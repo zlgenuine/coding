@@ -1,0 +1,16 @@
+.list-enter-active,
+.list-leave-active {
+    transition: all 0.2s;
+}
+
+.list-enter,
+.list-leave-active {
+    opacity: 0;
+    transform: translateY(50px);
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}

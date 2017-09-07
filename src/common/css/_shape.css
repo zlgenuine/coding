@@ -1,0 +1,41 @@
+/*排行榜*/
+.ranking {
+  height: 56px;
+  width: 44px;
+}
+
+.topRanking {
+  height: 58px;
+  width: 48px;
+  overflow: hidden;
+}
+
+.ranking, .topRanking {
+  background: url('/static/images/assets/sprite.png')no-repeat;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.topRanking_0 {
+  background-position-x: 0;
+}
+
+.topRanking_1 {
+  background-position-x: -48px;
+}
+
+.topRanking_2 {
+  background-position-x: -96px;
+}
+
+.ranking_1 {
+  background-position-x: -144px;
+}
+
+.ranking_2 {
+  background-position-x: -188px;
+}
+
+.ranking_3 {
+  background-position-x: -232px;
+}

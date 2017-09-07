@@ -1,0 +1,15 @@
+.ts-col-1, .ts-col-2, .ts-col-3, .ts-col-4, .ts-col-5, .ts-col-6, .ts-col-7, .ts-col-8, .ts-col-9, .ts-col-10, .ts-col-11, .ts-col-12, .ts-col-13, .ts-col-14, .ts-col-15, .ts-col-16, .ts-col-17, .ts-col-18, .ts-col-19, .ts-col-20, .ts-col-21, .ts-col-22, .ts-col-23, .ts-col-24 {
+  float: left;
+  box-sizing: border-box;
+}
+.ts-col-0 {
+  width: 0;
+}
+@for $i from 0 through 24 {
+  .ts-col-#{$i}{
+    width: 1 / 24 * $i * 100%;
+  }
+  .ts-col-offset-#{$i}{
+    margin-left: 1 / 24 * $i * 100%;
+  }
+}

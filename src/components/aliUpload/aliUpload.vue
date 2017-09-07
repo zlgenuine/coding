@@ -91,12 +91,11 @@ export default {
         if (fileLen.length > 0) {
           const client = new OSS.Wrapper({
             region: _.region,
-            secure: true,
+            secure: process.env.NODE_ENV === 'production',
             accessKeyId: data.accessKeyId,
             accessKeySecret: data.accessKeySecret,
             stsToken: data.securityToken,
-            bucket: data.bucket,
-            endpoint: data.endpoint
+            bucket: data.bucket
           });
           _.$emit('begin');
           for (let i = 0; i < fileLen.length; i++) {

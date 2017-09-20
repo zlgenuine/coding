@@ -90,7 +90,7 @@
       </ts-col>
       <ts-col :span="19">已收订金金额：</ts-col>
       <ts-col :span="5">
-        <span v-if="item.price>0&&!!item.price">    
+        <span v-if="data.prepaidMoney>0&&!!data.prepaidMoney">    
          ¥{{data.prepaidMoney/100}}/{{item.unit | filterDict(dicTree.PRODUCT_UNIT,'name')}}
         </span>
         <span v-else>价格面议</span>

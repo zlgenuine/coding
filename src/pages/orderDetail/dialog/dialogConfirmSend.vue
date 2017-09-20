@@ -25,8 +25,8 @@
           <ts-col :span="6">买家收货信息：</ts-col>
           <ts-col :span="18">{{data.address.province}}{{data.address.city}}{{data.address.county}}{{data.address.address}}350200。{{data.address.name}}，{{data.address.phone}}</ts-col>
           <!-- TODO: 没有发货人信息 取getCompanyInfo -->
-          <ts-col :span="6">我的发货信息：</ts-col>
-          <ts-col :span="18">福建省长乐市文武砂，数字福建产业园，8号研发楼，一楼。 350200。庄志勇，13928766967</ts-col>
+          <!-- <ts-col :span="6">我的发货信息：</ts-col> -->
+          <!-- <ts-col :span="18">福建省长乐市文武砂，数字福建产业园，8号研发楼，一楼。 350200。庄志勇，13928766967</ts-col> -->
         </ts-row>
       </ts-col>
       <ts-col :span="12">

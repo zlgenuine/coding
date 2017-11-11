@@ -26,7 +26,7 @@ export const filterDate = (value, type = 'dateTime') => {
     let year = tmpDate.getFullYear();
     let mathon = tmpDate.getMonth() + 1 < 10
       ? `0${tmpDate.getMonth() + 1}`
-      : tmpDate.getMonth();
+      : tmpDate.getMonth() + 1;
     let day = tmpDate.getDate() < 10
       ? `0${tmpDate.getDate()}`
       : tmpDate.getDate();
@@ -55,7 +55,7 @@ export const filterDate1 = (value, type = 'dateTime') => {
     let year = tmpDate.getFullYear();
     let mathon = tmpDate.getMonth() + 1 < 10
       ? `0${tmpDate.getMonth() + 1}`
-      : tmpDate.getMonth();
+      : tmpDate.getMonth() + 1;
     let day = tmpDate.getDate() < 10
       ? `0${tmpDate.getDate()}`
       : tmpDate.getDate();

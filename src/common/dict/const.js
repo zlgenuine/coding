@@ -14,10 +14,10 @@ export const BANNER = {
   ],
   // 动态=>banner+跳转地址
   dynamic: [
-    {
-      pic: `${ALI_DOMAIN}banner/06.jpg`,
-      link: '/aboutLace'
-    }
+    // {
+    //   pic: `${ALI_DOMAIN}banner/06.jpg`,
+    //   link: '/aboutLace'
+    // }
   ]
 };
 export const MODELS = [

@@ -7,7 +7,7 @@
           	<span>网店管理</span>
           </router-link>
         	<router-link to="/homePage" v-else>
-            <img src="/static/images/统搜57.png">
+            <img src="/static/images/log.png">
           </router-link>
           <!-- <slot></slot> -->
       </div>

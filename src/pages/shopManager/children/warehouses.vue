@@ -106,6 +106,14 @@
                         <span v-else>价格面议</span>
                       </ts-col>
                     </ts-row>
+                    <ts-row class="warehouse-grid-item--row">
+                    <ts-col :span="5">所属厂家</ts-col>
+                      <ts-col :span="7">
+                        <span >{{item.produceCompanyName}}</span>
+                      </ts-col>
+
+                    </ts-row>
+                    
                   </div>
                   <!-- 4.花型色卡 -->
                   <div class="warehouse-grid-item--container"  v-else>
@@ -334,6 +342,7 @@ export default {
     // 如果没有回到获取全部花型
     let productList = (await getProductList(this.Params)).data.data;
     this.productList = productList;
+
     if (productList.list.length > 0) {
       this.productList.list = productList.list.map(item => {
         return Object.assign({}, item, {
@@ -402,12 +411,14 @@ export default {
           publishStatus: 0
         });
       });
+
       this.handleUpOrEditPro(data, 'create');
       this.fullscreenLoading = false;
       return;
     },
     // 修改花型
     handleEditProduct(data) {
+;
       this.handleUpOrEditPro(data, 'edit');
       this.BatchUpload.dialogShow = false;
     },

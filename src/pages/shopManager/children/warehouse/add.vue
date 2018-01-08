@@ -19,6 +19,9 @@
           <div slot="header-left">
             <strong>花型基本信息</strong>
           </div>
+           <ts-form-item label="来源厂家：" prop="produceCompanyName" >
+                <ts-input  class="add-input" v-model="addPatternForm.produceCompanyName" :maxlength="10" size="small" placeholder="请输入来源厂家"></ts-input>
+          </ts-form-item>
           <ts-form-item label="面料种类：" prop="category">
             <ts-radio-group bordered v-model="addPatternForm.category">
               <ts-radio  :label="item.dicValue" v-for="item in dicTree.PRODUCT_TYPE" :key="item.dicValue">{{item.name}}</ts-radio>
@@ -198,6 +201,7 @@ export default {
       userCategory: [],
       // 表单
       addPatternForm: {
+        produceCompanyName: '',
         category: '',
         height: '',
         ingredient: '',
@@ -405,6 +409,7 @@ export default {
       this.$refs[formName].validate(async(valid) => {
         if (valid) {
           let data = JSON.parse(JSON.stringify(this.addPatternForm));
+          console.log(data);
           if (this.isCreatedStatus) {
             await this.$emit('created', data);
           } else {

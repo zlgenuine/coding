@@ -230,14 +230,22 @@ export default {
     },
     // 查看网店的首页
     handleGotoShop(item) {
+      var shopId;
       if (!item.companyId) {
-        this.goto(`/shop/${item.id}`);
-        return;
+        shopId = item.id;
+       // this.goto(`/shop/${item.id}`);
+      // return;
+      }else{
+        shopId = item.companyId;
+        // this.goto(`/shop/${item.companyId}`);
       }
-      this.goto(`/shop/${item.companyId}`);
+     // console.log('indexName:'+item.indexName);
+     var url = 'http://' + item.indexName + '.lacewang.cn';
+     this.goto(url);
     },
     handleGotoShopTable(item) {
       this.goto(`/shop/${item.id}`);
+      
     },
     handleViewProduct(item) {
       this.goto(`/product/${item.id}`);

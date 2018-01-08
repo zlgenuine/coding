@@ -65,12 +65,12 @@
                     <li @click="handleTabChange(item,2)"  :class="[item.isActive===2?'is-active':'']">花型色卡</li>
                   </ul>
                 </ts-col>
-                <ts-col :span="15">
+                <ts-col :span="15" style="min-height: 198px">
                   <!-- 3.列表的详细信息 -->
                   <div class="warehouse-grid-item--container" v-if="item.isActive===1">
                     <ts-row class="warehouse-grid-item--row">
                       <ts-col :span="5">面料种类</ts-col>
-                      <ts-col :span="7">{{item.category | filterDict(dicTree.PRODUCT_TYPE,'name')}}</span></ts-col>
+                      <ts-col :span="7">{{item.category | filterDict(dicTree.PRODUCT_TYPE,'name')}}</ts-col>
                       <ts-col :span="5">编号</ts-col>
                       <ts-col :span="7" :title="item.productNo"><span>{{item.productNo}}</span></ts-col>
                     </ts-row>
@@ -105,13 +105,13 @@
                         <span v-if="item.price>0&&!!item.price">¥{{item.price/100}}/{{item.priceUnit | filterDict(dicTree.PRODUCT_UNIT,'name')}}</span>
                         <span v-else>价格面议</span>
                       </ts-col>
+
                     </ts-row>
                     <ts-row class="warehouse-grid-item--row">
-                    <ts-col :span="5">所属厂家</ts-col>
-                      <ts-col :span="7">
+                        <ts-col :span="5">所属厂家</ts-col>
+                        <ts-col :span="7">
                         <span >{{item.produceCompanyName}}</span>
                       </ts-col>
-
                     </ts-row>
                     
                   </div>

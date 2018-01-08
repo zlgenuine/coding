@@ -12,7 +12,7 @@ import * as utils from '@/common/js/utils';
 import {GAODE_MAP_KEY} from '@/common/dict/const';
 import VueLazyload from 'vue-lazyload';
 // HZC公共组件
-import jhComponents from '@/Components/common/index.js';
+import jhComponents from '@/components/common/index.js';
 // 高德地图
 import AMap from 'vue-amap';
 Vue.use(AMap);

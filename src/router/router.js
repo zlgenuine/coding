@@ -16,8 +16,8 @@ const supplyOrBuy = r => require.ensure([], () => r(require('@/pages/homePage/su
 const purchaseListPage = r => require.ensure([], () => r(require('@/pages/homePage/purchaseListPage/purchaseListPage.vue')), 'purchaseListPage');
 const purchaseDetailPage = r => require.ensure([], () => r(require('@/pages/homePage/purchaseListPage/purchaseDetailPage/purchaseDetailPage.vue')), 'purchaseDetailPage');
 const supplyListPage = r => require.ensure([], () => r(require('@/pages/homePage/supplyListPage/supplyListPage.vue')), 'supplyListPage');
-const hotListpage = r => require.ensure([], () => r(require('@/pages/homePage/addHotListpage/hotListpage.vue')), 'hotListpage');
-const supplyDetailPage = r => require.ensure([], () => r(require('@/pages/homePage/supplyListPage/supplyDetailPage/supplyDetailPage.vue')), 'supplyDetailPage');
+const hotListpage = r => require.ensure([], () => r(require('@/pages/homePage/addHotListPage/hotListPage.vue')), 'hotListpage');
+const supplyDetailPage = r => require.ensure([], () => r(require('@/pages/homePage/supplyListPage/supplyDetailpage/supplyDetailPage.vue')), 'supplyDetailPage');
 // =============
 // 订单管理
 const order = r => require.ensure([], () => r(require('@/pages/order/index.vue')), 'order');

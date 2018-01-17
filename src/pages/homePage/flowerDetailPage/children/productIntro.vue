@@ -138,9 +138,9 @@
 							<div class="productIntro-company--span">
 								{{CompanySimpleInfo.companyBusiness}}
 							</div>
-							<router-link :to="{path:`/shop/${productDetail.companyId}`}">
+							<a :href="'http://' + CompanySimpleInfo.indexName + '.lacewang.cn'">
 								<ts-button type="primary"  class="productIntro-company--button">进入网店</ts-button>
-							</router-link>
+							</a>
 					</div>
 				</ts-col>
 			</ts-row>

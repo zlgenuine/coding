@@ -62,8 +62,8 @@ export default {
   },
   methods: {
     handleViewProduct(company) {
-      // this.goto(`http://${company.indexName}.lacewang.cn`);
-      this.goto(`/shop/${company.companyId}`);
+      this.goto(`http://${company.indexName}.lacewang.cn`);
+      // this.goto(`/shop/${company.companyId}`);
     },
     // 更多
     goEntry() {

@@ -9,7 +9,7 @@ axios.defaults.headers['x-client'] = 1;
 // http://192.168.8.212:9090
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
   ? 'https://api.ts57.cn/app'
-  : 'http://192.168.8.212:9090/app';
+  : 'https://apidev.ts57.cn/app';
 // x-token
 axios.defaults.headers['x-token'] = cookie.get('x-token') || '';
 store.commit('LOGIN', axios.defaults.headers['x-token'] || '');

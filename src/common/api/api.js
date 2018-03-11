@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 const API = {
   // 用户模块API
   user: {
@@ -86,6 +87,7 @@ const API = {
   product: {
     // POST
     listProducts: '/product/listProducts', // 获取花型列表
+    listLSKProduct: '/product/listLSKProduct', // 已上架蕾丝控的花型
     putInStorage: '/product/putInStorage', // 花型图片入仓
     addProduct: '/product/addProduct', // 新增花型
     batchAddProduct: '/product/batchAddProduct', // 批量新增花型
@@ -156,6 +158,7 @@ const API = {
   },
   // 公司
   company: {
+    checkSettled: ' /company/checkSettled',                // 店铺是否入驻了蕾丝控
     getCompanyBestList: '/companyBest/getCompanyBestList', // 优质厂家
     totalCompanies: '/company/totalCompanies', // 获取工厂or店铺总数统计
     getCompanyQRcode: '/company/getCompanyQRcode', // 获取公司二维码图片
@@ -248,6 +251,8 @@ export const getUserSimpleInfo = param => axios.post(API.user.getUserSimpleInfo,
 export const checkPhone = param => axios.get(API.user.checkPhone, {params: param});
 // 会员权限检查
 export const checklimit = param => axios.get(API.member.checklimit);
+// 是否lsk
+export const checkSettled = param => axios.get(API.company.checkSettled, {params: param});
 // 获取设备列表
 export const getListDevice = param => axios.post(API.device.listDevice, param);
 // 获取注册短信验证码
@@ -431,6 +436,8 @@ export const saveCompanyAptitude = param => axios.post(API.company.saveCompanyAp
 export const updateCompanyExtend = param => axios.post(API.company.updateCompanyExtend, param);
 // 获取花型列表
 export const getProductList = param => axios.post(API.product.listProducts, param);
+// 已上架蕾丝控的花型
+export const listLSKProduct = param => axios.post(API.product.listLSKProduct, param);
 // 获取花型详情
 export const getProduct = id => axios.get(`${API.product.getProduct}/${id}`);
 // 新增花型

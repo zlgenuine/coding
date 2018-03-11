@@ -333,7 +333,7 @@ export default {
       }
     },
     classId() {
-      if (this.userCategory && this.data.classList.length) {
+      if (this.userCategory && this.data.classList &&this.data.classList.length) {
         let className = this.userCategory.filter(item => item.className === this.data.classList[0])[0];
         return className.id;
       }

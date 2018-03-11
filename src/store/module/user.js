@@ -1,4 +1,5 @@
 import {getUserInfo, checklimit} from '@/common/api/api';
+
 const state = {
   // 用户信息
   userInfo: {},
@@ -6,30 +7,30 @@ const state = {
 };
 
 const mutations = {
-  GET_USERINFO(state, userInfo) {
+  GET_USERINFO (state, userInfo) {
     state.userInfo = userInfo;
   },
-  CLEAR_USERINFO(state, userInfo) {
+  CLEAR_USERINFO (state, userInfo) {
     state.userInfo = {};
   },
-  GET_IS_MEMEBR(state, isMemeber) {
+  GET_IS_MEMEBR (state, isMemeber) {
     state.isMemeber = isMemeber;
   }
 };
 const actions = {
   // 获取企业资质信息
-  async getUserInfo({commit}) {
+  async getUserInfo ({commit}) {
     try {
-      let { data } = await getUserInfo();
+      let {data} = await getUserInfo();
       commit('GET_USERINFO', data.data);
     } catch (e) {
       console.error('获取用户信息失败');
     }
   },
   // 会员权限检查
-  async memberChecklimit({commit}) {
+  async memberChecklimit ({commit}) {
     try {
-      let { data } = await checklimit();
+      let {data} = await checklimit();
       commit('GET_IS_MEMEBR', data.data);
       return data.data;
     } catch (e) {

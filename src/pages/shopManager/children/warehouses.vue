@@ -748,14 +748,10 @@
   };
 </script>
 
-<style lang="css" scoped>
+<style lang="postcss" scoped>
     @component-namespace warehouse {
         @component product-color {
-            min-height:
-
-        60px
-
-        ;
+            min-height: 60px;
             @modifier number {
                 color: red;
                 margin: 0 2px;
@@ -764,208 +760,152 @@
                 color: grey;
             }
             @modifier carousel {
-                margin:
-
-            20px auto
-
-            ;
+                margin: 20px auto;
                 .item {
-
-                .ts-image {
-                    margin: 0 10px;
-
-            &:first-child {
-                 margin-left: 15px;
-             }
+                    .ts-image {
+                        margin: 0 10px;
+                        &:first-child {
+                            margin-left: 15px;
+                        }
+                    }
+                }
+            }
+            @modifier image {
+                margin: 22px 2px;
+            }
+            @modifier row {
+                padding-top: 12px;
+                border-top: 1px solid #eaeaea;
             }
         }
-    }
-    @modifier image {
-        margin: 22px 2px;
-    }
-    @modifier row {
-        padding-top: 12px;
-        border-top: 1px solid #eaeaea;
-    }
-    }
-    @component grid {
-        @descendent item {
-            font-size:
-
-        12px
-
-        ;
-            display: inline-block
-
-        ;
-            margin-top:
-
-        10px
-
-        ;
-            border:
-
-        2px solid #eee
-
-        ;
-            width:
-
-        100%;
-            border-radius:
-
-        4px
-
-        ;
-            box-sizing: border-box
-
-        ;
-            padding:
-
-        8px
-
-        ;
-            @modifier flex {
-                display: flex;
-            }
-            @modifier category {
-                margin: 6px auto;
-                width: 120px;
+        @component grid {
+            @descendent item {
+                font-size: 12px;
                 display: inline-block;
-                text-align: center;
-            }
-            @modifier container {
-                flex: 1;
-                padding-left: 4px;
-                height: 160px;
+                margin-top: 10px;
+                border: 2px solid #eee;
+                width: 100%;
+                border-radius: 4px;
                 box-sizing: border-box;
-            }
-            @modifier navbar {
-                li {
-                    border: 1px solid #eaeaea;
-                    border-radius: 1px;
-                    margin: 0 6px 4px;
-                    width: 18px;
-                    line-height: 19px;
-                    font-size: 12px;
+                padding: 8px;
+                @modifier flex {
+                    display: flex;
+                }
+                @modifier category {
+                    margin: 6px auto;
+                    width: 120px;
+                    display: inline-block;
                     text-align: center;
-                    transition: .3s;
-                    cursor: pointer;
+                }
+                @modifier container {
+                    flex: 1;
+                    padding-left: 4px;
+                    height: 160px;
+                    box-sizing: border-box;
+                }
+                @modifier navbar {
+                    li {
+                        border: 1px solid #eaeaea;
+                        border-radius: 1px;
+                        margin: 0 6px 4px;
+                        width: 18px;
+                        line-height: 19px;
+                        font-size: 12px;
+                        text-align: center;
+                        transition: .3s;
+                        cursor: pointer;
+                        @when active {
+                            border: 1px solid #4c93fd;
+                            background: #fff;
+                            color: #4c93fd;
+                        }
+                    }
+                }
+                @modifier status {
+                    position: relative;
+                }
+                @modifier img {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    z-index: 1;
+                    width: 25%;
+                }
+                @modifier row {
+                    margin-bottom: 18px;
+                    .ts-col-5 {
+                        color: grey;
+                        text-align: right;
+                    }
 
-                @when active {
-                    border: 1px solid #4c93fd;
-                    background: #fff;
-                    color: #4c93fd;
+                    .ts-col-7 {
+                        text-align: left;
+                        padding-left: 10px;
+                        max-width: 140px;
+                        display: inline-block;
+                        @utils-ellipsis ;
+                    }
+                }
+                @modifier footer {
+                    text-align: right;
+                    padding-top: 10px;
+                    border-top: 1px solid #eaeaea;
+                    button {
+                        margin-right: 6px;
+                    }
                 }
             }
         }
-        @modifier status {
-            position: relative;
+        @component filter {
+            margin-bottom: 24px;
         }
-        @modifier img {
-            position: absolute 0 **0;
-            z-index: 1;
-            width: 25%;
-        }
-        @modifier row {
-            margin-bottom:
-
-        18px
-
-        ;
-            .ts-col-5 {
-                color: grey;
+        @component footer {
+            display: flex;
+            align-items: center;
+            @modifier button {
+                button {
+                    margin-right: 32px;
+                }
+            }
+            @modifier pagation {
+                flex: 1;
                 text-align: right;
             }
-
-            .ts-col-7 {
-                text-align: left;
-                padding-left: 10px;
-                max-width: 140px;
-                display: inline-block;
-            @utils-ellipsis;
+        }
+        @component table {
+            @modifier link {
+                display: block;
+                text-align: center;
             }
         }
-        @modifier footer {
-            text-align: right
+        @component dialog {
+            p {
+                text-align: center;
+            }
 
-        ;
-            padding-top:
-
-        10px
-
-        ;
-            border-top:
-
-        1px solid #eaeaea
-
-        ;
-            button {
-                margin-right: 6px;
+            @modifier title {
+                font-size: 18px;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+            @modifier tip {
+                font-size: 14px;
+                i {
+                    font-size: smaller;
+                    color: #3F3F3F;
+                }
             }
         }
-    }
-    }
-    @component filter {
-        margin-bottom: 24px;
-    }
-    @component footer {
-        display: flex
-
-    ;
-        align-items: center
-
-    ;
-        @modifier button {
-            button {
-                margin-right: 32px;
+        @component photo {
+            @modifier search {
+                margin: 0 20px;
+                min-width: 40px;
             }
         }
-        @modifier pagation {
-            flex: 1;
-            text-align: right;
-        }
-    }
-    @component table {
-        @modifier link {
-            display: block;
-            text-align: center;
-        }
-    }
-    @component dialog {
-        p {
-            text-align: center;
-        }
-
-        @modifier title {
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
-        @modifier tip {
-            font-size:
-
-        14px
-
-        ;
-            i {
-                font-size: smaller;
-                color: #3F3F3F;
-            }
-        }
-    }
-    @component photo {
-        @modifier search {
-            margin: 0 20px;
-            min-width: 40px;
-        }
-    }
     }
     .icon-xiangji {
-
-    &
-    :before {
-        color: #fff;
-    }
-
+        &:before {
+            color: #fff;
+        }
     }
 </style>

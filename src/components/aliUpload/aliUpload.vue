@@ -84,7 +84,7 @@ export default {
       };
       // 3.OSS token
       token(this.fileType).then((res) => {
-        alert(this.fileType);
+        // alert(this.fileType);
         let data = res.data.data;
         _.dir = data.dir;
         var arr = [];

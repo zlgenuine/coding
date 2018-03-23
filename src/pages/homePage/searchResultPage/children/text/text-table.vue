@@ -1,14 +1,17 @@
-<template lang="html">
-	<div class="">
-		<ts-table class="entryList-table" :data="SearchCompany.list">
-			<ts-column slot data-key="companyName" width="150px" align="center" name="公司名称"></ts-column>
-			<ts-column slot data-key="USERATYPE" width="100px" align="center" name="公司类型"></ts-column>
-			<ts-column slot data-key="phone" align="center" name="联系电话" width="130px"></ts-column>
-			<ts-column slot data-key="address" align="center" name="地址"></ts-column>
-		  <ts-column slot align="center" class="text-table--button"  name="操作" action="{'text':'进入官网','func':'handleGotoShop'}"></ts-column>
-		</ts-table>
-		<ts-pagination type="page" :total="SearchCompany.totalNum" class="textSearch-pagination" :current="SearchCompany.pageNO" @change="handleChangeCompanyNum" :pageSize="SearchCompany.pageSize"></ts-pagination>
-	</div>
+<template>
+    <div class="">
+        <ts-table class="entryList-table" :data="SearchCompany.list">
+            <ts-column slot data-key="companyName" width="150px" align="center" name="公司名称"></ts-column>
+            <ts-column slot data-key="USERATYPE" width="100px" align="center" name="公司类型"></ts-column>
+            <ts-column slot data-key="phone" align="center" name="联系电话" width="130px"></ts-column>
+            <ts-column slot data-key="address" align="center" name="地址"></ts-column>
+            <ts-column slot align="center" class="text-table--button" name="操作"
+                       action="{'text':'进入官网','func':'handleGotoShop'}"></ts-column>
+        </ts-table>
+        <ts-pagination type="page" :total="SearchCompany.totalNum" class="textSearch-pagination"
+                       :current="SearchCompany.pageNO" @change="handleChangeCompanyNum"
+                       :pageSize="SearchCompany.pageSize"></ts-pagination>
+    </div>
 </template>
 
 <script>
@@ -59,7 +62,7 @@ export default {
   },
   methods: {
     handleGotoShop(item) {
-      this.goto(`/shop/${item.id}`);
+      this.goto(`http://${item.indexName}.lacewang.cn`);
     },
     handleChangeCompanyNum(number) {
       this.CompanySearchParams.pageNo = number;

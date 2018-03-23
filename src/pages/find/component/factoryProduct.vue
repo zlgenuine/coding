@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
   <div class="factory">
     <div class="factory-row">
       <div class="factory-row--left" :style="{'width':width}">
@@ -27,7 +27,7 @@
              height="170"
              :canView="false"
              disabledHover
-             :src="product.defaultPicUrl+'?x-oss-process=image/resize,m_fill,h_170,w_170'+watermask">
+             :src="imgPath(product.defaultPicUrl,'x-oss-process=image/resize,m_fill,h_170,w_170'+watermask)">
              </ts-image>
              <p class="factory-product--number">{{product.productNo}}</p>
              <template slot="footer">
@@ -44,9 +44,8 @@
 
 <script>
 import DICT from '@/common/dict';
-import {
-  mapGetters
-} from 'vuex';
+import {mapGetters} from 'vuex';
+import {imgPath} from '@/common/js/utils';
 export default {
   data() {
     return {
@@ -74,6 +73,7 @@ export default {
     }
   },
   methods: {
+    imgPath,
     // 进去某个商品
     handleViewProduct(item) {
       this.$emit('viewProduct', item);

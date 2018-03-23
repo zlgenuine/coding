@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
 	<div class="updateProduct-wrapper">
 		<div class="updateProduct-list-block">
 			<p>最新上架</p>
@@ -17,7 +17,7 @@
 						height="170"
 						:canView="false"
 						disabledHover
-						:src="product.defaultPicUrl+'?x-oss-process=image/resize,m_fill,h_170,w_170'+watermask">
+						:src="imgPath(product.defaultPicUrl,'x-oss-process=image/resize,m_fill,h_170,w_170'+watermask)">
 						</ts-image>
 						<p class="updateProduct-item">{{product.productNo}}</p>
 						<template slot="footer" class="updateProduct-footer">
@@ -34,39 +34,38 @@
 </template>
 
 <script>
-import {
-  mapGetters
-} from 'vuex';
-import {
-  getVistitCompanyProductsList
-} from '@/common/api/api';
-export default {
-  data() {
-    return {
-      Update: {}
-    };
-  },
-  computed: {
-    ...mapGetters(['dicTree', 'productDetail', 'watermask'])
-  },
-  watch: {
-    productDetail: {
-      async handler(val) {
-        this.Update = (await getVistitCompanyProductsList({
-          companyId: val.companyId,
-          pageNo: 1,
-          pageSize: 6
-        })).data.data;
-      },
-      deep: true
+  import {imgPath} from '@/common/js/utils';
+  import {mapGetters} from 'vuex';
+  import {getVistitCompanyProductsList} from '@/common/api/api';
+
+  export default {
+    data () {
+      return {
+        Update: {}
+      };
+    },
+    computed: {
+      ...mapGetters(['dicTree', 'productDetail', 'watermask'])
+    },
+    watch: {
+      productDetail: {
+        async handler (val) {
+          this.Update = (await getVistitCompanyProductsList({
+            companyId: val.companyId,
+            pageNo: 1,
+            pageSize: 6
+          })).data.data;
+        },
+        deep: true
+      }
+    },
+    methods: {
+      imgPath,
+      handleViewProduct (id) {
+        this.goto(`/product/${id}` + '?route=shop');
+      }
     }
-  },
-  methods: {
-    handleViewProduct(id) {
-			this.goto(`/product/${id}` + '?route=shop');
-    }
-  }
-};
+  };
 </script>
 
 <style lang="css" scoped>

@@ -9,7 +9,7 @@
   </p>
   <ts-grid :data="Search" class="update-result-data">
     <ts-grid-item style="width:240px" v-for="product in Search" :key="product" @click="handleGotoProduct(product.id)">
-      <ts-image width="170" height="170" :canView="false" disabledHover :src="product.defaultPicUrl+'?x-oss-process=image/resize,m_fill,h_170,w_170'+watermask">
+      <ts-image width="170" height="170" :canView="false" disabledHover :src="imgPath(product.defaultPicUrl,'x-oss-process=image/resize,m_fill,h_170,w_170'+watermask)">
       </ts-image>
       <p class="update-result-product--number">{{product.productNo}}</p>
       <template slot="footer">
@@ -30,6 +30,7 @@ import {
 } from '@/common/api/api';
 import { mapGetters } from 'vuex';
 import { pagination } from '@/components/';
+import {imgPath} from '@/common/js/utils';
 export default {
   data() {
     return {
@@ -72,6 +73,7 @@ export default {
 //  }
 // },
   methods: {
+    imgPath,
     async handleMore(number) {
     console.log(number);
       this.Params.pageNo = number;

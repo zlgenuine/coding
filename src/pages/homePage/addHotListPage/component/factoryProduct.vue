@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
 	<div class="factory">
 		<div class="factory-row">
 			<div class="factory-row--left" :style="{'width':width}">
@@ -18,7 +18,7 @@
 				</div>
 				<ts-grid :data="products">
 					<ts-grid-item v-for="product in products" :key="product" @click="handleViewProduct(product)" :style="{'width':width}">
-						<ts-image width="170" height="170" :canView="false" disabledHover :src="product.defaultPicUrl+'?x-oss-process=image/resize,m_fill,h_170,w_170'+watermask">
+						<ts-image width="170" height="170" :canView="false" disabledHover :src="imgPath(product.defaultPicUrl,'x-oss-process=image/resize,m_fill,h_170,w_170'+watermask)">
 						</ts-image>
 						<p class="factory-product--number">{{product.productNo}}</p>
 						<template slot="footer">
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+    import {imgPath} from '@/common/js/utils';
 	import DICT from '@/common/dict';
 	import {
 		mapGetters
@@ -72,7 +73,8 @@
 			// 进去店铺
 			handleViewStore(item) {
 				this.$emit('viewStore', item);
-			}
+			},
+            imgPath
 		}
 	};
 </script>

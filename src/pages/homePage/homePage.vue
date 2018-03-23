@@ -8,10 +8,10 @@
     <!-- autoplay :autoplay-speed="5000" -->
     <ts-carousel fade v-model="value" arrow="hover" trigger="hover" autoplay :autoplay-speed="5000" easing='linear'>
     	<ts-carousel-item v-for="(item,index) in banners.dynamic">
-        <ts-image :src="item.pic+banner" @click.native="handleGotoAboutLace(item.link)" height="350" class="home-image" :canView="false" disabledHover></ts-image>
+        <ts-image :src="banner(item.pic)" @click.native="handleGotoAboutLace(item.link)" height="350" class="home-image" :canView="false" disabledHover></ts-image>
       </ts-carousel-item>
       <ts-carousel-item v-for="(item,index) in banners.static">
-        <ts-image :src="item+banner" height="350" class="home-image" :canView="false" disabledHover></ts-image>
+        <ts-image :src="banner(item)" height="350" class="home-image" :canView="false" disabledHover></ts-image>
       </ts-carousel-item>
     </ts-carousel>
   </div>
@@ -56,17 +56,14 @@ import {
   entryList
 } from '@/components';
 import {
-  mapGetters
-} from 'vuex';
-import {
   // listHomeBanners,
   listProductBuys,
   listCompanySupplys,
   findNewCompanyByIndex
 } from '@/common/api/api';
-import {
-  BANNER
-} from '@/common/dict/const';
+import {mapGetters} from 'vuex';
+import {BANNER} from '@/common/dict/const';
+import {imgPath} from '@/common/js/utils';
 export default {
   data() {
     return {
@@ -84,11 +81,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['userInfo']),
-    banner() {
-      let width = document.body.clientWidth || document.documentElement.clientWidth;
-      return `?x-oss-process=image/resize,w_${width},h_350,m_fill`;
-    }
+    ...mapGetters(['userInfo'])
   },
   components: {
     'vHeader': header,
@@ -109,6 +102,10 @@ export default {
     }
   },
   methods: {
+    banner(path) {
+      let width = document.body.clientWidth || document.documentElement.clientWidth;
+      return imgPath(path,`x-oss-process=image/resize,w_${width},h_350,m_fill`);
+    },
     goProduct(e) {
       this.goto(`/productExplain?params=${e}`);
     },

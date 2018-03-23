@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
 	<div class="update" style="margin-top: 10px;">
 		<div class="update-container">
 			<div v-for="item in NewProductList">
@@ -23,12 +23,8 @@
 <script>
 	import factoryUpdate from '../component/factoryProduct.vue';
 	import { pagination } from '@/components/';
-	import {
-		mapGetters
-	} from 'vuex';
-	import {
-		getCompanyNewProductList
-	} from '@/common/api/api';
+	import {mapGetters} from 'vuex';
+	import {getCompanyNewProductList} from '@/common/api/api';
 	export default {
 		data() {
 			return {

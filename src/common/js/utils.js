@@ -11,7 +11,7 @@ export const parseText = (str) => {
     str = str.replace(/'/g, '"');
     str = str.replace(/(\s?\{\s?)(\S)/g, '$1' + '"' + '$2');
     str = str.replace(/(\s?,\s?)(\S)/g, '$1' + '' +
-        '$2');
+      '$2');
     str = str.replace(/(\S\s?):(\s?\S)/g, '$1' + '":' + '$2');
     str = str.replace(/,'\{/g, ',{');
     str = str.replace(/""/g, '"');
@@ -70,7 +70,7 @@ export const cookie = (() => {
       return true;
     },
     // 获取cookie
-    get: function(sKey) {
+    get: function (sKey) {
       return decodeURIComponent(document.cookie.replace(new RegExp('(?:(?:^|.*;)\\s*' + encodeURIComponent(sKey).replace(/[\\-\\.\\+\\*]/g, '\\$&') + '\\s*\\=\\s*([^;]*).*$)|^.*$'), '$1')) || null;
     }
   };
@@ -184,7 +184,8 @@ export const historyItems = (() => {
 export const convertImgToBase64 = (url, callback, error, outputFormat) => {
   var canvas = document.createElement('canvas');
   var ctx = canvas.getContext('2d');
-  function requestImg(src) {
+
+  function requestImg (src) {
     var img = new Image();
     img.crossOrigin = 'Anonymous';
     var timeStamp = +new Date();
@@ -240,3 +241,14 @@ export const Device = (() => {
     isAndroid: isAndroid
   };
 })();
+
+export const imgPath = function (path, options = 'x-oss-process=image/resize,m_fill,h_200,w_200') {
+  if (String(path).indexOf('x-oss-process') >= 0) {
+    if (options) {
+      return `${path},${options}`;
+    }
+    return path;
+  }
+  ;
+  return `${path}?${options}`;
+};

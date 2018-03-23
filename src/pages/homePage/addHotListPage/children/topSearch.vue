@@ -1,9 +1,9 @@
-<template lang="html">
+<template>
 	<div class="hotSearch-content" ref="hotSearch">
 		<ts-grid :data="BurstHotSearch" class="hotSearch-content">
 			<ts-grid-item width="200px" v-for="(product,index) in BurstHotSearch" :key="product" @click="handleViewProduct(product,index)">
 				<span class="ranking hotSearch-rank" :class="`ranking_${index+1}`" v-if="index<3&&pageData.pageNO===1"></span>
-				<ts-image width="170" height="170" :canView="false" disabledHover :src="product.pics[0]+'?x-oss-process=image/resize,m_fill,h_170,w_170'+watermask">
+				<ts-image width="170" height="170" :canView="false" disabledHover :src="imgPath(product.pics[0],'x-oss-process=image/resize,m_fill,h_170,w_170'+watermask)">
 				</ts-image>
 				<template slot="footer" class="hotSearch-footer">
 					<p>搜索量&nbsp;<span class="hotSearch-footer--searchNum">{{product.searchs}}</span></p>
@@ -18,11 +18,10 @@
 </template>
 
 <script>
-	import {
-		mapGetters
-	} from 'vuex';
+	import {mapGetters} from 'vuex';
 	import { burstHotSearch } from '@/common/api/api';
 	import { pagination } from '@/components/';
+    import {imgPath} from '@/common/js/utils';
 	export default {
 		data() {
 			return {
@@ -50,6 +49,7 @@
 			}
 		},
 		methods: {
+            imgPath,
 			async handleLoadMore(number) {
 				this.Params.pageNo = number;
 				let data = (await burstHotSearch(this.Params)).data.data;

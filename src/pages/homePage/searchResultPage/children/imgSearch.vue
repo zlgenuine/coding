@@ -109,7 +109,7 @@
     mapGetters
   } from 'vuex';
   import CropperDialog from '@/components/search/searchImgDialog.vue';
-
+  import {imgPath} from '@/common/js/utils';
   export default {
     data () {
       return {
@@ -190,9 +190,9 @@
     methods: {
       getImg (img) {
         if (this.isShopRoute) {
-          return img + '?x-oss-process=image/resize,m_fill,h_170,w_170';
+          return imgPath(img,'x-oss-process=image/resize,m_fill,h_170,w_170');
         }
-        return img + '?x-oss-process=image/resize,m_fill,h_170,w_170' + this.watermask;
+        return imgPath(img,'x-oss-process=image/resize,m_fill,h_170,w_170'+ this.watermask);
       },
       handleLoadMore () {
         this.Params.pageNo++;

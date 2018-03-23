@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
   <div class="hotSearch-wrapper">
     <div slot="menu">
       <div class="hotSearch-title">
@@ -15,7 +15,7 @@
            height="220"
            :canView="false"
            disabledHover
-           :src="product.pics[0]+'?x-oss-process=image/resize,m_fill,h_220,w_220'+watermask">
+           :src="imgPath(product.pics[0],'x-oss-process=image/resize,m_fill,h_220,w_220'+watermask)">
            </ts-image>
            <template slot="footer" class="hotSearch-footer">
              <p>搜索量&nbsp;<span class="hotSearch-footer--searchNum">{{product.searchs}}</span></p>
@@ -32,9 +32,8 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import {
-  burstHotSearch
-} from '@/common/api/api';
+import {burstHotSearch} from '@/common/api/api';
+import {imgPath} from '@/common/js/utils';
 export default {
   data() {
     return {
@@ -52,6 +51,7 @@ export default {
     }
   },
   methods: {
+    imgPath,
     handleViewProduct(item, index) {
       this.$router.push({
         name: 'updateResult',

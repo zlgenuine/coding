@@ -14,15 +14,10 @@
 			<top-search v-show="!isActive"></top-search>
 		</div>
 	</div>
-	</div>
 </template>
 
 <script>
-	import {
-		header,
-		nav,
-		search
-	} from '@/components';
+	import {header, nav, search} from '@/components';
 	import factoryUpdate from './children/factoryUpdate.vue';
 	import topSearch from './children/topSearch.vue';
 	import { mapGetters } from 'vuex';

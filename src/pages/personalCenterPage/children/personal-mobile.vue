@@ -8,7 +8,7 @@
   </div>
   <div class="personal-mobile-wrap personal-form" v-if="isShow">
     <label for="password">登录密码</label>
-    <input type="password" name="password" id="password" placeholder="请输入登录密码" v-model="param.userPasswd" />
+    <input type="password" name="password" id="password" placeholder="请输入登录密码"  autocomplete="new-password" v-model="param.userPasswd" />
     <button class="checkoutBtn personal-btn" @click="checkPasswdMethod()">校验</button>
   </div>
   <div class="personal-mobile-wrap" v-if="!isShow">

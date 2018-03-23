@@ -180,7 +180,8 @@
                                            @click="handleShelveProduct({goal:1,ids:item.id,isUp:true})" size="small">
                                     上架网店
                                 </ts-button>
-                                <ts-button type="primary" v-if="Number(userInfo.isSettled) ===1"
+                                <!--只有入驻与上架到平台或网店才能上架lsk-->
+                                <ts-button type="primary" v-if="Number(userInfo.isSettled) ===1 && Number(Filter.publishStatuss) !== 0"
                                            @click="uploadLsk(item)"
                                            size="small">{{Number(item.isShelve) === 1 ? '下架蕾丝控' : '上架蕾丝控'}}
                                 </ts-button>

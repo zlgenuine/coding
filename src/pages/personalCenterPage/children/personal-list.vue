@@ -288,12 +288,14 @@
 	};
 </script>
 
-<style lang="scss" scoped="scoped">
+<style lang="scss" scoped>
 	.personal-list {
 		margin-top: 25px;
 		padding: 0 15px;
 	}
-	
+	.personal-goods-item{
+		position: relative;
+	}
 	div.personal-goods-item:nth-child(4n) {
 		margin-right: 0 !important;
 	}

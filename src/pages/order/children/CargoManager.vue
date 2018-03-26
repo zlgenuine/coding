@@ -4,7 +4,7 @@
 		<div class="order-cargo-wrap">
 			<ts-filter title="订单分类">
 				<ts-radio-group v-model="Filter.sort" @change="hanleFilterSort">
-					<ts-radio :label="item.label" v-for="item in classData">{{item.name}}<span style="color: #4C93FD;">{{item.label}}</span></ts-radio>
+					<ts-radio :label="item.label" v-for="(item,index) in classData" :key="index">{{item.name}}<span style="color: #4C93FD;">{{item.label}}</span></ts-radio>
 				</ts-radio-group>
 			</ts-filter>
 			<div class="order-cargo-wrap--searchBox">
@@ -35,7 +35,7 @@
 					<ts-menu-table-item width="100">操作</ts-menu-table-item>
 				</ts-menu-table>
 				<ts-menu :prop="list">
-					<ts-menu-table content v-for="item in list">
+					<ts-menu-table content v-for="(item,index) in list" :key="index">
 						<div class="title" slot="header-left">
 							<span>
 								<!--<img src="../../../../dist/static/images/assets/clock.svg" width="40" height="40"/>-->
@@ -45,7 +45,7 @@
 							<span class="column">下单时间：{{item.time}}</span>
 						</div>
 						<ts-menu-table-item width="260" style="padding:0">
-							<ts-row v-for="i in item.products" style="display: block;">
+							<ts-row v-for="(i,index) in item.products" style="display: block;" :key="index">
 								<ts-col :span="12" style="text-align:left" class="clearfix">
 									<ts-image class="fl" width="80" height="80" :src="i.src"></ts-image>
 									<div class="detail fl">

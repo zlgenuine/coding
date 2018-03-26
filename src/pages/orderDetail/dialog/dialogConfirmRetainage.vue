@@ -39,7 +39,7 @@
           <ts-menu-table-item>大货交易数量</ts-menu-table-item>
       </ts-menu-table>
        <ts-menu :prop="list">
-        <ts-menu-table :header="false" content v-for="(item,index) in data.orderItems">
+        <ts-menu-table :header="false" content v-for="(item,index) in data.orderItems" :key="index">
           <ts-menu-table-item>
             <div class="dialog-editPrice-detail--wrapper">
               <ts-image width="80" height="80" :src="item.picUrl"></ts-image>

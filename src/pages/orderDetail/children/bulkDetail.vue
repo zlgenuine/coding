@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
   <div class="bulkDeatil">
     <!-- 步骤进度 -->
     <detail-step class="bulkDeatil-step" :id="OrderDetails.orderStatus" :step="stepData" step-label="name" step-value="id" :show="!showByStatus([9000, 9900, 9910, 9920])">
@@ -7,7 +7,7 @@
            <i class="icon-warning" v-show="showByStatus([9000, 9900, 9910, 9920])">!</i> 当前订单状态：<span>{{judge.title}} {{OrderDetails.orderStatus}}</span>
         </p>
         <ul class="bulkDeatil-step--item">
-          <li v-for="item in judge.notice">{{item}}</li>
+          <li v-for="(item, index) in judge.notice" :key="index">{{item}}</li>
           <li v-show="showByStatus([2000])">买家要求备货期为{{OrderDetails.stockPeriod}}天，如对此有疑问可及时与买家沟通</li>
           <li v-show="showByStatus([201010, 201020, 3000])">订单剩余支付
             <span v-show="showByStatus([201010])">全款</span>
@@ -62,7 +62,7 @@
           <p v-show="showByStatus([2050, 2040, 3020])">剩余收货时间：{{OrderDetails.surplusReceiptTime}}</p>
         </div>
         <div class="bulkDeatil-step--button">
-          <ts-button :type="item.type?item.type:'warning'" v-for="item in judge.button" @click="handleBulk(item.methods)">
+          <ts-button :type="item.type?item.type:'warning'" v-for="(item,index) in judge.button" @click="handleBulk(item.methods)" :key="index">
             {{item.name}}
           </ts-button>
           <ts-button @click="handleConfirmRetainage">handleConfirmRetainage</ts-button>
@@ -131,7 +131,7 @@
             <ts-menu :prop="list">
               <ts-menu-table :header="false" content>
                 <ts-menu-table-item width="660" style="padding:0">
-                  <ts-row v-for="item in OrderDetails.orderItems">
+                  <ts-row v-for="(item,index) in OrderDetails.orderItems" :key="index">
                     <ts-col :span="12" style="text-align:left">
                       <ts-image width="80" height="80" :src="item.picUrl"></ts-image>
                       {{item.productId}}
@@ -224,7 +224,7 @@
               <ts-col :span="22">{{OrderDetails.orderId}}</ts-col>
               <!-- TODO：循环 -->
               <ts-col :span="22" :offset="2" class="bulkDeatil-follow--time">
-                <p v-for="i in tranOrderTimes">{{judgeJSON[OrderDetails.orderType][i.status].name}} {{i.time | filterDate('dateTime')}}</p>
+                <p v-for="(i,index) in tranOrderTimes" :key="index">{{judgeJSON[OrderDetails.orderType][i.status].name}} {{i.time | filterDate('dateTime')}}</p>
               </ts-col>
               <ts-col :span="2">配送公司：</ts-col>
               <ts-col :span="22">{{OrderDetails.logisticsName}}&nbsp;</ts-col>
@@ -232,7 +232,7 @@
               <ts-col :span="22">{{OrderDetails.logisticsNum}}&nbsp;</ts-col>
               <ts-col :span="2">物流跟踪：</ts-col>
               <ts-col :span="22">
-                <p v-for="i in ExpQuery">{{i.AcceptStation}} {{i.AcceptTime}}</p>
+                <p v-for="(i,index) in ExpQuery" :key="index">{{i.AcceptStation}} {{i.AcceptTime}}</p>
               </ts-col>
             </ts-row>
           </div>

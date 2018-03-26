@@ -1,49 +1,58 @@
-<template lang="html">
-  <div>
-    <ts-grid :data="Exclusive.list" v-show="!isExclusive">
-      <ts-grid-item style="width:240px" v-for="product in Exclusive.list" :key="product">
-        <ts-image
-         width="170"
-         height="170"
-         :canView="false"
-         disabledHover
-         @click="handleViewProduct(product)"
-         :src="product.defaultPicUrl">
-         </ts-image>
-         <p class="exclusive-product--number">{{product.productNo}}</p>
-         <div class="exclusive-color-wrapper">
-            <div v-if="product.productColors.length<=5">
-              <span v-for="color in colorPicList(product.productColors)">
-                <ts-image :src="cards.picUrl" v-for="(cards,index) in color" height="30" width="30" :canView="false" disabledHover class="exclusive-color--image" @click="showColorDetail(cards,index, product)"></ts-image>
+<template>
+    <div>
+        <ts-grid :data="Exclusive.list" v-show="!isExclusive">
+            <ts-grid-item style="width:240px" v-for="product in Exclusive.list" :key="product">
+                <ts-image
+                        width="170"
+                        height="170"
+                        :canView="false"
+                        disabledHover
+                        @click="handleViewProduct(product)"
+                        :src="product.defaultPicUrl">
+                </ts-image>
+                <p class="exclusive-product--number">{{product.productNo}}</p>
+                <div class="exclusive-color-wrapper">
+                    <div v-if="product.productColors.length<=5">
+              <span v-for="(color,index) in colorPicList(product.productColors)" :key="index">
+                <ts-image :src="cards.picUrl" v-for="(cards,index) in color" height="30" width="30" :canView="false"
+                          disabledHover class="exclusive-color--image" @click="showColorDetail(cards,index, product)"
+                          :key="index"></ts-image>
               </span>
+                    </div>
+                    <ts-carousel class="exclusive-color-wrapper carousel" dots="never" arrow="always" arrowType="square"
+                                 easing='linear' v-else>
+                        <ts-carousel-item v-for="(color,index) in colorPicList(product.productColors)" :key="index">
+                            <ts-image :src="cards.picUrl" v-for="(cards,index) in color" height="30" width="30"
+                                      :canView="false" disabledHover class="exclusive-color--image"
+                                      @click="showColorDetail(cards,index, product)" :key="index"></ts-image>
+                        </ts-carousel-item>
+                    </ts-carousel>
+                </div>
+                <template slot="footer">
+                    <span v-if="product.price>0&&!!product.price">¥{{product.price / 100}}/{{product.priceUnit | filterDict(DICT.PriceUnits)
+                        }}</span>
+                    <span v-else>价格面议</span>
+                </template>
+            </ts-grid-item>
+        </ts-grid>
+        <ts-pagination type="page" :total="Exclusive.totalNum" :current="Exclusive.pageNO"
+                       :pageSize="Exclusive.pageSize" @change="handleChangePage" class="exclusive-pagination"
+                       v-show="!isExclusive"></ts-pagination>
+        <div v-show="isExclusive">
+            <div class="exclusive-tip">
+                <p class="exclusive-tip-content">
+                    <span>独家花型需要商家授权才能访问，请向商家索取访问密码！</span>
+                </p>
             </div>
-            <ts-carousel class="exclusive-color-wrapper carousel" dots="never" arrow="always" arrowType="square" easing='linear' v-else>
-              <ts-carousel-item v-for="color in colorPicList(product.productColors)">
-                <ts-image :src="cards.picUrl" v-for="(cards,index) in color" height="30" width="30" :canView="false" disabledHover class="exclusive-color--image" @click="showColorDetail(cards,index, product)"></ts-image>
-              </ts-carousel-item>
-            </ts-carousel>
-          </div>
-         <template slot="footer">
-           <span v-if="product.price>0&&!!product.price">¥{{product.price/100}}/{{product.priceUnit | filterDict(DICT.PriceUnits) }}</span>
-           <span v-else>价格面议</span>
-         </template>
-       </ts-grid-item>
-    </ts-grid>
-    <ts-pagination type="page" :total="Exclusive.totalNum"  :current="Exclusive.pageNO" :pageSize="Exclusive.pageSize" @change="handleChangePage" class="exclusive-pagination" v-show="!isExclusive"></ts-pagination>
-    <div v-show="isExclusive">
-      <div class="exclusive-tip">
-        <p class="exclusive-tip-content">
-          <span>独家花型需要商家授权才能访问，请向商家索取访问密码！</span>
-        </p>
-      </div>
-      <ts-form :model="Pwd" :rules="rules" ref="Pwd" label-width="130px">
-        <ts-form-item prop="password" label="请输入访问密码">
-          <ts-input v-model="Pwd.password" placeholder="请输入密码" @keyup.enter.native="handleSetPwd('Pwd')" :maxlength="6" width="30%"></ts-input>
-        </ts-form-item>
-      </ts-form>
-      <ts-button type="primary" @click="handleSetPwd('Pwd')">访问</ts-button>
+            <ts-form :model="Pwd" :rules="rules" ref="Pwd" label-width="130px">
+                <ts-form-item prop="password" label="请输入访问密码">
+                    <ts-input v-model="Pwd.password" placeholder="请输入密码" @keyup.enter.native="handleSetPwd('Pwd')"
+                              :maxlength="6" width="30%"></ts-input>
+                </ts-form-item>
+            </ts-form>
+            <ts-button type="primary" @click="handleSetPwd('Pwd')">访问</ts-button>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>

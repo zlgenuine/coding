@@ -7,10 +7,10 @@
   <div class="swiper">
     <!-- autoplay :autoplay-speed="5000" -->
     <ts-carousel fade v-model="value" arrow="hover" trigger="hover" autoplay :autoplay-speed="5000" easing='linear'>
-    	<ts-carousel-item v-for="(item,index) in banners.dynamic">
+    	<ts-carousel-item v-for="(item,index) in banners.dynamic" :key="index">
         <ts-image :src="banner(item.pic)" @click.native="handleGotoAboutLace(item.link)" height="350" class="home-image" :canView="false" disabledHover></ts-image>
       </ts-carousel-item>
-      <ts-carousel-item v-for="(item,index) in banners.static">
+      <ts-carousel-item v-for="(item,index) in banners.static" :key="index">
         <ts-image :src="banner(item)" height="350" class="home-image" :canView="false" disabledHover></ts-image>
       </ts-carousel-item>
     </ts-carousel>

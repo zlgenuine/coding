@@ -1,30 +1,34 @@
 <template>
-<div>
-  <table>
-    <thead>
+  <div>
+    <table>
+      <thead>
       <tr>
-        <th v-for="(item,e) in rule" :class="'col_'+(e+1)" :style="getStyle(item)" @click="thColClick(item)"> {{item.name}}</th>
+        <th v-for="(item,e) in rule" :class="'col_'+(e+1)" :style="getStyle(item)" @click="thColClick(item)">
+          {{item.name}}
+        </th>
       </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(trData,rowIndex) in tables(data,rule)" :class="'row_'+(rowIndex+1)" @click="bodyTrClick(data[rowIndex])">
+      </thead>
+      <tbody>
+      <tr v-for="(trData,rowIndex) in tables(data,rule)" :class="'row_'+(rowIndex+1)"
+          @click="bodyTrClick(data[rowIndex])">
         <td v-for="(tdData,colIndex) in trData" :style="getStyle(rule[colIndex])" :class="'col_'+(colIndex+1)">
           <ts-image :src="tdData" v-if="rule[colIndex].image" :width="imgWidth" :height="imgHeight"></ts-image>
           <span v-else>{{tdData}}</span>
           <template v-if="tdData===null && rule[colIndex].action">
-              <span v-for="actionItem in changeAction(rule[colIndex].action)" @click.stop="fireAction(actionItem, data[rowIndex])" class="handleAction">
+              <span v-for="actionItem in changeAction(rule[colIndex].action)"
+                    @click.stop="fireAction(actionItem, data[rowIndex])" class="handleAction">
                 {{actionItem.text}}
               </span>
-            </template>
+          </template>
         </td>
       </tr>
-    </tbody>
-  </table>
-  <div class="table-empty" v-if="empty">
-    <span>暂无数据</span>
+      </tbody>
+    </table>
+    <div class="table-empty" v-if="empty">
+      <span>暂无数据</span>
+    </div>
+    <slot></slot>
   </div>
-  <slot></slot>
-</div>
 </template>
 <script>
 import {

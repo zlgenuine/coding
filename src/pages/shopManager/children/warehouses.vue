@@ -95,7 +95,7 @@
                                             </ts-col>
                                             <ts-col :span="5">分类</ts-col>
                                             <ts-col :span="7">
-                                                <span v-for="i in item.classList">{{i}}&nbsp;</span>
+                                                <span v-for="(i,index) in item.classList" :key="index">{{i}}&nbsp;</span>
                                             </ts-col>
                                         </ts-row>
                                         <ts-row class="warehouse-grid-item--row">
@@ -139,19 +139,19 @@
                                         </p>
                                         <div class="warehouse-product-color">
                                             <div v-if="item.colorCardsNum<5">
-                        <span v-for="color in item.colorCardspic">
-                            <ts-image :src="cards.picUrl" v-for="cards in color" height="60" width="60" :canView="false"
-                                      disabledHover class="warehouse-product-color--image"
-                                      @click="showColorDetail(cards,item)"></ts-image>
-                        </span>
+                                                <span v-for="(color,index) in item.colorCardspic" :key="index">
+                                                    <ts-image :src="cards.picUrl" v-for="(cards,index) in color" :key="index"
+                                                        height="60" width="60" :canView="false" disabledHover class="warehouse-product-color--image"
+                                                        @click="showColorDetail(cards,item)"></ts-image>
+                                                </span>
                                             </div>
                                             <div v-if="item.colorCardsNum>=5">
                                                 <ts-carousel class="warehouse-product-color--carousel"
                                                              v-model="item.carousel" dots="never" arrow="always"
                                                              arrowType="square" easing='linear'>
-                                                    <ts-carousel-item v-for="color in item.colorCardspic">
+                                                    <ts-carousel-item v-for="(color,index) in item.colorCardspic" :key="index">
                                                         <div class="item">
-                                                            <ts-image :src="cards.picUrl" v-for="cards in color"
+                                                            <ts-image :src="cards.picUrl" v-for="(cards,index) in color" :key="index"
                                                                       height="60" width="60" :canView="false"
                                                                       disabledHover
                                                                       @click="showColorDetail(cards,item)"></ts-image>

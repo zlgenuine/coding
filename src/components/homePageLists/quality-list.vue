@@ -7,7 +7,7 @@
 		<div class="right-list">
 			<list-tile :title-text="titleText"></list-tile>
 			<div class="entry-flexbox">
-				<entry-list-item :item="item" v-for="item in newCompanyList"></entry-list-item>
+				<entry-list-item :item="item" v-for="(item,index) in newCompanyList" :key="index"></entry-list-item>
 			</div>
 			<!--<div class="item-wrapper">
         <ts-carousel height="546px" autoplay-speed="6000" dots="none" autoplay arrow="always" easing='linear'>

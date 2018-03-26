@@ -53,7 +53,7 @@
                                         <ts-col :span="4" v-show="!!productDetail.classList.length">分&nbsp;&nbsp;类：
                                         </ts-col>
                                         <ts-col :span="20" v-show="!!productDetail.classList.length"><span
-                                                v-for="i in productDetail.classList">{{i}}&nbsp;</span>&nbsp;
+                                                v-for="(i,index) in productDetail.classList" :key="index">{{i}}&nbsp;</span>&nbsp;
                                         </ts-col>
                                         <ts-col :span="4">成&nbsp;&nbsp;分：</ts-col>
                                         <ts-col :span="20">{{productDetail.ingredient}}&nbsp;</ts-col>
@@ -71,26 +71,27 @@
                                         <ts-col :span="20">
                                             <div class="productIntro-product-color">
                                                 <div v-if="getColorsLength<2">
-														<span v-for="color in Color.list">
+														<span v-for="(color,index) in Color.list" :key="index">
 																<ts-image :src="cards.picUrl"
                                                                           v-for="(cards,index) in color" height="56"
                                                                           width="56" :canView="false" disabledHover
                                                                           class="productIntro-product-color--image"
                                                                           @click="showColorDetail(cards,index)"
-                                                                          :class="Color.chosed===index?'is-chosed':''"></ts-image>
+                                                                          :class="Color.chosed===index?'is-chosed':''"
+                                                                          :key="index"></ts-image>
 														</span>
                                                 </div>
                                                 <div v-if="getColorsLength>=2">
                                                     <ts-carousel class="productIntro-product-color--carousel"
                                                                  v-model="carousel" dots="never" arrow="always"
                                                                  arrowType="square" easing='linear'>
-                                                        <ts-carousel-item v-for="color in Color.list">
+                                                        <ts-carousel-item v-for="(color,index) in Color.list" :key="index">
                                                             <div class="item">
                                                                 <ts-image :src="cards.picUrl"
                                                                           v-for="(cards,index) in color" height="56"
                                                                           width="56" :canView="false" disabledHover
                                                                           @click="showColorDetail(cards,index)"
-                                                                          :class="Color.chosed===index?'is-chosed':''"></ts-image>
+                                                                          :class="Color.chosed===index?'is-chosed':''" :key="index"></ts-image>
                                                             </div>
                                                         </ts-carousel-item>
                                                     </ts-carousel>
@@ -197,7 +198,7 @@
                                  label-position="left">
                             <ts-form-item label="采购类型" prop="purchaseType">
                                 <ts-radio-group bordered v-model="enquiryForm.purchaseType">
-                                    <ts-radio :label="item.dicValue" v-for="item in DICT.purchaseType">{{item.label}}
+                                    <ts-radio :label="item.dicValue" v-for="(item,index) in DICT.purchaseType" :key="index">{{item.label}}
                                     </ts-radio>
                                 </ts-radio-group>
                             </ts-form-item>

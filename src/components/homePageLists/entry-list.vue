@@ -20,7 +20,7 @@
         <ts-carousel height="523px" autoplay-speed="6000" dots="none" autoplay arrow="always" easing='linear'>
           <ts-carousel-item v-for="(company,index) in companys" :key="index">
             <ts-grid>
-              <ts-grid-item style="width:289px;height:160px" v-for="item in company" @click="handleViewProduct(item)">
+              <ts-grid-item style="width:289px;height:160px" v-for="(item,index) in company" @click="handleViewProduct(item)" :key="index">
                 <ts-image width="258" height="130" :canView="false" disabledHover :src="item.pic"></ts-image>
                 <!--<img width="258" height="130" :src="item.pic"/>-->
               </ts-grid-item>

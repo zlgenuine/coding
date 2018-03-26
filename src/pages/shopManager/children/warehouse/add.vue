@@ -62,7 +62,7 @@
                                     <i class="add-radio-close" @click.self="handleDelIngredient(item,'Ingredient')"
                                        v-if="item.ingredientType=== 1">&times</i>
                                 </div>
-                                <div class="add-radio" v-for="(item,index) in newIngredients">
+                                <div class="add-radio" v-for="(item,index) in newIngredients" :key="index">
                                     <ts-radio :label="item.ingredientName">
                   <span @keydown="handlePreventInput">
                   {{item.ingredientName}}  </span>
@@ -78,7 +78,7 @@
                         </ts-form-item>
                         <ts-form-item label="花型分类：" v-show="hasUserCategory">
                             <ts-radio-group bordered v-model="addPatternForm.classId">
-                                <ts-radio :label="item.id" v-for="item in userCategory">{{item.className}}</ts-radio>
+                                <ts-radio :label="item.id" v-for="(item,index) in userCategory" :key="index">{{item.className}}</ts-radio>
                             </ts-radio-group>
                         </ts-form-item>
                         <div v-if="!isCreatedStatus">

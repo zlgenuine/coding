@@ -13,7 +13,7 @@
     <!-- Form -->
 
     <ts-form :model="PhoneForm" ref="PhoneForm" label-width="200px" label-position="left">
-      <ts-form-item v-for="(phone,index) in PhoneForm.phoneList" :label="`短信接收号码_${index+1}`">
+      <ts-form-item v-for="(phone,index) in PhoneForm.phoneList" :label="`短信接收号码_${index+1}`" :key="index">
         <ts-input
         :prop="'phoneList.' + index + '.value'"
         v-model="phone.value"

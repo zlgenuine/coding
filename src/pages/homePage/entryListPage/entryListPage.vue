@@ -9,14 +9,9 @@
             <entry-list></entry-list>
         </div>
     </div>
-
 </template>
 <script>
-    import {
-        header,
-        nav,
-        search
-    } from '@/components';
+    import {header, nav, search} from '@/components';
     import EntryList from './children/entryList.vue';
 
     export default {

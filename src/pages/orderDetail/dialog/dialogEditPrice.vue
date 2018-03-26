@@ -83,7 +83,7 @@
       </ts-menu-table>
       <div class="dialog-editPrice-menu-table">
         <ts-menu :prop="list">
-        <ts-menu-table :header="false" content v-for="(item,index) in editPriceForm.orderItems">
+        <ts-menu-table :header="false" content v-for="(item,index) in editPriceForm.orderItems" :key="index">
           <ts-menu-table-item>
             <div class="dialog-editPrice-detail--wrapper">
               <ts-image width="80" height="80" :src="item.picUrl"></ts-image>

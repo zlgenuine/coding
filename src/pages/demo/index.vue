@@ -111,7 +111,7 @@
     <!-- 2.组 -->
     <pre>{{checkbox.group}}</pre>
     <ts-checkbox-group v-model="checkbox.group">
-      <ts-checkbox :label="item.id" v-for="item in checkbox.groupData">{{item.val}}</ts-checkbox>
+      <ts-checkbox :label="item.id" v-for="(item,index) in checkbox.groupData" :key="index">{{item.val}}</ts-checkbox>
     </ts-checkbox-group>
     <br>
     <!-- ==========  -->
@@ -156,7 +156,7 @@
 <br>
 <p>ts-menu</p>
 <ts-menu :prop="list">
-  <ts-menu-table v-for="item in list">
+  <ts-menu-table v-for="(item,index) in list" :key="index">
     <div slot="header-left">
       最左边
     </div>
@@ -164,7 +164,7 @@
       最右边
     </div>
     <ts-menu-table-item width="660" style="padding:0">
-      <ts-row v-for="i in item.products">
+      <ts-row v-for="(i,index) in item.products" :key="index">
         <ts-col :span="12" style="text-align:left">
           <ts-image width="80" height="80" :src="i.src"></ts-image>
           {{i.id}}
@@ -187,9 +187,9 @@
       <ts-menu-table-item>商品总价</ts-menu-table-item>
     </ts-menu-table>
     <ts-menu :prop="list">
-      <ts-menu-table :header="false" content v-for="item in list">
+      <ts-menu-table :header="false" content v-for="(item,index) in list" :key="index">
         <ts-menu-table-item width="660" style="padding:0">
-          <ts-row v-for="i in item.products">
+          <ts-row v-for="(i,index) in item.products" :key="index">
             <ts-col :span="12" style="text-align:left">
               <ts-image width="80" height="80" :src="i.src"></ts-image>
               {{i.id}}

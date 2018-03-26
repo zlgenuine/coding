@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import {
+import  {
   deleteProductCategory,
   listSystemProductCategory,
   listUserProductCategory,

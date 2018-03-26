@@ -11,7 +11,7 @@
       <ts-aliupload fileType="3" id="AddColor" multiple @doUpload="handleAddColorCards" :maxNum="8"></ts-aliupload>
     </div>
     <ts-row :gutter="10">
-      <ts-col :span="12" v-for="item in ColorList">
+      <ts-col :span="12" v-for="(item,index) in ColorList" :key="index">
         <ts-row class="add-dynamic-col">
           <ts-col :span="7">
             <ts-image class="add-dynamic-image" width="90" height="90" :src="item.picUrl" :canView="false" disabledHover></ts-image>

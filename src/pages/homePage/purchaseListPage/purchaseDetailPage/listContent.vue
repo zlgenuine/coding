@@ -2,7 +2,7 @@
 	<div class="list-content">
 		<div class="fl content-img">
 			<!--<img v-lazy="item.buyPicUrl" alt="求购花型图片" />-->
-			<magnifier :imgSrc="item.buyPicUrl"></magnifier>
+			<magnifier :imgSrc="item.buyPicUrl" :s_width="200"></magnifier>
 		</div>
 		<div class="fl content-info">
 			<p class="content-info-desc">{{item.buyDesc}}</p>

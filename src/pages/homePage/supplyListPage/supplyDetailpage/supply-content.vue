@@ -1,7 +1,7 @@
 <template>
 <div class="list-content">
   <div class="fl content-img">
-    <magnifier :imgSrc="obj.productPicUrl"></magnifier>
+    <magnifier :imgSrc="obj.productPicUrl" :s_width="200"></magnifier>
     <collection @clickMethod="collectionMethod" :yes="yesOrNo" style="margin: 28px 10px 0 160px; display: inline-block;"></collection>
     <span style="font-size: 13px; position: relative; top: -2px;">浏览量：{{obj.viewCount}}</span>
   </div>

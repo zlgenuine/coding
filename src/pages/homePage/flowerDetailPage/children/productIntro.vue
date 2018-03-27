@@ -8,9 +8,10 @@
                         <!-- 1.花型图片 -->
                         <ts-col :span="13">
                             <div class="productIntro-product-cover">
-                                <ts-image width="380" height="380" :canView="false" disabledHover
+                               <!-- <ts-image width="380" height="380" :canView="false" disabledHover
                                           :src="imgPath(productDetail.defaultPicUrl,'x-oss-process=image/resize,m_fill,h_380,w_380'+watermask)">
-                                </ts-image>
+                                </ts-image>-->
+                                <magnifier  width="380" height="380" :s_width="200" :imgSrc="imgPath(productDetail.defaultPicUrl,'x-oss-process=image/resize,m_fill,h_380,w_380'+watermask)"></magnifier>
                                 <div class="productIntro-product-share" @click="handleCollected"
                                      v-if="productDetail.userId!==userInfo.id&&userInfo.id">
                                     <i :class="Collect.isCollected?'icon-yishoucang':'icon-shoucang'"></i>

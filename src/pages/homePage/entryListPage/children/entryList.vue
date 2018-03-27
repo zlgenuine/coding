@@ -19,13 +19,22 @@
   </div>
   <!-- Table -->
   <div class="entryList-table" v-if="showSearchItem">
-    <ts-table :data="Search.list">
-      <ts-column slot data-key="companyName" width="150px" align="center" name="公司名称"></ts-column>
-      <ts-column slot data-key="USERATYPE" width="100px" align="center" name="公司类型"></ts-column>
-      <ts-column slot data-key="phone" align="center" name="联系电话" width="130px"></ts-column>
-      <ts-column slot data-key="DATE" align="center" name="地址"></ts-column>
-      <ts-column slot align="center" name="操作" action="{'text':'进入官网','func':'handleGotoShopTable'}"></ts-column>
-    </ts-table>
+    <el-table class="entryList-table" :data="Search.list"  border>
+      <el-table-column  width="150px" align="center" label="公司名称">
+        <template scope="scope">
+          <span style="margin-left: 10px">{{ scope.row.companyName }}</span>
+          <span v-if="Number(scope.row.isSettled)" class="tag">在线交易</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="USERATYPE" width="100px" align="center" label="公司类型"></el-table-column>
+      <el-table-column prop="phone" align="center" label="联系电话" width="130px"></el-table-column>
+      <el-table-column prop="address" align="center" label="地址"></el-table-column>
+      <el-table-column align="center" label="操作">
+        <template scope="scope">
+          <ts-button @click="handleGotoShop(scope.row)" type="primary" class="btn">进入官网</ts-button>
+        </template>
+      </el-table-column>
+    </el-table>
     <div class="entryList-pagination page">
       <ts-pagination type="page" :total="Search.totalNum" :current="Search.pageNO" @change="handleChangeCompanyNum" :pageSize="Search.pageSize"></ts-pagination>
     </div>
@@ -370,4 +379,27 @@ export default {
     }
   }
 }
+.el-table__header-wrapper thead div {
+  background-color: rgb(248, 248, 248);
+  color: #1f2d3d;
+  font-weight: normal;
+}
+.el-table th {
+  background-color: rgb(248, 248, 248);
+}
+.el-table--enable-row-hover .el-table__body tr:hover>td {
+  background-color: #f8f8f8;
+}
+</style>
+<style scoped>
+  .btn{
+    margin: 10px auto;
+  }
+  .tag{
+    font-size: 8px;
+    color: #fff;
+    background-color: #FF8400;
+    border-radius: 2px;
+    padding: 2px 2px;
+  }
 </style>

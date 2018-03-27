@@ -15,8 +15,12 @@ import VueLazyload from 'vue-lazyload';
 import jhComponents from '@/components/common/index.js';
 // 高德地图
 import AMap from 'vue-amap';
+import { Table, TableColumn } from 'element-ui';
 Vue.use(AMap);
 Vue.use(jhComponents);
+Vue.component(Table.name, Table);
+Vue.component(TableColumn.name, TableColumn);
+
 Vue.use(VueLazyload, {
   preLoad: 1.3,
   error: '/static/images/default/morenhuaxing.png',

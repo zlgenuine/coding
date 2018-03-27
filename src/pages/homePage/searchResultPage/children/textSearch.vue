@@ -69,7 +69,7 @@
     mapGetters
   } from 'vuex';
   import DICT from '@/common/dict';
-  import TextTable from './text/text-table.vue';
+  import TextTable from './text/table.vue';
   import {
     searchMtd
   } from '@/common/api/api';

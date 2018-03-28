@@ -69,9 +69,9 @@
 			...mapGetters(['userInfo'])
 		},
 		created() {
-			if (this.$route.query.pageData) {
+			/*if (this.$route.query.pageData) {
 				this.param = this.$route.query.pageData;
-			}
+			}*/
 			this.listCompanySupplysMethod();
 			this.Filter.sort = this.param.supplyTypes + '' || 'null';
 			this.Filter.fabricType = this.param.supplyShapes + '' || 'null';

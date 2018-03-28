@@ -1,18 +1,18 @@
-<template lang="html">
-  <div>
-  <v-header>
-    <search></search>
-  </v-header>
-  <v-nav></v-nav>
-  <div class="supplyOrBuy-wrapper">
-    <div class="supplyOrBuy-tabber">
-      <ts-navbar v-model="selected">
-        <ts-tab-item id="1">求购信息</ts-tab-item>
-        <ts-tab-item id="2">供应信息</ts-tab-item>
-        <ts-tab-item id="3" v-if="userInfo.userType===2">我的求购</ts-tab-item>
-        <ts-tab-item id="4" v-if="userInfo.userType===1">我的供应</ts-tab-item>
-      </ts-navbar>
-      <span class="supplyOrBuy-tabber--button">
+<template>
+    <div>
+        <v-header>
+            <search></search>
+        </v-header>
+        <v-nav></v-nav>
+        <div class="supplyOrBuy-wrapper">
+            <div class="supplyOrBuy-tabber">
+                <ts-navbar v-model="selected">
+                    <ts-tab-item id="1">求购信息</ts-tab-item>
+                    <ts-tab-item id="2">供应信息</ts-tab-item>
+                    <ts-tab-item id="3" v-if="userInfo.userType===2">我的求购</ts-tab-item>
+                    <ts-tab-item id="4" v-if="userInfo.userType===1">我的供应</ts-tab-item>
+                </ts-navbar>
+                <span class="supplyOrBuy-tabber--button">
         <router-link to="/releaseSupplyPage">
           <ts-button type="primary" v-if="userInfo.userType===1">发布供应</ts-button>
         </router-link>
@@ -20,22 +20,22 @@
           <ts-button type="primary" v-if="userInfo.userType===2">发布求购</ts-button>
         </router-link>
       </span>
-      </div>
-    <ts-tab-container v-model="selected">
-      <ts-tab-container-item id="1">
-        <purchase-list></purchase-list>
-      </ts-tab-container-item>
-      <ts-tab-container-item id="2">
-        <supply-list></supply-list>
-      </ts-tab-container-item>
-      <ts-tab-container-item id="3" v-if="userInfo.userType===2">
-        <buy-component :titleShow="false"></buy-component>
-      </ts-tab-container-item>
-      <ts-tab-container-item id="4">
-        <supply-component :titleShow="false"></supply-component>
-      </ts-tab-container-item>
-     </ts-tab-container>
-  </div>
+            </div>
+            <ts-tab-container v-model="selected">
+                <ts-tab-container-item id="1">
+                    <purchase-list></purchase-list>
+                </ts-tab-container-item>
+                <ts-tab-container-item id="2">
+                    <supply-list></supply-list>
+                </ts-tab-container-item>
+                <ts-tab-container-item id="3" v-if="userInfo.userType===2">
+                    <buy-component :titleShow="false"></buy-component>
+                </ts-tab-container-item>
+                <ts-tab-container-item id="4">
+                    <supply-component :titleShow="false"></supply-component>
+                </ts-tab-container-item>
+            </ts-tab-container>
+        </div>
     </div>
 </template>
 

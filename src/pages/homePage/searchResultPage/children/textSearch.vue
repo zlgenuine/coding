@@ -26,15 +26,12 @@
 					</ts-filter>
 				</div>
 				<ts-grid :data="Search.list" class="textSearch-data">
-					<ts-grid-item style="width:240px" v-for="product in Search.list" :key="product"
-								  @click="handleGotoProduct(product.id)">
-						<div class="textSearch-image-box-img">
-							<ts-image
-									width="170"
-									height="170"
-									:canView="false"
-									disabledHover
-									:src="getImg(product.defaultPicUrl)">
+					<ts-grid-item style="width:240px" v-for="product in Search.list" :key="product">
+						<div class="textSearch-image-box-img" >
+							<ts-image width="170" height="170"
+									:canView="false" disabledHover
+									:src="getImg(product.defaultPicUrl)"
+                                    @click="handleGotoProduct(product.id)">
 							</ts-image>
 							<div class="textSearch-title">
 								<p class="textSearch-title-left">{{product.productNo}}</p>
@@ -44,7 +41,8 @@
 								 class="textSearch-image-box-watermask" alt="">
 						</div>
 						<template slot="footer">
-							<p class="textSearch-product-company">{{product.companyName}}</p>
+							<!--<p class="textSearch-product-company">{{product.companyName}}</p>-->
+							<p class="textSearch-product-contact" @click="handleGotoProduct(product.id)">联系厂家</p>
 							<span v-if="product.price>0&&!!product.price">¥{{product.price / 100}}/{{product.priceUnit | filterDict(DICT.PriceUnits)
 								}}</span>
 							<span v-else>价格面议</span>
@@ -190,6 +188,13 @@
 			@utils-ellipsis;
 			max-width: 65%;
 		}
+		@descendent contact{
+			border: 1px solid #4C93FD;
+            border-radius: 4px;
+            color: #4C93FD;
+		    font-size: 12px;
+            padding: 1px 3px;
+        }
   }
   @component title {
     display: flex;

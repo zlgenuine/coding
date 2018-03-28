@@ -17,15 +17,15 @@
         <!-- 图片列表 -->
         <div class="">
             <ts-grid :data="search.list" class="imgSearch-data">
-                <ts-grid-item class="imgSearch-data-item" v-for="product in search.list" :key="product"
-                              @click="handleViewProduct(product.id)">
+                <ts-grid-item class="imgSearch-data-item" v-for="product in search.list" :key="product">
                     <div class="imgSearch-image-box-img">
                         <ts-image
                                 width="170"
                                 height="170"
                                 :canView="false"
                                 disabledHover
-                                :src="getImg(product.defaultPicUrl)">
+                                :src="getImg(product.defaultPicUrl)"
+                                @click="handleViewProduct(product.id)">
                         </ts-image>
                         <div class="imgSearch-image-box-menu">
                             <p @click.stop="handleGotoDress(product)"><i class="icon-shiyihui"></i>&nbsp;试衣</p>
@@ -40,7 +40,8 @@
                         <p>{{product.updateDate | customTime}}发布</p>
                     </div>
                     <template slot="footer">
-                        <p class="imgSearch-product-company">{{product.companyName}}</p>
+                        <!--<p class="imgSearch-product-company">{{product.companyName}}</p>-->
+                        <p class="imgSearch-product-contact" @click="handleViewProduct(product.id)">联系厂家</p>
                         <!-- <span v-if="!Type.edit">{{product.publishDate | customTime}}</span> -->
                         <span v-if="product.price>0&&!!product.price">¥{{product.price / 100}}/{{product.priceUnit | filterDict(DICT.PriceUnits)
                             }}</span>
@@ -279,11 +280,7 @@
 <style lang="css" scoped>
     @component-namespace imgSearch {
         @component tip {
-            line-height:
-
-        50px
-
-        ;
+            line-height: 50px;
             a {
                 color: #4C93FD;
             }
@@ -294,11 +291,18 @@
                 margin-top: 10px;
                 text-align: left;
                 max-width: 200px;
-            @utils-ellipsis ;
+                @utils-ellipsis ;
             }
             @descendent company {
-            @utils-ellipsis ;
+                @utils-ellipsis ;
                 max-width: 65%;
+            }
+            @descendent contact{
+                border: 1px solid #4C93FD;
+                border-radius: 4px;
+                color: #4C93FD;
+                font-size: 12px;
+                padding: 1px 3px;
             }
         }
         @component result {
@@ -313,221 +317,171 @@
                 line-height: 40px;
             }
             @descendent item {
-                width:
+                width: 240px;
+                &:hover {
 
-            240px
-
-            ;
-            &:hover {
-
-                .imgSearch-image-box-menu {
-                    display: table;
+                    .imgSearch-image-box-menu {
+                        display: table;
+                    }
                 }
             }
         }
-    }
-    @component editPic {
-        @modifier menu {
-            text-align: center
-
-        ;
-            clear: both
-
-        ;
-            padding-top:
-
-        16px
-
-        ;
-            button {
-                margin: 0 4px;
+        @component editPic {
+            @modifier menu {
+                text-align: center;
+                clear: both;
+                padding-top: 16px;
+                button {
+                    margin: 0 4px;
+                }
             }
         }
-    }
-    @component pagination {
-        display: table;
-        margin: 7px auto;
-    }
-    @component title {
-        display: flex
-
-    ;
-        justify-content: space-between
-
-    ;
-        align-items: center
-
-    ;
-        line-height:
-
-    40px
-
-    ;
-        @descendent left {
-            flex: 1;
-            padding-right: 4px;
-            text-align: left;
-        @utils-ellipsis ;
+        @component pagination {
+            display: table;
+            margin: 7px auto;
         }
-    }
-    @component image-box {
-        position: relative
-
-    ;
-        max-width:
-
-    150px
-
-    ;
-    &:hover {
-
-        .imgSearch-image-box-tip {
-            display: inline-block;
+        @component title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            line-height: 40px;
+            @descendent left {
+                flex: 1;
+                padding-right: 4px;
+                text-align: left;
+                @utils-ellipsis ;
+            }
         }
-    }
-    @descendent watermask {
-        position: absolute 0 20px **;
-    }
-    @descendent img {
-        position: relative;
-    }
-    @descendent menu {
-        position: absolute *
+        @component image-box {
+            position: relative;
+            max-width: 150px;
+            &:hover {
 
-    0 0 0;
-        display: none
+                .imgSearch-image-box-tip {
+                    display: inline-block;
+                }
+            }
 
-    ;
-        table-layout: fixed
+            @descendent watermask {
+                position: absolute 0 20px * *;
+            }
+            @descendent img {
+                position: relative;
+            }
+            @descendent menu {
+                position: absolute *  0 0 0;
+                display: none;
+                table-layout: fixed;
+                width: 100%;
+                max-width: 170px;
+                margin: 0 auto;
+                i[class*='icon-'] {
 
-    ;
-        width:
+                    &:before {
+                        color: #fff;
+                    }
+                }
 
-    100%;
-        max-width:
+                p {
+                    background: rgba(0, 0, 0, 0.3);
+                    color: #fff;
+                    display: table-cell;
+                    width: 50%;
+                    position: relative;
+                    height: 30px;
+                    vertical-align: middle;
+                    cursor: pointer;
+                    transition: .8s;
 
-    170px
+                    & :hover {
+                        background: rgba(0, 0, 0, 0.5);
+                    }
 
-    ;
-        margin:
+                    & :first-child:after {
+                        content: '';
+                        position: absolute;
+                        right: 0;
+                        height: 100%;
+                        top: 0;
+                        width: 1px;
+                        background: #fff;
+                    }
 
-    0 auto
+                }
+            }
+            @descendent text {
+                margin-left: 30px;
+                p {
+                    line-height: 35px;
 
-    ;
-        i[class*='icon-'] {
+                    &:nth-of-type(1) {
+                        font-size: 20px;
+                        letter-spacing: 0;
+                    }
 
-    &:before {
-         color: #fff;
-     }
-    }
-    p {
-        background: rgba(0, 0, 0, 0.3);
-        color: #fff;
-        display: table-cell;
-        width: 50%;
-        position: relative;
-        height: 30px;
-        vertical-align: middle;
-        cursor: pointer;
-        transition: .8s;
+                    &:nth-of-type(2) {
+                        color: #FF8400;
+                        margin-top: 20px;
+                    }
 
-    &
-    :hover {
-        background: rgba(0, 0, 0, 0.5);
-    }
-
-    &
-    :first-child:after {
-        content: '';
-        position: absolute;
-        right: 0;
-        height: 100%;
-        top: 0;
-        width: 1px;
-        background: #fff;
-    }
-
-    }
-    }
-    @descendent text {
-        margin-left:
-
-    30px
-
-    ;
-        p {
-            line-height: 35px;
-
-    &:nth-of-type(1) {
-         font-size: 20px;
-         letter-spacing: 0;
-     }
-
-    &:nth-of-type(2) {
-         color: #FF8400;
-         margin-top: 20px;
-     }
-
-    &:nth-of-type(3) {
-         color: #999;
-     }
-    }
-    }
-    @descendent tip {
-        position: absolute *0 0 0;
-        display: inline-block;
-        height: 28px;
-        line-height: 28px;
-        background: rgba(0, 0, 0, 0.4);
-        color: #fff;
-        display: none;
-        cursor: pointer;
-        text-align: center;
-    }
-    }
-    @component bestCompany {
-        @descendent tip {
-            text-align: left;
-            line-height: 50px;
+                    &:nth-of-type(3) {
+                        color: #999;
+                    }
+                }
+            }
+            @descendent tip {
+                position: absolute *0 0 0;
+                display: inline-block;
+                height: 28px;
+                line-height: 28px;
+                background: rgba(0, 0, 0, 0.4);
+                color: #fff;
+                display: none;
+                cursor: pointer;
+                text-align: center;
+            }
         }
-    }
-    @component footer {
-        text-align: center
+        @component bestCompany {
+            @descendent tip {
+                text-align: left;
+                line-height: 50px;
+            }
+        }
+        @component footer {
+            text-align: center;
+            p {
 
-    ;
-        p {
+                &:nth-of-type(1) {
+                    font-size: 14px;
+                    color: #999999;
+                    margin: 10px 0;
+                    letter-spacing: 0;
+                }
 
-    &:nth-of-type(1) {
-         font-size: 14px;
-         color: #999999;
-         margin: 10px 0;
-         letter-spacing: 0;
-     }
+                &:nth-of-type(2) {
+                    font-size: 18px;
+                    color: #666666;
+                }
 
-    &:nth-of-type(2) {
-         font-size: 18px;
-         color: #666666;
-     }
+                &:nth-of-type(3) {
+                    font-size: 18px;
+                    color: #FF8400;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+        @component tag {
+            a {
+                color: #fff;
 
-    &:nth-of-type(3) {
-         font-size: 18px;
-         color: #FF8400;
-         margin-bottom: 10px;
-     }
-    }
-    }
-    @component tag {
-        a {
-            color: #fff;
-
-    &:hover {
-         color: #FF8400;
-     }
-    }
-    }
-    @component wrapper {
-        text-align: center;
-    }
+                &:hover {
+                    color: #FF8400;
+                }
+            }
+        }
+        @component wrapper {
+            text-align: center;
+        }
 
     }
 </style>

@@ -16,12 +16,17 @@
 </template>
 
 <script>
-	import { header, nav, search } from '@/components';
+  import { header, nav, search } from '@/components';
   import { mapGetters } from 'vuex';
   import shopManagerNav from './children/nav';
 export default {
   computed: {
-    ...mapGetters(['search'])
+    ...mapGetters(['search', 'userInfo'])
+  },
+  created:async function () {
+    await this.$store.dispatch('getCompanyInfo', {
+      companyId: this.userInfo.companyId
+    });
   },
   components: {
     'vHeader': header,

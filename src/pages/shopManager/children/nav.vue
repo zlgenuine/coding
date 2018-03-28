@@ -31,7 +31,7 @@ export default {
     this.loadNav();
   },
   computed: {
-    ...mapGetters(['userInfo'])
+    ...mapGetters(['userInfo', 'companyInfo'])
   },
   methods: {
     loadNav() {
@@ -50,7 +50,8 @@ export default {
       });
     },
     gotoStore() {
-      this.goto(`/shop/${this.userInfo.companyId}`);
+      // this.goto(`/shop/${this.userInfo.companyId}`);
+      this.goto(`http://${this.companyInfo.homePageUrl}`);
     }
   }
 };

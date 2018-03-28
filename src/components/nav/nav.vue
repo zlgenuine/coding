@@ -34,12 +34,12 @@
 			},
 			handleView(path) {
 				if (path === '/shopManagePage') {
-					if (this.userInfo.id) {
-						this.goto(`/shop/${this.userInfo.companyId}`);
+					 if (this.userInfo.id) {
+						// this.goto(`/shop/${this.userInfo.companyId}`);
 						return;
 					}
 					this.$router.push('/loginPage');
-					return;
+					// return;
 					//      this.$router.push('/');
 				}
 			}

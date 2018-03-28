@@ -21,8 +21,8 @@
 			<p class="content-info-class"><span>求购时间：</span>{{item.createDate | customTime}}</p>
 
 			<p class="content-info-class content-info-user"><span>采购商：</span>{{item.userName}}</p>
-			<p class="content-info-class content-info-status" v-if="userType === 2"><span>状态：</span><span class="status">{{item.buyStatus | buyStatus}}</span></p>
-			<p class="content-info-class content-info-status" v-if="userType === 1"><span>状态：</span><span class="status">{{listState}}</span></p>
+			<p class="content-info-class content-info-status"><span>状态：</span><span class="status">{{item.buyStatus | buyStatus}}</span></p>
+			<!--<p class="content-info-class content-info-status" v-if="userType === 1"><span>状态：</span><span class="status">{{listState}}</span></p>-->
 
 			<button class="btn btn-dele" v-if="shanchu1" @click="deleteBuyTaskMethod">删除</button>
 			<button class="btn btn-dele" v-if="quxiao" @click="cancelList(item.id)">取消接单</button>

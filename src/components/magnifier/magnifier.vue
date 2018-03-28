@@ -92,9 +92,9 @@
         let oBig = document.querySelector('.magnifier-big');
         let oFloat = document.querySelector('.magnifier-floatBox');
         let oImg = document.querySelector('.magnifier-showBigImg');
-        if (oImg.width < this.width) {
+        /* if (oImg.width < this.width) {
           return;
-        }
+        } */
         oFloat.style.display = 'block';
         oBig.style.display = 'block';
         // oFlaot
@@ -119,8 +119,8 @@
       hideMagnifier () {
         let oBig = document.querySelector('.magnifier-big');
         let oFloat = document.querySelector('.magnifier-floatBox');
-        // oFloat.style.display = 'none';
-        // oBig.style.display = 'none';
+        oFloat.style.display = 'none';
+        oBig.style.display = 'none';
       }
     }
   };

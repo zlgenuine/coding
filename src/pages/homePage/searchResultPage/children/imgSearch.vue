@@ -7,7 +7,7 @@
             </div>
             <div class="imgSearch-image-box-text">
                 <!-- <p>对该图片的最佳猜测：{{firstProductNo}}</p> -->
-                <p>对结果不满意？重新框图试试</p>
+                <p>对结果不满意？重新截图试试</p>
                 <p>白色的花型更能被查找到哦！所以请尽量添加白色无干扰的花型样板。</p>
             </div>
         </div>

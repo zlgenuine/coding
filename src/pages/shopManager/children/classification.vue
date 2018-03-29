@@ -29,9 +29,9 @@
     <!-- 表格 -->
     <ts-menu :prop="BindingProductList.list" v-show="!isExclusive">
       <ts-checkbox-group v-model="chooseItem">
-        <ts-menu-table v-for="(item,index) in BindingProductList.list" :key="item.bandId">
+        <ts-menu-table v-for="(item,index) in BindingProductList.list" :key="index">
           <div slot="header-left">
-            <ts-checkbox :label="item.productNo" v-if="!Params.unbinding"></ts-checkbox>
+            <ts-checkbox :label="item.bandId" v-if="!Params.unbinding">{{item.productNo}}</ts-checkbox>
             <span v-else>{{item.productNo}}&nbsp{{item.category | filterDict(dicTree.PRODUCT_SHAPE)}}</span>
           </div>
           <div slot="header-right">

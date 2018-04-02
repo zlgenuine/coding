@@ -1,7 +1,7 @@
 <template>
     <div class="magnifier">
         <div class="magnifier-small" :style="{width: width + 'px', height: height + 'px'}"
-             @mousemove="showMagnifier($event)" @mouseout="hideMagnifier">
+             @mousemove="showMagnifier" @mouseleave="hideMagnifier">
             <img :src="imgSrc"/>
             <span class="magnifier-floatBox"
                   :style="{left: floatStyleData.l + 'px', top: floatStyleData.t + 'px', width: s_width+'px', height: s_width+'px'}"></span>
@@ -95,8 +95,6 @@
         /* if (oImg.width < this.width) {
           return;
         } */
-        oFloat.style.display = 'block';
-        oBig.style.display = 'block';
         // oFlaot
         let offset = this.offset(oSmall);
         this.floatStyleData.l = ev.clientX - offset.offsetLeft - oFloat.offsetWidth / 2;
@@ -115,12 +113,15 @@
         // img
         this.imgStyleData.l = -this.multiple * (oFloat.offsetLeft);
         this.imgStyleData.t = -this.multiple * (oFloat.offsetTop);
+        oFloat.style.display = 'block';
+        oBig.style.display = 'block';
       },
       hideMagnifier () {
         let oBig = document.querySelector('.magnifier-big');
         let oFloat = document.querySelector('.magnifier-floatBox');
         oFloat.style.display = 'none';
         oBig.style.display = 'none';
+        console.log('----------hideMagnifier');
       }
     }
   };

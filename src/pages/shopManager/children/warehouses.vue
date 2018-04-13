@@ -95,7 +95,8 @@
                                             </ts-col>
                                             <ts-col :span="5">分类</ts-col>
                                             <ts-col :span="7">
-                                                <span v-for="(i,index) in item.classList" :key="index">{{i}}&nbsp;</span>
+                                                <span v-for="(i,index) in item.classList"
+                                                      :key="index">{{i}}&nbsp;</span>
                                             </ts-col>
                                         </ts-row>
                                         <ts-row class="warehouse-grid-item--row">
@@ -140,18 +141,22 @@
                                         <div class="warehouse-product-color">
                                             <div v-if="item.colorCardsNum<5">
                                                 <span v-for="(color,index) in item.colorCardspic" :key="index">
-                                                    <ts-image :src="cards.picUrl" v-for="(cards,index) in color" :key="index"
-                                                        height="60" width="60" :canView="false" disabledHover class="warehouse-product-color--image"
-                                                        @click="showColorDetail(cards,item)"></ts-image>
+                                                    <ts-image :src="cards.picUrl" v-for="(cards,index) in color"
+                                                              :key="index"
+                                                              height="60" width="60" :canView="false" disabledHover
+                                                              class="warehouse-product-color--image"
+                                                              @click="showColorDetail(cards,item)"></ts-image>
                                                 </span>
                                             </div>
                                             <div v-if="item.colorCardsNum>=5">
                                                 <ts-carousel class="warehouse-product-color--carousel"
                                                              v-model="item.carousel" dots="never" arrow="always"
                                                              arrowType="square" easing='linear'>
-                                                    <ts-carousel-item v-for="(color,index) in item.colorCardspic" :key="index">
+                                                    <ts-carousel-item v-for="(color,index) in item.colorCardspic"
+                                                                      :key="index">
                                                         <div class="item">
-                                                            <ts-image :src="cards.picUrl" v-for="(cards,index) in color" :key="index"
+                                                            <ts-image :src="cards.picUrl" v-for="(cards,index) in color"
+                                                                      :key="index"
                                                                       height="60" width="60" :canView="false"
                                                                       disabledHover
                                                                       @click="showColorDetail(cards,item)"></ts-image>
@@ -181,7 +186,8 @@
                                     上架网店
                                 </ts-button>
                                 <!--只有入驻与上架到平台或网店才能上架lsk-->
-                                <ts-button type="primary" v-if="Number(userInfo.isSettled) ===1 && Number(Filter.publishStatuss) !== 0"
+                                <ts-button type="primary"
+                                           v-if="Number(userInfo.isSettled) ===1 && Number(Filter.publishStatuss) !== 0"
                                            @click="uploadLsk(item)"
                                            size="small">{{Number(item.isShelve) === 1 ? '下架蕾丝控' : '上架蕾丝控'}}
                                 </ts-button>

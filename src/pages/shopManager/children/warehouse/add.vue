@@ -241,7 +241,8 @@
           stock: '',
           stockUnit: '',
           width: '',
-          productShape: ''
+          productShape: '',
+          colorCards: []
         },
         // 色卡
         Color: {
@@ -359,7 +360,7 @@
       classId () {
         if (this.userCategory && this.data.classList && this.data.classList.length) {
           let className = this.userCategory.filter(item => item.className === this.data.classList[0])[0];
-          return className.id;
+          if (className) return className.id;
         }
       }
     },
@@ -432,6 +433,9 @@
       submitForm (formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
+            if (this.Color.temp.length) {
+              this.addPatternForm.colorCards = this.Color.temp;
+            }
             let data = JSON.parse(JSON.stringify(this.addPatternForm));
             console.log(data);
             if (this.isCreatedStatus) {
@@ -439,12 +443,12 @@
             } else {
               await this.$emit('edit', data);
               await this.$emit('editColor', this.Color.temp);
-              if (this.Color.temp.length) {
+/*              if (this.Color.temp.length) {
                 await updateColorCards({
                   productId: data.id,
                   colorCards: this.Color.temp
                 });
-              }
+              } */
             }
             this.$refs[formName].resetFields();
           } else {

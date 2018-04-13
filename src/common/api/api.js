@@ -43,6 +43,7 @@ const API = {
     companySearch: '/company/search', // 文本搜索--公司搜索
     getResult: '/search/getResult', // 文本搜索
     getHot: '/search/getHot', // 爆款热搜排名详情
+    viewSearchProduct:'/search/viewSearchProduct',  // 传图搜花结果-查看花型详情 用于发送短信
     history: '/search/history' // 搜索记录列表(大家都在找)
   },
   // 索样
@@ -299,6 +300,9 @@ export const getResultAll = param => axios.get(API.search.getResultAll, {params:
 export const searchHistoryId = id => axios.get(`${API.search.history}/${id}`);
 // 获取搜索记录中的产品列表
 export const searchGetResult = param => axios.get(API.search.getResult, {params: param});
+// 传图搜花结果-查看花型详情 用于发送短信
+export const viewSearchProduct = param => axios.get(API.search.viewSearchProduct, {params: param});
+
 /**
  * 个人中心部分
  */

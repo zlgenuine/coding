@@ -103,7 +103,7 @@
 
 <script>
   import {
-    getCompanyBestList
+    getCompanyBestList, viewSearchProduct
   } from '@/common/api/api';
   import DICT from '@/common/dict';
   import {
@@ -242,7 +242,7 @@
         });
       },
       // XXX:仓库管理搜图=>搜图暂时可以跳去编辑页面
-      handleViewProduct (id) {
+      async handleViewProduct (id) {
         if (this.Type.edit) {
           this.$router.push({
             path: `/shopManagePage/addwarehouse`,
@@ -251,6 +251,8 @@
             }
           });
         } else {
+          let data = await viewSearchProduct({productId: id, searchResultId: this.Params.id});
+          // console.log(data);
           this.goto(`/product/${id}`);
         }
       }

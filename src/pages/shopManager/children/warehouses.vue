@@ -35,7 +35,7 @@
                                   v-if="item.dicValue===1">{{item.label}}({{productList.shop}})</span>
                             <span :title="item.title" v-if="item.dicValue===0">{{item.label}}({{productList.repository}})</span>
                         </ts-radio>
-                        <ts-radio label="lsk">蕾丝控({{productList.lsk}})</ts-radio>
+                        <ts-radio label="lsk" v-if="Number(userInfo.isSettled) ===1">蕾丝控({{productList.lsk}})</ts-radio>
                     </ts-radio-group>
 
                 </ts-filter>
@@ -276,6 +276,8 @@
 </template>
 
 <script>
+  import Toast from '@/components/common/toast/toast';
+  import schema from 'async-validator';
   import DICT from '@/common/dict';
   import {
     mapGetters
@@ -659,13 +661,37 @@
       },
       // lsk上下架
       async uploadLsk (params) {
-        let isUp = Number(params.isShelve) === 1 ? false : true;
-        await shelveLSK({id: params.id, isUp: isUp});
-        if (!this.lsk) {
-          this.loadProductList();
-        } else {
-          this.getLsk();
-        }
+        if (!params.cutPrice){params.cutPrice = null;}
+        let descriptor = {
+          category: {required: true, message: '请补充花型面料类型'},
+          cutPrice: {required: true, type:'number', message: '请补充剪版价'},
+          ingredient: {required: true, message: '请补充花型成分'},
+          productShape: {required: true, message: '请补充产品形态'}
+        };
+        let validator = new schema(descriptor);
+        validator.validate(params, async (errors, fields) => {
+          if (errors) {
+            console.log(errors, fields);
+            Toast({type: 'error', message: errors[0].message});
+            return handleErrors(errors, fields);
+          }
+          // validation passed
+          let isUp = Number(params.isShelve) === 1 ? false : true;
+          await shelveLSK({
+            id: params.id,
+            isUp: isUp,
+            category: params.category,
+            cutPrice: params.cutPrice,
+            ingredient: params.ingredient,
+            productNo: params.productNo,
+            productShape: params.productShape
+          });
+          if (!this.lsk) {
+            this.loadProductList();
+          } else {
+            this.getLsk();
+          }
+        });
       },
       // 删除花型
       // ================
@@ -718,8 +744,7 @@
         let result = [];
         for (let i = 0, len = list.length; i < len; i += num) {
           result.push(list.slice(i, i + num));
-        }
-        ;
+        };
         return result;
       },
       // 获取色卡信息

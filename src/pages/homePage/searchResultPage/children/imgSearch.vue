@@ -42,6 +42,7 @@
                     <template slot="footer">
                         <!--<p class="imgSearch-product-company">{{product.companyName}}</p>-->
                         <p class="imgSearch-product-contact" @click="handleViewProduct(product.id)">联系厂家</p>
+                        <p class="imgSearch-product-contrast" @click="contrastShow(product)">对比</p>
                         <!-- <span v-if="!Type.edit">{{product.publishDate | customTime}}</span> -->
                         <span v-if="product.price>0&&!!product.price">¥{{product.price / 100}}/{{product.priceUnit | filterDict(DICT.PriceUnits)
                             }}</span>
@@ -98,6 +99,20 @@
         <cropper-dialog :dialog="Cropper" :imageUrl="Pic.encoded" @check="handleLookProduct" @close="handleClose"
                         @change="handleGetResult">
         </cropper-dialog>
+        <!-- 短信接收设置说明对话框 -->
+        <ts-dialog title="花型对比" v-model="contrast" v-if="currentRow" type="alert">
+            <div style="font-size: 0">
+                <div class="contrast" style="width: 50%">
+                    <h5 class="contrast__title">搜花原图</h5>
+                    <img class="contrast__img" :src="Pic.encoded">
+                </div>
+                <div class="contrast" style="width: 50%">
+                    <h5 class="contrast__title">搜花原图</h5>
+                    <img class="contrast__img" :src="getImg(currentRow.defaultPicUrl)" v-show="currentRow.defaultPicUrl">
+                </div>
+            </div>
+            <div slot="footer"></div>
+        </ts-dialog>
     </div>
 </template>
 
@@ -118,6 +133,7 @@
         Cropper: {
           show: false
         },
+        contrast: true,
         // XXX:仓库管理搜图=>搜图暂时可以跳去编辑页面
         Type: {
           edit: false
@@ -139,7 +155,9 @@
           id: '',
           pageNo: 1,
           pageSize: 10
-        }
+        },
+        // 当前行
+        currentRow: null
       };
     },
     watch: {
@@ -255,6 +273,10 @@
           // console.log(data);
           this.goto(`/product/${id}`);
         }
+      },
+      contrastShow (value) {
+        this.contrast = true;
+        this.currentRow = value;
       }
     },
     async created () {
@@ -280,6 +302,7 @@
 </script>
 
 <style lang="css" scoped>
+
     @component-namespace imgSearch {
         @component tip {
             line-height: 50px;
@@ -305,6 +328,14 @@
                 color: #4C93FD;
                 font-size: 12px;
                 padding: 1px 3px;
+            }
+            @descendent contrast{
+                color:#FF8400;
+                font-size: 12px;
+                margin-left: -50px;
+            }
+            @descendent contrast:hover{
+                color: rgb(255, 90, 0);
             }
         }
         @component result {
@@ -485,5 +516,23 @@
             text-align: center;
         }
 
+    }
+</style>
+<style lang="scss">
+    .contrast{
+        display: inline-block;
+        font-size: 0;
+        &__title{
+            font-size: 13px;
+            text-align: center;
+            font-weight: normal;
+            margin-bottom: 10px;
+        }
+        &__img{
+            display: block;
+            width: 210px;
+            height: 210px;
+            margin: 0 auto;
+        }
     }
 </style>

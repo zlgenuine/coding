@@ -64,8 +64,7 @@
                                 </div>
                                 <div class="add-radio" v-for="(item,index) in newIngredients" :key="index">
                                     <ts-radio :label="item.ingredientName">
-                  <span @keydown="handlePreventInput">
-                  {{item.ingredientName}}  </span>
+                                        <span @keydown="handlePreventInput">{{item.ingredientName}}</span>
                                     </ts-radio>
                                     <i class="add-radio-close" @click.self="handleDelIngredient(item,'newIngredient')">&times</i>
                                 </div>
@@ -537,7 +536,9 @@
             display: inline-block;
             position: relative;
             @descendent close {
-                position: absolute 0 **-8px;
+                position: absolute;
+                top: 0;
+                left:-8px;
                 border-radius: 50%;
                 text-align: center;
                 line-height: 1;

@@ -1,34 +1,35 @@
 <template>
-<transition name="dialog-fade">
-  <div class="ts-dialog--wrapper" v-show="visible" @click.self="handleWrapperClick">
-    <div class="ts-dialog" ref="dialog" :style="{width:boxWidth}">
-      <!-- 头部 -->
-      <div :class="['ts-dialog--header','onepx-b',{'center':!$slots.title}]">
-        <span class="ts-dialog--title">{{title}}</span>
-        <slot name="title">
-        </slot>
-        <!-- <div class="ts-dialog--headerbtn" v-if=""> -->
+  <transition name="dialog-fade">
+    <div class="ts-dialog--wrapper" v-show="visible" @click.self="handleWrapperClick">
+      <div class="ts-dialog" ref="dialog" :style="{width:boxWidth}">
+        <!-- 头部 -->
+        <div :class="['ts-dialog--header','onepx-b',{'center':!$slots.title}]">
+          <span class="ts-dialog--title">{{title}}</span>
+          <slot name="title">
+          </slot>
+          <!-- <div class="ts-dialog--headerbtn" v-if=""> -->
           <i v-if="showClose" class="ts-dialog--close" @click="close">&times</i>
-        <!-- </div> -->
-      </div>
-      <!-- 正文内容 -->
-      <div class="ts-dialog--body" v-if="rendered">
-        <slot></slot>
-      </div>
-      <!-- 底部 -->
-      <div class="ts-dialog--footer onepx-t">
-        <template v-if="!$slots.footer">
-        <button type="button" class="ts-dialog--button is-cancel" v-if="type==='confirm'" @click="handleClose">取消</button>
-        <button type="button" class="ts-dialog--button is-confirm" v-if="type==='confirm'" @click="handleConfirm">{{alertText}}</button>
-        <button type="button" class="ts-dialog--button is-confirm" v-if="type==='alert'" @click="handleConfirm">{{alertText}}</button>
-      </template>
-        <!-- {{$slots.default}} -->
-        <slot name="footer"></slot>
-      </div>
+          <!-- </div> -->
+        </div>
+        <!-- 正文内容 -->
+        <div class="ts-dialog--body" v-if="rendered">
+          <slot></slot>
+        </div>
+        <!-- 底部 -->
+        <div class="ts-dialog--footer onepx-t">
+          <template v-if="!$slots.footer">
+            <button type="button" class="ts-dialog--button is-cancel" v-if="type==='confirm'" @click="handleClose">取消
+            </button>
+            <button type="button" class="ts-dialog--button is-confirm" v-if="type==='confirm'" @click="handleConfirm">{{alertText}}</button>
+            <button type="button" class="ts-dialog--button is-confirm" v-if="type==='alert'" @click="handleConfirm">{{alertText}}</button>
+          </template>
+          <!-- {{$slots.default}} -->
+          <slot name="footer"></slot>
+        </div>
 
+      </div>
     </div>
-  </div>
-</transition>
+  </transition>
 </template>
 
 <script>

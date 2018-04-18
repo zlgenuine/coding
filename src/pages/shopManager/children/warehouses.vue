@@ -492,9 +492,13 @@
             publishStatus: 0
           });
         });
-
-        this.handleUpOrEditPro(data, 'create');
-        this.fullscreenLoading = false;
+        try {
+          this.handleUpOrEditPro(data, 'create');
+        } catch (e) {
+          console.log(e);
+        } finally {
+          this.fullscreenLoading = false;
+        }
         return;
       },
       // 修改花型
@@ -661,12 +665,14 @@
       },
       // lsk上下架
       async uploadLsk (params) {
-        if (!params.cutPrice){params.cutPrice = null;}
+        if (!params.cutPrice) {
+          params.cutPrice = null;
+        }
         let descriptor = {
-          category: {required: true, message: '请补充花型面料类型'},
-          cutPrice: {required: true, type:'number', message: '请补充剪版价'},
-          ingredient: {required: true, message: '请补充花型成分'},
-          productShape: {required: true, message: '请补充产品形态'}
+          category: {required: false, message: '请补充花型面料类型'},
+          cutPrice: {required: false, type: 'number', message: '请补充剪版价'},
+          ingredient: {required: false, message: '请补充花型成分'},
+          productShape: {required: false, message: '请补充产品形态'}
         };
         let validator = new schema(descriptor);
         validator.validate(params, async (errors, fields) => {
@@ -744,7 +750,8 @@
         let result = [];
         for (let i = 0, len = list.length; i < len; i += num) {
           result.push(list.slice(i, i + num));
-        };
+        }
+        ;
         return result;
       },
       // 获取色卡信息

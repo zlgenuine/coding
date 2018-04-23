@@ -495,7 +495,8 @@
         try {
           this.handleUpOrEditPro(data, 'create');
         } catch (e) {
-          console.log(e);
+          console.log(e, '图片上传失败');
+          this.$toast('图片上传失败');
         } finally {
           this.fullscreenLoading = false;
         }

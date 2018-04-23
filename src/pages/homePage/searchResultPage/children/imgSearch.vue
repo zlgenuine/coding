@@ -19,14 +19,16 @@
             <ts-grid :data="search.list" class="imgSearch-data">
                 <ts-grid-item class="imgSearch-data-item" v-for="product in search.list" :key="product">
                     <div class="imgSearch-image-box-img">
-                        <ts-image
-                                width="170"
-                                height="170"
-                                :canView="false"
-                                disabledHover
-                                :src="getImg(product.defaultPicUrl)"
-                                @click="handleViewProduct(product.id)">
-                        </ts-image>
+                        <a :href="'/product/'+product.id" target="_blank" style="display: block"
+                           @click="handleViewProduct(product.id)">
+                            <ts-image
+                                    width="170"
+                                    height="170"
+                                    :canView="false"
+                                    disabledHover
+                                    :src="getImg(product.defaultPicUrl)">
+                            </ts-image>
+                        </a>
                         <div class="imgSearch-image-box-menu">
                             <p @click.stop="handleGotoDress(product)"><i class="icon-shiyihui"></i>&nbsp;试衣</p>
                             <p @click.stop="handleChoosePic(getImg(product.defaultPicUrl))"><i class="icon-sousuo"></i>&nbsp;再找
@@ -41,7 +43,10 @@
                     </div>
                     <template slot="footer">
                         <!--<p class="imgSearch-product-company">{{product.companyName}}</p>-->
-                        <p class="imgSearch-product-contact" @click="handleViewProduct(product.id)">联系厂家</p>
+                        <router-link class="imgSearch-product-contact"
+                                     @click.native="handleViewProduct(product.id)"
+                                     :to="'/product/'+product.id" target="_blank">联系厂家
+                        </router-link>
                         <p class="imgSearch-product-contrast" @click="contrastShow(product)">对比</p>
                         <!-- <span v-if="!Type.edit">{{product.publishDate | customTime}}</span> -->
                         <span v-if="product.price>0&&!!product.price">¥{{product.price / 100}}/{{product.priceUnit | filterDict(DICT.PriceUnits)
@@ -108,7 +113,8 @@
                 </div>
                 <div class="contrast" style="width: 50%">
                     <h5 class="contrast__title">搜花原图</h5>
-                    <img class="contrast__img" :src="getImg(currentRow.defaultPicUrl)" v-show="currentRow.defaultPicUrl">
+                    <img class="contrast__img" :src="getImg(currentRow.defaultPicUrl)"
+                         v-show="currentRow.defaultPicUrl">
                 </div>
             </div>
             <div slot="footer"></div>
@@ -126,6 +132,7 @@
   } from 'vuex';
   import CropperDialog from '@/components/search/searchImgDialog.vue';
   import {imgPath} from '@/common/js/utils';
+
   export default {
     data () {
       return {
@@ -209,9 +216,9 @@
     methods: {
       getImg (img) {
         if (this.isShopRoute) {
-          return imgPath(img,'x-oss-process=image/resize,m_fill,h_170,w_170');
+          return imgPath(img, 'x-oss-process=image/resize,m_fill,h_170,w_170');
         }
-        return imgPath(img,'x-oss-process=image/resize,m_fill,h_170,w_170'+ this.watermask);
+        return imgPath(img, 'x-oss-process=image/resize,m_fill,h_170,w_170' + this.watermask);
       },
       handleLoadMore () {
         this.Params.pageNo++;
@@ -269,9 +276,14 @@
             }
           });
         } else {
-          let data = await viewSearchProduct({productId: id, searchResultId: this.Params.id});
-          // console.log(data);
-          this.goto(`/product/${id}`);
+          try {
+            await viewSearchProduct({productId: id, searchResultId: this.Params.id});
+          } catch (e) {
+            console.log(e);
+          } finally {
+            // this.goto(`/product/${id}`);
+          }
+
         }
       },
       contrastShow (value) {
@@ -301,8 +313,7 @@
   };
 </script>
 
-<style lang="css" scoped>
-
+<style scoped>
     @component-namespace imgSearch {
         @component tip {
             line-height: 50px;
@@ -322,19 +333,19 @@
                 @utils-ellipsis ;
                 max-width: 65%;
             }
-            @descendent contact{
+            @descendent contact {
                 border: 1px solid #4C93FD;
                 border-radius: 4px;
                 color: #4C93FD;
                 font-size: 12px;
                 padding: 1px 3px;
             }
-            @descendent contrast{
-                color:#FF8400;
+            @descendent contrast {
+                color: #FF8400;
                 font-size: 12px;
                 margin-left: -50px;
             }
-            @descendent contrast:hover{
+            @descendent contrast:hover {
                 color: rgb(255, 90, 0);
             }
         }
@@ -362,7 +373,7 @@
         @component editPic {
             @modifier menu {
                 text-align: center;
-                clear: both;
+                clear: both ;
                 padding-top: 16px;
                 button {
                     margin: 0 4px;
@@ -396,13 +407,18 @@
             }
 
             @descendent watermask {
-                position: absolute 0 20px * *;
+                position: absolute;
+                top: 0;
+                right: 20px;
             }
             @descendent img {
                 position: relative;
             }
             @descendent menu {
-                position: absolute *  0 0 0;
+                position: absolute;
+                right: 0;
+                left: 0;
+                bottom: 0;
                 display: none;
                 table-layout: fixed;
                 width: 100%;
@@ -426,11 +442,11 @@
                     cursor: pointer;
                     transition: .8s;
 
-                    & :hover {
+                    &:hover {
                         background: rgba(0, 0, 0, 0.5);
                     }
 
-                    & :first-child:after {
+                    &:first-child:after {
                         content: '';
                         position: absolute;
                         right: 0;
@@ -463,7 +479,10 @@
                 }
             }
             @descendent tip {
-                position: absolute *0 0 0;
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
                 display: inline-block;
                 height: 28px;
                 line-height: 28px;
@@ -519,16 +538,16 @@
     }
 </style>
 <style lang="scss">
-    .contrast{
+    .contrast {
         display: inline-block;
         font-size: 0;
-        &__title{
+        &__title {
             font-size: 13px;
             text-align: center;
             font-weight: normal;
             margin-bottom: 10px;
         }
-        &__img{
+        &__img {
             display: block;
             width: 210px;
             height: 210px;

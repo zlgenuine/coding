@@ -54,10 +54,9 @@
                                 <!-- 成分类型ingredientType为1才可以修改／删除 -->
                                 <div class="add-radio" v-for="item in ingredientList">
                                     <ts-radio :label="item.ingredientName" :key="item.id">
-                  <span
-                          @keydown="handlePreventInput">
-                  {{item.ingredientName}}
-                  </span>
+                                        <span @keydown="handlePreventInput">
+                                            {{item.ingredientName}}
+                                        </span>
                                     </ts-radio>
                                     <i class="add-radio-close" @click.self="handleDelIngredient(item,'Ingredient')"
                                        v-if="item.ingredientType=== 1">&times</i>
@@ -420,6 +419,8 @@
           await addIngredient({
             ingredientName: value
           });
+          // 获取成分列表
+          this.getIngredientsList();
         }
       },
       // ==================
@@ -487,6 +488,11 @@
         } else {
           this.addPatternForm.priceUnit = PSPB;
         }
+      },
+      // 获取成分列表
+      getIngredientsList: async function () {
+        this.newIngredients = [];
+        this.ingredientList = (await getIngredientsList()).data.data;
       }
     },
     async created () {
@@ -505,7 +511,7 @@
       }
       this.loadData();
       // 获取成分列表
-      this.ingredientList = (await getIngredientsList()).data.data;
+      this.getIngredientsList();
     }
   };
 </script>

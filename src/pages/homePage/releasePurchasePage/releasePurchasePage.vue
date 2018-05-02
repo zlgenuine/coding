@@ -93,7 +93,15 @@ export default {
         }],
         buyNum: [{
           pattern: /^[0-9]*$/,
-          message: '请输入正确的求购数量'
+          message: '请输入正确的求购数量',
+          required: true
+        },{
+          type:'number',
+          min: 1,
+          message: '求购数量必须大于0',
+          transform(value) {
+            return Number(value);
+          }
         }],
         isStartUp: [{
           required: true,
@@ -128,7 +136,7 @@ export default {
         buyUnit: '',
         buyShapes: '',
         isStartUp: '',
-        buyNum: '',
+        buyNum: 0,
         buyDesc: '',
         buyPicUrl: ''
       }

@@ -3,7 +3,7 @@ import {getUserInfo, checklimit} from '@/common/api/api';
 const state = {
   // 用户信息
   userInfo: {},
-  isMemeber: null
+  isMemeber: false
 };
 
 const mutations = {

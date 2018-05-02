@@ -54,10 +54,11 @@ export default {
     supplyList
   },
   computed: {
-    ...mapGetters(['userInfo'])
+    ...mapGetters(['userInfo', 'isMemeber'])
   },
   created() {
-    if (this.userInfo.userType === 1) {
+    // 厂家会员账号也可以查看其他厂家发布的供应；
+    if (this.userInfo.userType === 1 && !this.isMemeber) {
       this.$router.push('/');
     } else {
       this.getCompanySupplyMethod();

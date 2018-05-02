@@ -71,7 +71,6 @@
         }
       };
     },
-
     methods: {
       listProductBuysMethod () {
         listProductBuys(this.param).then((res) => {
@@ -116,7 +115,8 @@
       },
       // 进去求购想也页面
       goDetail (id) {
-        if (this.userInfo.userType === 2) {
+        // 贸易商会员账号也可以查看其他贸易商发布的求购，但不能接单
+        if (this.userInfo.userType === 2 && !this.isMemeber) {
           this.$messagebox.alert('为了保密，该求购信息仅对厂家公开');
           return;
         }
@@ -150,7 +150,7 @@
       pagination
     },
     computed: {
-      ...mapGetters(['userInfo'])
+      ...mapGetters(['userInfo', 'isMemeber'])
     }
   };
 </script>

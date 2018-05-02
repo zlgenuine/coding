@@ -66,7 +66,7 @@
 			supplyItem
 		},
 		computed: {
-			...mapGetters(['userInfo'])
+			...mapGetters(['userInfo', 'isMemeber'])
 		},
 		created() {
 			/*if (this.$route.query.pageData) {
@@ -110,7 +110,8 @@
 			},
 			// 跳转详情页
 			goDetail(e) {
-				if (this.userInfo.userType === 1) {
+			    // 厂家会员账号也可以查看其他厂家发布的供应；
+				if (this.userInfo.userType === 1 && !this.isMemeber) {
 					this.$messagebox.alert('为了保密，该供应信息仅对贸易商公开');
 					return;
 				}

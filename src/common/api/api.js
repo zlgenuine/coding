@@ -44,7 +44,8 @@ const API = {
     getResult: '/search/getResult', // 文本搜索
     getHot: '/search/getHot', // 爆款热搜排名详情
     viewSearchProduct:'/search/viewSearchProduct',  // 传图搜花结果-查看花型详情 用于发送短信
-    history: '/search/history' // 搜索记录列表(大家都在找)
+    history: '/search/history', // 搜索记录列表(大家都在找)
+    listMySearchProduct: '/search/listMySearchProduct'
   },
   // 索样
   sample: {
@@ -420,6 +421,8 @@ export const getCompanyBindingProductList = param => axios.get(API.productCatego
 // =======
 // 店铺管理
 // =======
+//获取被搜索的花型查看记录
+export const listMySearchProduct = param => axios.post(API.search.listMySearchProduct, param);
 // 询价
 export const enquiryAskPrice = param => axios.post(API.enquiry.askPrice, param);
 // 采购登记

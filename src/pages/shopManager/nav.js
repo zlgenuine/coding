@@ -3,7 +3,11 @@ module.exports = {
     {
       path: 'enquiry',
       name: '买家采购列表'
-    }, {
+    },
+    {
+      path: 'search',
+      name: '档口搜花记录'
+    },{
       path: 'cooperation',
       name: '合作厂家'
     }, {

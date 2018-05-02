@@ -1,60 +1,63 @@
-<template lang="html">
-	<div class="shopManager-nav">
-		<p class="shopManager-nav-title">
-			{{title}}
-			<i class="icon-dangkou store" @click="gotoStore"></i>
-		</p>
-		<ul>
-			<router-link :to="item.path" tag="li" exact active-class="active" v-for="item in navItem" class="shopManager-nav-menu" :key="item.path" v-if="item.show">{{item.name}}</router-link>
-		</ul>
-	</div>
+<template>
+    <div class="shopManager-nav">
+        <p class="shopManager-nav-title">
+            {{title}}
+            <i class="icon-dangkou store" @click="gotoStore"></i>
+        </p>
+        <ul>
+            <router-link :to="item.path" tag="li" exact active-class="active" class="shopManager-nav-menu"
+                         v-for="item in navItem" :key="item.path" v-if="item.show">{{item.name}}
+            </router-link>
+        </ul>
+    </div>
 </template>
 
 <script>
-import nav from '../nav';
-import {
-  mapGetters
-} from 'vuex';
-export default {
-  data() {
-    return {
-      navItem: [],
-      title: ''
-    };
-  },
-  watch: {
-    $route(val) {
-      this.loadNav();
-    }
-  },
-  created() {
-    this.loadNav();
-  },
-  computed: {
-    ...mapGetters(['userInfo', 'companyInfo'])
-  },
-  methods: {
-    loadNav() {
-			this.navItem = this.$route.path.indexOf('warehouseManage') >= 0 ? nav.warehouse : nav.shop;
-      this.title = this.$route.path.indexOf('warehouseManage') >= 0 ? '仓库管理' : '网店管理';
-      // 根据userInfo判断
-      // 如果用户类型为2（档口）=> 厂家供应隐藏
-      this.navItem.forEach(item => {
-        item.show = true;
-        if (this.userInfo.userType === 2 && item.path === 'supply') {
-          item.show = false;
-        }
-        if (!this.userInfo.hasWebsite && item.path === 'mircoSetting') {
-          item.show = false;
-        }
-      });
+  import nav from '../nav';
+  import {
+    mapGetters
+  } from 'vuex';
+
+  export default {
+    data () {
+      return {
+        navItem: [],
+        title: ''
+      };
     },
-    gotoStore() {
-      // this.goto(`/shop/${this.userInfo.companyId}`);
-      this.goto(`http://${this.companyInfo.homePageUrl}`);
+    watch: {
+      $route (val) {
+        this.loadNav();
+      }
+    },
+    created () {
+      this.loadNav();
+    },
+    computed: {
+      ...mapGetters(['userInfo', 'companyInfo'])
+    },
+    methods: {
+      loadNav () {
+        this.navItem = this.$route.path.indexOf('warehouseManage') >= 0 ? nav.warehouse : nav.shop;
+        this.title = this.$route.path.indexOf('warehouseManage') >= 0 ? '仓库管理' : '网店管理';
+        // 根据userInfo判断
+        // 如果用户类型为2（档口）=> 厂家供应隐藏
+        this.navItem.forEach(item => {
+          item.show = true;
+          if (this.userInfo.userType === 2 && item.path === 'supply') {
+            item.show = false;
+          }
+          if (!this.userInfo.hasWebsite && item.path === 'mircoSetting') {
+            item.show = false;
+          }
+        });
+      },
+      gotoStore () {
+        // this.goto(`/shop/${this.userInfo.companyId}`);
+        this.goto(`http://${this.companyInfo.homePageUrl}`);
+      }
     }
-  }
-};
+  };
 </script>
 
 <style lang="css" scoped>

@@ -78,6 +78,7 @@ const wareHouseAdd = r => require.ensure([], () => r(require('@/pages/shopManage
 const shopManagerSupply = r => require.ensure([], () => r(require('@/pages/shopManager/children/supply')), 'shopManagerSupply');
 const supplyAdd = r => require.ensure([], () => r(require('@/pages/shopManager/children/supply/add')), 'supplyAdd');
 const shopManagerEnquiry = r => require.ensure([], () => r(require('@/pages/shopManager/children/enquiry')), 'shopManagerEnquiry');
+const shopManagerSearch = r => require.ensure([], () => r(require('@/pages/shopManager/children/search')), 'shopManagerSearch');
 const shopManagerEquipment = r => require.ensure([], () => r(require('@/pages/shopManager/children/equipment')), 'shopManagerEquipment');
 const shopManagerSetting = r => require.ensure([], () => r(require('@/pages/shopManager/children/setting')), 'shopManagerSetting');
 const shopManagerCooperation = r => require.ensure([], () => r(require('@/pages/shopManager/children/cooperation')), 'shopManager');
@@ -604,6 +605,14 @@ const routes = [{
         },
         component: shopManagerAptitude,
         name: '企业资质'
+      },
+      {
+        path: 'search',
+        meta: {
+          needAuth: true
+        },
+        component: shopManagerSearch,
+        name: '档口搜花记录'
       }
     ]
   },

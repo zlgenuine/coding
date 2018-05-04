@@ -11,7 +11,7 @@
                                <!-- <ts-image width="380" height="380" :canView="false" disabledHover
                                           :src="imgPath(productDetail.defaultPicUrl,'x-oss-process=image/resize,m_fill,h_380,w_380'+watermask)">
                                 </ts-image>-->
-                                <magnifier  width="380" height="380" :s_width="200" :imgSrc="imgPath(productDetail.defaultPicUrl,'x-oss-process=image/resize,m_fill,h_380,w_380'+watermask)"></magnifier>
+                                <magnifier  width="380" height="380" :s_width="200" :imgSrc="imgPath(this.Color.picUrl ,'x-oss-process=image/resize,m_fill,h_800,w_800'+this.watermask)"></magnifier>
                                 <div class="productIntro-product-share" @click="handleCollected"
                                      v-if="productDetail.userId!==userInfo.id&&userInfo.id">
                                     <i :class="Collect.isCollected?'icon-yishoucang':'icon-shoucang'"></i>
@@ -407,6 +407,9 @@
       },
       getColorsLength () {
         return this.Color.list.length;
+      },
+      img: function () {
+        return imgPath(this.Color.picUrl ,'x-oss-process=image/resize,m_fill,h_800,w_800'+this.watermask);
       }
     },
     async created () {

@@ -245,10 +245,14 @@ export const Device = (() => {
 export const imgPath = function (path, options = 'x-oss-process=image/resize,m_fill,h_200,w_200') {
   if (String(path).indexOf('x-oss-process') >= 0) {
     if (options) {
+      if (String(path).indexOf('?') >= 0) {
+        let end = String(path).indexOf('?');
+        path = String(path).substr(0 ,end);
+        return `${path}?${options}`;
+      }
       return `${path},${options}`;
     }
     return path;
-  }
-  ;
+  };
   return `${path}?${options}`;
 };

@@ -38,6 +38,8 @@
           <div class="right">{{enquiryEskUser.companyType|filterDict(DICT.userType)}}</div>
           <div class="left">详细地址：</div>
           <div class="right">{{enquiryEskUser.address}}</div>
+          <div class="left"></div>
+          <div class="right"></div>
         </div>
         <div slot="footer">
           <div class="enquiry-dialog-footer">

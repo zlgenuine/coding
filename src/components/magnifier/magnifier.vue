@@ -4,7 +4,9 @@
              @mousemove="showMagnifier" @mouseleave="hideMagnifier">
             <img :src="imgSrc"/>
             <span class="magnifier-floatBox"
-                  :style="{left: floatStyleData.l + 'px', top: floatStyleData.t + 'px', width: s_width+'px', height: s_width+'px'}"></span>
+                  :style="{left: floatStyleData.l + 'px', top: floatStyleData.t + 'px', width: s_width+'px', height: s_width+'px'}">
+                <img style="opacity: 0" :src="imgSrc" width="100%" height="100%">
+            </span>
         </div>
         <div class="magnifier-big"
              :style="{left: Number(width) + 1 + 'px', width: r_width + 'px'}">
@@ -66,6 +68,9 @@
     },
     created () {
     },
+    mounted () {
+      this.$refs['img'].focus();
+    },
     methods: {
       offset: function (ele) {
         let obj = {
@@ -109,7 +114,8 @@
           this.floatStyleData.t = 0;
         } else if (this.floatStyleData.t > (oSmall.offsetHeight - oFloat.offsetHeight)) {
           this.floatStyleData.t = oSmall.offsetHeight - oFloat.offsetHeight;
-        };
+        }
+        ;
         // img
         this.imgStyleData.l = -this.multiple * (oFloat.offsetLeft);
         this.imgStyleData.t = -this.multiple * (oFloat.offsetTop);
@@ -121,7 +127,6 @@
         let oFloat = document.querySelector('.magnifier-floatBox');
         oFloat.style.display = 'none';
         oBig.style.display = 'none';
-        console.log('----------hideMagnifier');
       }
     }
   };

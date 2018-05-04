@@ -612,7 +612,7 @@ const routes = [{
           needAuth: true
         },
         component: shopManagerSearch,
-        name: '档口搜花记录'
+        name: '买家查看记录'
       }
     ]
   },

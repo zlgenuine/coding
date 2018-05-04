@@ -69,7 +69,6 @@
     created () {
     },
     mounted () {
-      this.$refs['img'].focus();
     },
     methods: {
       offset: function (ele) {

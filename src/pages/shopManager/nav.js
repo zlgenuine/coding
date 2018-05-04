@@ -6,7 +6,7 @@ module.exports = {
     },
     {
       path: 'search',
-      name: '档口搜花记录'
+      name: '买家查看记录'
     },{
       path: 'cooperation',
       name: '合作厂家'

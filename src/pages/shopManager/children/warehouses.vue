@@ -302,7 +302,10 @@
     data () {
       return {
         fullscreenLoading: false,
-        productList: {},
+        productList: {
+          pageNO: 1,
+          totalPage:0
+        },
         // 双向绑定 => 与searchImgDialog中 dialog.show对应
         Cropper: {
           show: false
@@ -908,6 +911,7 @@
                 }
             }
             @modifier pagation {
+                position: relative;
                 flex: 1;
                 text-align: right;
             }

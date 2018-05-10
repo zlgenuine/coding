@@ -290,7 +290,10 @@ export default {
   @component search{
     &.input{
       width: 30%;
-      position: absolute 50% 10px * *;
+      position: absolute;
+      top:50% ;
+      left: 70%;
+      margin-left: -10px;
       transform: translateY(-50%);
     }
   }

@@ -255,7 +255,7 @@
         <!--  对话框 - 批量上传 -->
         <!-- ================ -->
         <ts-dialog :close-on-click-modal="!loading" type="alert" width="80%" v-model="BatchUpload.dialogShow"
-                   title="请选择上传花型的属性（*为必填项）" @close="loadProductList">
+                   title="请选择上传花型的属性（*为必填项）" @close="refresh">
             <div class="warehouse-dialog-batchupload" v-loading.body="loading">
                 <product-add-form
                         :validate="BatchUpload.validateForm"
@@ -304,7 +304,7 @@
         fullscreenLoading: false,
         productList: {
           pageNO: 1,
-          totalPage:0
+          totalPage: 0
         },
         // 双向绑定 => 与searchImgDialog中 dialog.show对应
         Cropper: {
@@ -369,7 +369,8 @@
         },
         // 色卡详细信息
         ColorDetail: {},
-        lsk: false,  // 是否获取lsk花型列表
+        // 是否获取lsk花型列表
+        lsk: false
       };
     },
     computed: {
@@ -391,7 +392,7 @@
         handler (val) {
           this.checkAll = false;
           this.chooseItem = [];
-          this.loadProductList();
+          this.refresh();
         },
         deep: true
       }
@@ -432,8 +433,9 @@
         });
         this.Params.pageNo = 1;
         this.searchStatus = true;
-        this.loadProductList();
+        this.refresh();
       },
+      // 获取花型列表
       async loadProductList () {
         let dataList = (await getProductList(this.Params)).data.data;
         this.$nextTick(() => {
@@ -469,6 +471,18 @@
           }
         });
       },
+      // 重新获取列表
+      refresh () {
+        if (this.lsk) {
+          this.getLsk();
+          getProductList({pageSize: 1}).then(({data: {data}}) => {
+            if (data.platform) this.productList.platform = data.platform;
+            if (data.shop) this.productList.shop = data.shop;
+          });
+        } else {
+          this.loadProductList();
+        }
+      },
       async handleUpOrEditPro (data, type) {
         if (type === 'create') {
           let res = await batchAddProduct({
@@ -484,7 +498,7 @@
         } else {
           await updateProduct(data);
         }
-        this.loadProductList();
+        this.refresh();
       },
       // 上传花型
       async uploadProduct (pic) {
@@ -665,7 +679,7 @@
         });
         this.checkAll = false;
         this.chooseItem = [];
-        this.loadProductList();
+        this.refresh();
       },
       // lsk上下架
       async uploadLsk (params) {
@@ -696,11 +710,7 @@
             productNo: params.productNo,
             productShape: params.productShape
           });
-          if (!this.lsk) {
-            this.loadProductList();
-          } else {
-            this.getLsk();
-          }
+          this.refresh();
         });
       },
       // 删除花型
@@ -722,7 +732,7 @@
         this.ConfirmDialog.show = false;
         this.chooseItem = [];
         this.checkAll = false;
-        this.loadProductList();
+        this.refresh();
       },
       // 取消删除
       handleCancelDelProduct () {
@@ -754,8 +764,7 @@
         let result = [];
         for (let i = 0, len = list.length; i < len; i += num) {
           result.push(list.slice(i, i + num));
-        }
-        ;
+        };
         return result;
       },
       // 获取色卡信息

@@ -130,6 +130,7 @@ export default {
     position: relative;
     box-sizing: border-box;
     vertical-align: middle;
+    width:100%;
     @when overhidden{
       overflow: auto;
     }

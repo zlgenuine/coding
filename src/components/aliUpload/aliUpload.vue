@@ -139,5 +139,6 @@ export default {
   position: absolute;
   opacity: 0;
   filter: alpha(opacity=0);
+  display: none;
 }
 </style>

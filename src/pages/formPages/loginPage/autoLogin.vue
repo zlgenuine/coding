@@ -9,12 +9,15 @@ export default {
   async beforeCreate() {
     this.$store.commit('LOGIN_OUT');
     if (this.$route.query.token) {
-      let res = await checkOauth(this.$route.query.token);
-      if (!res.data.code) {
-        await this.$store.commit('LOGIN', this.$route.query.token);
-        await this.$store.commit('GET_USERINFO', res.data.data);
-        await this.$router.push('/homePage');
-      }
+      this.$store.commit('LOGIN', this.$route.query.token);
+      checkOauth(this.$route.query.token).then(res => {
+        if (res.data && !res.data.code) {
+           this.$store.commit('LOGIN', this.$route.query.token);
+           this.$store.commit('GET_USERINFO', res.data.data);
+           this.$router.push('/homePage');
+        }
+      });
+
     }
   },
   async mounted() {

@@ -15,7 +15,8 @@ axios.defaults.headers['x-token'] = cookie.get('x-token') || '';
 store.commit('LOGIN', axios.defaults.headers['x-token'] || '');
 // ==============
 axios.interceptors.request.use(config => {
-  axios.defaults.headers['x-token'] = cookie.get('x-token') || '';
+  let token = cookie.get('x-token');
+  axios.defaults.headers['x-token'] = token || '';
   return config;
 }, err => {
   return Promise.reject(err);
@@ -27,7 +28,7 @@ axios.interceptors.response.use(response => {
     store.commit('LOGIN_OUT');
     Toast({type: 'error', message: response.data.message});
     router.push('/loginPage');
-    return;
+    return response;
   }
   if (response.status === 200) {
     if (response.data.message) {

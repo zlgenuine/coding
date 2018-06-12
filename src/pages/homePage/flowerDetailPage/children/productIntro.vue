@@ -213,13 +213,13 @@
                                 <ts-input v-model="enquiryForm.purchaseNum" width="50%" :maxlength="9"
                                           placeholder="请输入剪版数量"></ts-input>
                                 <ts-select style="width:30%" data-key-name="name" data-val-name="dicValue"
-                                           :options="dicTree.PRODUCT_UNIT" v-model="enquiryForm.stockUnit"></ts-select>
+                                           :options="dicTree.PRODUCT_UNIT" v-model="enquiryForm.numUnit"></ts-select>
                             </ts-form-item>
                             <ts-form-item label="大货数量" prop="purchaseNum" v-if="enquiryForm.purchaseType===2">
                                 <ts-input v-model="enquiryForm.purchaseNum" width="50%" :maxlength="9"
                                           placeholder="请输入大货数量"></ts-input>
                                 <ts-select style="width:30%" data-key-name="name" data-val-name="dicValue"
-                                           :options="dicTree.PRODUCT_UNIT" v-model="enquiryForm.stockUnit"></ts-select>
+                                           :options="dicTree.PRODUCT_UNIT" v-model="enquiryForm.numUnit"></ts-select>
                             </ts-form-item>
                             <p class="productIntro-dialog-sendSample--tip">确认提交后系统将以短信方式通知到商家</p>
                         </ts-form>
@@ -277,7 +277,8 @@
           userName: '',
           colorId: '',
           purchaseType: '',
-          purchaseNum: ''
+          purchaseNum: '',
+          numUnit: null
         },
         Collect: {
           isCollected: false
@@ -429,7 +430,7 @@
         this.companyId = this.productDetail.companyId;
       }
       if (this.dicTree.PRODUCT_UNIT) {
-        this.enquiryForm.stockUnit = this.dicTree.PRODUCT_UNIT[0].dicValue;
+        this.enquiryForm.numUnit = this.dicTree.PRODUCT_UNIT[0].dicValue;
       }
       // path
     },

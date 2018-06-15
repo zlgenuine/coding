@@ -414,7 +414,7 @@ export default {
   @component button {
     height: 34px;
     font-size: 18px;
-    word-spacing: 14px;
+   /* word-spacing: 14px;*/
     position: absolute;
     bottom: 0;
     height: 36px;

@@ -184,9 +184,9 @@
             img.onload = () => {
               this.Pic.canCropper = true;
             };
-            img.onerror = () => {
-              this.Pic.canCropper = false;
-            };
+            // img.onerror = () => {
+            //   this.Pic.canCropper = false;
+            // };
           }
         },
         deep: true
@@ -299,7 +299,20 @@
       // 如果url存在id =》加载数据
       if (this.$route.query.imgId) {
         this.Params.id = this.$route.query.imgId;
-        this.$store.dispatch('searchGetResult', this.Params);
+        if (this.$route.query.newImgId) {
+          // 更改搜花逻辑之后，先用新的id请求数据（限制20条）之后，再用旧的id请求数据，最后拼接
+          this.Params.id = this.$route.query.newImgId;
+          this.Params.pageSize = 20;
+          await this.$store.dispatch('searchGetResult', this.Params);
+
+          // 还原参数
+          this.Params.id = this.$route.query.imgId;
+          this.Params.pageSize =10;
+          this.$store.dispatch('searchGetResult', this.Params);
+
+        } else {
+          this.$store.dispatch('searchGetResult', this.Params);
+        }
         this.companyBestList = (await getCompanyBestList({
           pageNo: 1,
           pageSize: 3

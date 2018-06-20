@@ -70,8 +70,11 @@
 				this.$store.commit('SET_HANDLE_STATUS', false);
 				this.$store.commit('CLEAR_INTERVAL');
 				clearInterval(this.Progress.interval);
-				this.$emit('change', val);
-			}
+				this.$emit('change', Object.assign({},{
+          imgId: val,
+          newImgId: this.search.newId
+        }));
+			},
 		},
 		methods: {
 			handleClose() {

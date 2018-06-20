@@ -266,14 +266,15 @@ export default {
       console.log(val, 'val');
       this.handleCanceSearch();
       if (this.globalLook && this.globalSearch) {
-        this.$router.push({
-          path: '/search/image',
-          query: {
-            imgId: val
-          }
+        this.$nextTick(() => {
+          this.$router.push({
+            path: '/search/image',
+            query: Object.assign({}, val)
+          });
         });
       } else {
-        this.$emit('change', val);
+        console.log(3333);
+        this.$emit('change');
       }
     },
     // 搜索

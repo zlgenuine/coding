@@ -38,6 +38,7 @@ const API = {
   search: {
     search: '/product/search', // 文本搜索
     encoded: '/search/encoded',
+    encodedNew: '/search/encodedNew',
     getResultAll: ' /search/getResultAll', // 大家在找
     polling: '/search/polling', // 搜索结果检查
     companySearch: '/company/search', // 文本搜索--公司搜索
@@ -291,6 +292,8 @@ export const searchMtd = param => axios.post(API.search.search, param);
 export const searchCompany = param => axios.post(API.search.companySearch, param);
 // 搜索-BASE64文本
 export const searchEncoded = param => axios.post(API.search.encoded, param);
+// 搜索-BASE64文本
+export const encodedNew = param => axios.post(API.search.encodedNew, param);
 // 搜索结果检查
 export const searchPolling = searchKey => axios.get(`${API.search.polling}/${searchKey}`);
 // 搜索记录列表(大家都在找)

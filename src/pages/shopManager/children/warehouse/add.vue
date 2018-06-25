@@ -236,7 +236,7 @@
           priceUnit: '',
           productNo: '',
           publishStatus: '',
-          stock: '',
+          stock: '-1',
           stockUnit: '',
           width: '',
           productShape: '',
@@ -435,6 +435,12 @@
           if (valid) {
             if (this.Color.temp.length) {
               this.addPatternForm.colorCards = this.Color.temp;
+              this.addPatternForm.isStock = 0;  // 默认无库存
+              for (let card of this.Color.temp) { // 色卡有库存则总库存为有
+                // 1或 '1' '-1'
+                if (card.isStock) this.addPatternForm.isStock = card.isStock;
+                break;
+              }
             }
             let data = JSON.parse(JSON.stringify(this.addPatternForm));
             console.log(data);

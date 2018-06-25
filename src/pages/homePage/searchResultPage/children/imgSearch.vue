@@ -112,7 +112,7 @@
                     <img class="contrast__img" :src="Pic.encoded">
                 </div>
                 <div class="contrast" style="width: 50%">
-                    <h5 class="contrast__title">搜花原图</h5>
+                    <h5 class="contrast__title">搜花结果</h5>
                     <img class="contrast__img" :src="getImg(currentRow.defaultPicUrl)"
                          v-show="currentRow.defaultPicUrl">
                 </div>
@@ -168,12 +168,24 @@
       };
     },
     watch: {
-      $route (to, from) {
-        this.Params.pageNo = 1;
-        this.Pic.encoded = JSON.parse(sessionStorage['find-pic']).encoded;
-        this.Params.id = to.query.imgId;
-        this.$store.commit('SET_SEARCH_EMPTY');
-        this.$store.dispatch('searchGetResult', this.Params);
+        $route  (to, from) {
+
+          (async () => {
+            this.$store.commit('SET_SEARCH_EMPTY');
+            this.Params.pageNo = 1;
+            this.Pic.encoded = JSON.parse(sessionStorage['find-pic']).encoded;
+
+            if (to.query.newImgId) {
+               this.Params.pageSize =20;
+               this.Params.id = to.query.newImgId;
+               await this.$store.dispatch('searchGetResult', this.Params);
+
+               this.Params.pageSize =10;
+               this.Params.id = to.query.imgId;
+               this.$store.dispatch('searchGetResult', this.Params);
+            }
+
+          })();
       },
       search: {
         handler (val) {
@@ -225,6 +237,7 @@
         this.$store.dispatch('searchGetResult', this.Params);
       },
       handleGotoDress (item) {
+        console.log(444);
         sessionStorage.setItem('flowerUrl', item.defaultPicUrl);
         this.$router.push({
           path: `/threeDDressPage`
@@ -303,6 +316,7 @@
           // 更改搜花逻辑之后，先用新的id请求数据（限制20条）之后，再用旧的id请求数据，最后拼接
           this.Params.id = this.$route.query.newImgId;
           this.Params.pageSize = 20;
+
           await this.$store.dispatch('searchGetResult', this.Params);
 
           // 还原参数
@@ -312,6 +326,7 @@
 
         } else {
           this.$store.dispatch('searchGetResult', this.Params);
+
         }
         this.companyBestList = (await getCompanyBestList({
           pageNo: 1,

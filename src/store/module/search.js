@@ -42,6 +42,7 @@ const mutations = {
   },
   CLEAR_INTERVAL(state) {
     clearInterval(state.search.setInterval);
+    state.search.setInterval = null;
   },
   // 区别库内&库外
   SET_GLOBAL(state, isGlobal) {
@@ -64,16 +65,20 @@ const actions = {
         state.search.setInterval = setInterval(async() => {
           let result = (await searchPolling(searchKey)).data.data;
           if (result !== -1) {
+            //
+            console.log(state.search.setInterval);
             clearInterval(state.search.setInterval);
+            state.search.setInterval = null;
             await commit('GET_SEARCH_NEW_ID', result);
             dispatch('searchAgain', params);
           }
-        }, 3000);
+        }, 1500);
       } else if (res.data.code === 1004020) {
         // 没有权限
         state.search.handleStatus = false;
         state.search.progress = 1;
         clearInterval(state.search.setInterval);
+        state.search.setInterval = null;
         state.search.access = false;
         MessageBox({title: '您今日7次免费搜花已用完', message: '成为会员，享受无限次快找搜花，请联系热线电话：4008013357', confirmButtonText: '知道了'});
       }
@@ -94,14 +99,16 @@ const actions = {
         let result = (await searchPolling(searchKey)).data.data;
         if (result !== -1) {
           clearInterval(state.search.setInterval);
+          state.search.setInterval = null;
           await commit('GET_SEARCH_ID', result);
         }
-      }, 3000);
+      }, 1500);
     } else if (res.data.code === 1004020) {
       // 没有权限
       state.search.handleStatus = false;
       state.search.progress = 1;
       clearInterval(state.search.setInterval);
+      state.search.setInterval = null;
       state.search.access = false;
       MessageBox({title: '您今日7次免费搜花已用完', message: '成为会员，享受无限次快找搜花，请联系热线电话：4008013357', confirmButtonText: '知道了'});
     }

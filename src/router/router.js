@@ -644,7 +644,7 @@ function msg(next) {
     message: '成为会员，请联系热线电话：4008013357',
     confirmButtonText: '知道了'
   }).then(() => {
-    next('/');
+    // next('/');
   });
 };
 

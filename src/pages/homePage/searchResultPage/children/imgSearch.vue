@@ -170,22 +170,29 @@
     watch: {
         $route  (to, from) {
 
-          (async () => {
-            this.$store.commit('SET_SEARCH_EMPTY');
-            this.Params.pageNo = 1;
-            this.Pic.encoded = JSON.parse(sessionStorage['find-pic']).encoded;
+          // (async () => {
+          //   this.$store.commit('SET_SEARCH_EMPTY');
+          //   this.Params.pageNo = 1;
+          //   this.Pic.encoded = JSON.parse(sessionStorage['find-pic']).encoded;
+          //
+          //   if (to.query.newImgId) {
+          //      this.Params.pageSize =20;
+          //      this.Params.id = to.query.newImgId;
+          //      await this.$store.dispatch('searchGetResult', this.Params);
+          //
+          //      this.Params.pageSize =10;
+          //      this.Params.id = to.query.imgId;
+          //      this.$store.dispatch('searchGetResult', this.Params);
+          //   }
+          //
+          // })();
 
-            if (to.query.newImgId) {
-               this.Params.pageSize =20;
-               this.Params.id = to.query.newImgId;
-               await this.$store.dispatch('searchGetResult', this.Params);
+          this.Params.pageNo = 1;
+          this.Pic.encoded = JSON.parse(sessionStorage['find-pic']).encoded;
+          this.Params.id = to.query.imgId;
+          this.$store.commit('SET_SEARCH_EMPTY');
+          this.$store.dispatch('searchGetResult', this.Params);
 
-               this.Params.pageSize =10;
-               this.Params.id = to.query.imgId;
-               this.$store.dispatch('searchGetResult', this.Params);
-            }
-
-          })();
       },
       search: {
         handler (val) {
@@ -310,30 +317,41 @@
         this.Type.edit = true;
       }
       // 如果url存在id =》加载数据
+      // if (this.$route.query.imgId) {
+      //   this.Params.id = this.$route.query.imgId;
+      //   if (this.$route.query.newImgId) {
+      //     // 更改搜花逻辑之后，先用新的id请求数据（限制20条）之后，再用旧的id请求数据，最后拼接
+      //     this.Params.id = this.$route.query.newImgId;
+      //     this.Params.pageSize = 20;
+      //
+      //     await this.$store.dispatch('searchGetResult', this.Params);
+      //
+      //     // 还原参数
+      //     this.Params.id = this.$route.query.imgId;
+      //     this.Params.pageSize =10;
+      //     this.$store.dispatch('searchGetResult', this.Params);
+      //
+      //   } else {
+      //     this.$store.dispatch('searchGetResult', this.Params);
+      //
+      //   }
+      //   this.companyBestList = (await getCompanyBestList({
+      //     pageNo: 1,
+      //     pageSize: 3
+      //   })).data.data;
+      //   this.Pic.canCropper = this.search.list.length > 0;
+      // }
+
       if (this.$route.query.imgId) {
         this.Params.id = this.$route.query.imgId;
-        if (this.$route.query.newImgId) {
-          // 更改搜花逻辑之后，先用新的id请求数据（限制20条）之后，再用旧的id请求数据，最后拼接
-          this.Params.id = this.$route.query.newImgId;
-          this.Params.pageSize = 20;
-
-          await this.$store.dispatch('searchGetResult', this.Params);
-
-          // 还原参数
-          this.Params.id = this.$route.query.imgId;
-          this.Params.pageSize =10;
-          this.$store.dispatch('searchGetResult', this.Params);
-
-        } else {
-          this.$store.dispatch('searchGetResult', this.Params);
-
-        }
+        this.$store.dispatch('searchGetResult', this.Params);
         this.companyBestList = (await getCompanyBestList({
           pageNo: 1,
           pageSize: 3
         })).data.data;
         this.Pic.canCropper = this.search.list.length > 0;
       }
+
       if (sessionStorage['find-pic']) {
         this.Pic.encoded = JSON.parse(sessionStorage['find-pic']).encoded;
       }

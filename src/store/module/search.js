@@ -51,34 +51,27 @@ const mutations = {
 };
 const actions = {
   async getSearchEncoded({
-    commit,
-    dispatch,
-    state
-  }, params) {
+                           commit,
+                           state
+                         }, params) {
     // 1.获取搜索的key
     try {
       state.search.access = true;
-     // 更改搜花逻辑，先用新的搜花接口，轮询得到searchKey之后再轮询旧的搜花接口
-      let res = await encodedNew(params);
+      let res = await searchEncoded(params);
       if (!res.data.code) {
         let searchKey = res.data.data.searchKey;
-        state.search.setInterval = setInterval(async() => {
+        state.search.setInterval = setInterval(async () => {
           let result = (await searchPolling(searchKey)).data.data;
           if (result !== -1) {
-            //
-            console.log(state.search.setInterval);
             clearInterval(state.search.setInterval);
-            state.search.setInterval = null;
-            await commit('GET_SEARCH_NEW_ID', result);
-            dispatch('searchAgain', params);
+            await commit('GET_SEARCH_ID', result);
           }
-        }, 1500);
+        }, 3000);
       } else if (res.data.code === 1004020) {
         // 没有权限
         state.search.handleStatus = false;
         state.search.progress = 1;
         clearInterval(state.search.setInterval);
-        state.search.setInterval = null;
         state.search.access = false;
         MessageBox({title: '您今日7次免费搜花已用完', message: '成为会员，享受无限次快找搜花，请联系热线电话：4008013357', confirmButtonText: '知道了'});
       }
@@ -86,36 +79,9 @@ const actions = {
       return e;
     }
   },
-  // 更改搜花逻辑，先用新的搜花接口，轮询得到searchKey之后再轮询旧的搜花接口
-  async searchAgain ({
-      commit,
-      state
-    },
-    params) {
-    let res = await searchEncoded(params);
-    if (!res.data.code) {
-      let searchKey = res.data.data.searchKey;
-      state.search.setInterval = setInterval(async() => {
-        let result = (await searchPolling(searchKey)).data.data;
-        if (result !== -1) {
-          clearInterval(state.search.setInterval);
-          state.search.setInterval = null;
-          await commit('GET_SEARCH_ID', result);
-        }
-      }, 1500);
-    } else if (res.data.code === 1004020) {
-      // 没有权限
-      state.search.handleStatus = false;
-      state.search.progress = 1;
-      clearInterval(state.search.setInterval);
-      state.search.setInterval = null;
-      state.search.access = false;
-      MessageBox({title: '您今日7次免费搜花已用完', message: '成为会员，享受无限次快找搜花，请联系热线电话：4008013357', confirmButtonText: '知道了'});
-    }
-  },
   async searchGetResult({
-    commit
-  }, param) {
+                          commit
+                        }, param) {
     let data = (await searchGetResult(param)).data.data.list;
     commit('GET_SEARCH_LIST', data);
   }

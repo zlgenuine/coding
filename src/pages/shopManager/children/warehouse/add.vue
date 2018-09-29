@@ -21,7 +21,7 @@
                         <div slot="header-left">
                             <strong>花型基本信息</strong>
                         </div>
-                        <ts-form-item label="来源厂家：" prop="produceCompanyName">
+                        <ts-form-item label="来源厂家1：" prop="produceCompanyName">
                             <ts-input class="add-input" v-model="addPatternForm.produceCompanyName" :maxlength="10"
                                       size="small" placeholder="请输入来源厂家"></ts-input>
                         </ts-form-item>
@@ -164,6 +164,11 @@
   } from 'vuex';
 
   export default {
+
+    // 大边小边默认码
+    // 面料默认公斤
+    // 睫毛默认条
+
     data () {
       return {
         // 数据字典
@@ -227,7 +232,7 @@
           category: '',
           height: '',
           ingredient: '',
-          isStock: '',
+          isStock: '-1',
           outRate: '',
           classId: '',
           defaultPicUrl: '',
@@ -236,7 +241,7 @@
           priceUnit: '',
           productNo: '',
           publishStatus: '',
-          stock: '-1',
+          stock: '',
           stockUnit: '',
           width: '',
           productShape: '',

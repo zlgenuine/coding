@@ -13,9 +13,12 @@
 			</ts-form>
 		</div>
 		<ts-grid :data="History.list">
-			<ts-grid-item style="width:200px" v-for="(product,index) in History.list" :key="product" @click="handleViewResult(product.id)">
+			<ts-grid-item style="width:200px; position: relative" v-for="(product,index) in History.list" :key="product" @click="handleViewResult($event, product.id)">
 				<ts-image width="170" height="170" :canView="false" disabledHover :src="product.searchSource">
 				</ts-image>
+        <div style="width: 170px; height: 170px; position: absolute; background-color: #000; opacity: 0.7; top: 15px; left: 15px" v-if="index === -1" @click="handleViewResult($event, -1)">
+
+        </div>
 				<template slot="footer" v-if="userInfo.userType===1">
 					<p class="everyLooking-footer--time" style="font-size:12px">{{product.createDate | filterDate('dateTimeNoYear')}}</p>
 					<ts-popover trigger="hover" :options="{placement: 'top'}">
@@ -137,7 +140,13 @@
 				this.Params.pageNo = number;
 			},
 			// 查看结果
-			handleViewResult(id) {
+			handleViewResult(e, id) {
+
+			  if (id === -1) {
+          e.stopPropagation();
+          this.$messagebox.alert('查找花型设置为保密状态，无法查看');
+			    return;
+        }
 				if (!this.isMemeber) {
 					this.$messagebox.alert('成为会员，请联系热线电话：4008013357', '你无此权限');
 					return;

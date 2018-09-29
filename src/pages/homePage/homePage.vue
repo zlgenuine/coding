@@ -7,11 +7,11 @@
   <div class="swiper">
     <!-- autoplay :autoplay-speed="5000" -->
     <ts-carousel fade v-model="value" arrow="hover" trigger="hover" autoplay :autoplay-speed="5000" easing='linear'>
-    	<ts-carousel-item v-for="(item,index) in banners.dynamic" :key="index">
-        <ts-image :src="banner(item.pic)" @click.native="handleGotoAboutLace(item.link)" height="350" class="home-image" :canView="false" disabledHover></ts-image>
-      </ts-carousel-item>
-      <ts-carousel-item v-for="(item,index) in banners.static" :key="index">
-        <ts-image :src="banner(item)" height="350" class="home-image" :canView="false" disabledHover></ts-image>
+    	<!--<ts-carousel-item v-for="(item,index) in banners.static" :key="index">-->
+        <!--<ts-image :src="banner(item)"  height="350" class="home-image" :canView="false" disabledHover></ts-image>-->
+      <!--</ts-carousel-item>-->
+      <ts-carousel-item v-for="(item,index) in bannerImgs" :key="index">
+        <ts-image :style="{cursor:  item.forwardUrl ? 'pointer' : 'auto'}" :src="banner(item.picUrl)" @click.native="handleGotoAboutLace(item.forwardUrl)" height="350" width="100%" class="home-image" :canView="false" disabledHover></ts-image>
       </ts-carousel-item>
     </ts-carousel>
   </div>
@@ -56,7 +56,7 @@ import {
   entryList
 } from '@/components';
 import {
-  // listHomeBanners,
+  listHomeBanners,
   listProductBuys,
   listCompanySupplys,
   findNewCompanyByIndex
@@ -73,6 +73,7 @@ export default {
       },
       // banner图
       banners: BANNER,
+      bannerImgs: [],
       value: 0,
       total: 1,
       purchaseListObj: {}, // 求购列表
@@ -110,6 +111,8 @@ export default {
       this.goto(`/productExplain?params=${e}`);
     },
     handleGotoAboutLace(path) {
+      console.log(path);
+      if (!path) return;
       this.goto(path);
     },
     handleViewProduct(id) {
@@ -119,10 +122,10 @@ export default {
       // =====
       // banner
       // ====
-      // listHomeBanners().then(res => {
-      //   let bannerArr = res.data.data;
-      //   this.bannerImgs = bannerArr;
-      // }).catch(res => {});
+      listHomeBanners().then(res => {
+        let bannerArr = res.data.data;
+        this.bannerImgs = bannerArr;
+      }).catch(res => {});
       // ====
       // 获取求购列表
       // ====

@@ -4,6 +4,9 @@
 		<div class="wrapper">
 			<vueCropper ref="cropper" :img="Pic.url" :outputSize="example2.size" :outputType="example2.outputType" :info="example2.info" :canScale="example2.canScale" :autoCrop="example2.autoCrop" :autoCropWidth="example2.width" :autoCropHeight="example2.height"></vueCropper>
 		</div>
+    <!--<div style="text-align: center; margin-top: 20px;">-->
+      <!--<input type="checkbox" style="vertical-align: middle; margin-right: 4px"/>是否对搜索花型进行保密-->
+    <!--</div>-->
 		<div class="search-editPic--menu">
 			<ts-button type="primary" v-for="item in DICT.productType" :key="item.dicValue" @click="handleLookProduct(item.dicValue)">搜{{item.label}}</ts-button>
 		</div>
@@ -70,10 +73,7 @@
 				this.$store.commit('SET_HANDLE_STATUS', false);
 				this.$store.commit('CLEAR_INTERVAL');
 				clearInterval(this.Progress.interval);
-				this.$emit('change', Object.assign({},{
-          imgId: val,
-          newImgId: this.search.newId
-        }));
+        this.$emit('change', val);
 			},
 		},
 		methods: {

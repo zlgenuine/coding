@@ -20,7 +20,8 @@ const API = {
     getUserInfo: '/user/getUserInfo', // 获取用户最新信息
     getMsgSetting: '/msg/getMsgSetting', // 获取短信设置
     findPassWd: '/front/user/findPassWd',
-    setMsg: '/msg/setMsg' // 设置短信开关
+    setMsg: '/msg/setMsg', // 设置短信开关，
+    getUserImToken: '/user/getUserImToken' // 获取云信
   },
   member: {
     checklimit: '/member/checklimit' // 会员权限检查
@@ -30,7 +31,7 @@ const API = {
   },
   // 首页
   home: {
-    listHomeBanners: '/homeBanner/listHomeBanners', // 首页banner
+    listHomeBanners: '/homeBanner/listHomeBanners2', // 首页banner
     findNewCompanyByIndex: '/company/findNewCompanyByIndex', // 获取最新入驻厂家列表
     qualityCompanyList: '/companyBest/getCompanyBestList' // 优质厂家列表
   },
@@ -237,6 +238,9 @@ export const getFindSMSCode = param => axios.post(API.user.getFindSMSCode, param
 
 // 校验密码
 export const checkPasswd = param => axios.post(API.user.checkPasswd, param);
+
+// 校验密码
+export const getUserImToken = param => axios.post(API.user.getUserImToken, param);
 
 // 获取图形验证码
 export const getVerifyCode = param => axios.post(API.user.getVerifyCode, param);

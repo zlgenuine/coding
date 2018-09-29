@@ -10,6 +10,10 @@ axios.defaults.headers['x-client'] = 1;
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
   ? 'https://api.ts57.cn/app'
   : 'https://api.ts57.cn/app';
+
+// 'http://192.168.8.107:15702/app'; 于康
+// 'http://192.168.8.93:15702/app'; 荣泽
+
 // x-token
 axios.defaults.headers['x-token'] = cookie.get('x-token') || '';
 store.commit('LOGIN', axios.defaults.headers['x-token'] || '');

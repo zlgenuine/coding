@@ -36,7 +36,8 @@ export default {
   data() {
     return {
       dir: '',
-      region: process.env.NODE_ENV === 'production' ? 'oss-cn-shenzhen' : 'oss-cn-shanghai',
+      // region: process.env.NODE_ENV === 'production' ? 'oss-cn-shenzhen' : 'oss-cn-shanghai',
+      region: process.env.NODE_ENV === 'production' ? 'oss-cn-shenzhen' : 'oss-cn-shenzhen',
       url: []
     };
   },

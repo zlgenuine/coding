@@ -219,8 +219,9 @@ export default {
       if (this.search.access) {
         this.overtime.interval = setTimeout(() => {
           this.$store.commit('SET_HANDLE_STATUS', false);
+          this.$store.commit('CLEAR_INTERVAL', false);
           this.overtime.status = true;
-        }, 30 * 1000);
+        }, 60 * 1000);
       }
     },
     // 隐藏上传file控件
@@ -266,15 +267,14 @@ export default {
       console.log(val, 'val');
       this.handleCanceSearch();
       if (this.globalLook && this.globalSearch) {
-        this.$nextTick(() => {
-          this.$router.push({
-            path: '/search/image',
-            query: Object.assign({}, val)
-          });
+        this.$router.push({
+          path: '/search/image',
+          query: {
+            imgId: val
+          }
         });
       } else {
-        console.log(3333);
-        this.$emit('change');
+        this.$emit('change', val);
       }
     },
     // 搜索

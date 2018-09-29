@@ -9,6 +9,7 @@ const state = {
 const mutations = {
   // 获取数据字典
   GET_DICTREE(state, tree) {
+    if (!tree) return;
     let result = tree.reduce(function(prev, item) {
       prev[item.typeKey] ? prev[item.typeKey].push(item) : prev[item.typeKey] = [item];
       return prev;

@@ -1,14 +1,29 @@
 <template lang="html">
 <div class="allmeterial-wrapper">
   <div class="allmeterial-filter">
-    <ts-filter title="花型分类">
-      <ts-radio-group v-model="Filter.classId" @change="handleFilterCategorys">
-        <ts-radio :label="null">全部</ts-radio>
-        <ts-radio :label="item.id" v-for="item in CategoryList.system" :key="item.id">{{item.className}}</ts-radio>
-        <!-- <ts-radio :label="item.dicValue" v-for="item in dicTree.PRODUCT_TYPE" :key="item.dicValue">{{item.name}}</ts-radio> -->
+    <template v-if="CategoryList && CategoryList.system.length === 0 && CategoryList.user.length === 0">
+      <ts-filter title="花型分类 ">
+        <ts-radio-group v-model="Params.category" @change="handleFilterCategorys()">
+          <ts-radio :label="null">全部</ts-radio>
+          <ts-radio :label="item.dicValue" v-for="item in dicTree.PRODUCT_TYPE" :key="item.dicValue">{{item.name}}</ts-radio>
+        </ts-radio-group>
+      </ts-filter>
+    </template>
+    <template v-else>
+      <ts-filter title="花型分类">
+        <ts-radio-group v-model="Params.classId" @change="handleFilterClass">
+          <ts-radio :label="null">全部</ts-radio>
+          <ts-radio :label="item.id" v-for="item in CategoryList.system" :key="item.id">{{item.className}}</ts-radio>
           <ts-radio :label="item.id" v-for="item in CategoryList.user" :key="item.id">{{item.className}}</ts-radio>
-      </ts-radio-group>
-    </ts-filter>
+        </ts-radio-group>
+      </ts-filter>
+      <ts-filter title=" ">
+        <ts-radio-group v-model="Params.category" @change="handleFilterCategorys()">
+          <ts-radio :label="null">全部</ts-radio>
+          <ts-radio :label="item.dicValue" v-for="item in dicTree.PRODUCT_TYPE" :key="item.dicValue">{{item.name}}</ts-radio>
+        </ts-radio-group>
+      </ts-filter>
+    </template>
   </div>
   <ts-grid :data="ProductList.list">
     <ts-grid-item style="width:240px" v-for="product in ProductList.list" :key="product" @click="handleViewProduct(product)">
@@ -45,7 +60,8 @@ export default {
   data() {
     return {
       Filter: {
-        classId: null
+        classId: null,
+        category: null
       },
       Infinite: {
         loading: false,
@@ -59,6 +75,7 @@ export default {
         pageSize: 10,
         pageNo: 1,
         companyId: '',
+        classId: null,
         category: null
       },
       CategoryList: {
@@ -71,13 +88,15 @@ export default {
   watch: {
     Params: {
       async handler(val) {
-        if (!this.Filter.classId) {
+        console.log(val);
+        if (!val.classId) {
+          console.log(val);
           this.ProductList = (await getVistitCompanyProductsList(val)).data.data;
         } else {
-          let data = Object.assign({}, val, this.Filter, {
-            category: null
-          });
-          this.ProductList = (await getCompanyBindingProductList(data)).data.data;
+          // let data = Object.assign({}, val, this.Filter, {
+          //   category: null
+          // });
+          this.ProductList = (await getCompanyBindingProductList(val)).data.data;
         }
       },
       deep: true
@@ -110,12 +129,12 @@ export default {
       this.Params.pageNo = number;
     },
     //
-    handleFilterCategorys(e) {
-      this.Params = Object.assign({}, this.Params, {
-        category: e,
-        pageNo: 1
-      });
-    },
+    // handleFilterClass(e) {
+    //   this.Params = Object.assign({}, this.Params, {
+    //     category: e,
+    //     pageNo: 1
+    //   });
+    // },
     // 店铺
     handleViewProduct(product) {
       this.goto(`/product/${product.id}?route=shop&companyId=${this.$route.params.id}`);
@@ -125,6 +144,8 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
+
 @component-namespace allmeterial{
   @component filter{
     margin-bottom: 16px;
@@ -143,4 +164,15 @@ export default {
     }
   }
 }
+</style>
+<style lang="css">
+  .allmeterial-filter .ts-filter {
+    background-color: #f8f8f8;
+  }
+  .allmeterial-filter .ts-filter-title {
+    position: relative;
+    /*bottom: -20px ;*/
+    text-align: center;
+    padding-left: 0;
+  }
 </style>

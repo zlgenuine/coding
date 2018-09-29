@@ -1,5 +1,5 @@
 <template lang="html">
-  <div @mouseover="isSHow=true" @mouseout="isSHow=false" class="ts-image" :style="{width:width+'px',height:height+'px'}" @click="handleImg" :class="{'is-overhidden':showOriginPic,'is-round':shape==='round'}">
+  <div @mouseover="isSHow=true" @mouseout="isSHow=false" class="ts-image" :style="{width: width === '100%' ? '100%' : width+'px',height: height === '100%' ? '100%' : height+'px'}" @click="handleImg" :class="{'is-overhidden':showOriginPic,'is-round':shape==='round'}">
     <img class="ts-image-img" v-lazy="src" :class="{'is-view':showOriginPic,'is-disabledHover':disabledHover}">
   </div>
 </template>
@@ -138,8 +138,9 @@ export default {
       border-radius: 50%;
     }
     @descendent img{
-      max-width: 100%;
-      min-height:100%;
+
+      width: 100%;
+      height:100%;
       vertical-align: middle;
       transition: all 0.3s;
       animation: imgfade .4s;

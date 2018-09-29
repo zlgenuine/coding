@@ -21,16 +21,30 @@ import {
   footer,
   models
 } from '@/components';
+import {
+  getUserImToken
+} from '@/common/api/api';
 export default {
   computed: {
     isClauseRoute() {
       return ['/clause', '/autologin'].indexOf(this.$route.path) >= 0;
+    },
+    token () {
+      return this.$store.state.token.token
+    },
+    userInfo () {
+      return this.$store.state.user.userInfo
     }
   },
   components: {
     topbar,
     models,
     'vFooter': footer
+  },
+  mounted () {
+    if (this.token) {
+      getUserImToken({id: this.userInfo.id});
+    }
   }
 };
 </script>

@@ -65,7 +65,8 @@
   } from 'vuex';
   import {
     login,
-    getVerifyCode
+    getVerifyCode,
+    getUserImToken
   } from '@/common/api/api';
 
   export default {
@@ -139,6 +140,7 @@
             path: decodeURIComponent(this.$route.query.redirect || '/')
           });
           await this.$store.dispatch('memberChecklimit');
+          await getUserImToken({id: res.data.data.id});
           return;
         }
         this.userData.userPWD = '';

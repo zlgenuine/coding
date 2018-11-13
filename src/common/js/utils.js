@@ -218,6 +218,20 @@ export const Encrypt = (word) => {
 };
 
 /**
+ * AES解密
+ * @param {[type]} word [description]
+ */
+export const Decrypt = (word) => {
+  let key = CryptoJS.enc.Utf8.parse(ECB_KEY);
+  let decrypt = CryptoJS.AES.decrypt(word, key, {
+    mode: CryptoJS.mode.ECB,
+    padding: CryptoJS.pad.Pkcs7
+  });
+  let decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
+  return decryptedStr.toString();
+};
+
+/**
  * 跳转新页面
  * @param  {[type]} url   [description]
  * @param  {[type]} param [description]
@@ -255,4 +269,34 @@ export const imgPath = function (path, options = 'x-oss-process=image/resize,m_f
     return path;
   };
   return `${path}?${options}`;
+};
+
+// 时间转换
+export const filterDate = (value, type = 'dateTime') => {
+  if (value) {
+    let tmpDate = new Date(value);
+    let year = tmpDate.getFullYear();
+    let mathon = tmpDate.getMonth() + 1 < 10
+      ? `0${tmpDate.getMonth() + 1}`
+      : tmpDate.getMonth();
+    let day = tmpDate.getDate() < 10
+      ? `0${tmpDate.getDate()}`
+      : tmpDate.getDate();
+    let hour = tmpDate.getHours();
+    let minutes = tmpDate.getMinutes() < 10
+      ? `0${tmpDate.getMinutes()}`
+      : tmpDate.getMinutes();
+    let seconds = tmpDate.getSeconds() < 10
+      ? `0${tmpDate.getSeconds()}`
+      : tmpDate.getSeconds();
+    if (type === 'dateTime') {
+      return `${year}-${mathon}-${day}   ${hour}:${minutes}:${seconds}`;
+    } else if (type === 'dateTimeNoYear') {
+      return `${mathon}-${day} ${hour}:${minutes}`;
+    } else {
+      return `${year}-${mathon}-${day}`;
+    }
+  } else {
+    return '';
+  }
 };

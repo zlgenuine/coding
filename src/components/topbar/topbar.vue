@@ -2,14 +2,29 @@
 <div class="topbar" id="topbar">
   <div class="content">
     <div class="left">
-      <span class="welcome">坐视布管欢迎你!</span>
+      <span class="welcome">坐视布管欢迎您!</span>
       <span v-if="isLogin">
         <router-link  to="/loginPage" class="link">登录</router-link>
         <router-link to="/registerPage" class="link">免费注册</router-link>
       </span>
       <span v-else>
-      <span class="username">{{userInfo.userName}}</span>
-      <span class="logout" @click="handleLogout">[退出]</span>
+      <span class="username" style="margin-right: 4px;">
+        <img v-if="userInfo.isVip && userInfo.days > 0" src="/static/images/VIP1@2x.png" style="width: 16px;" />
+        <img v-else src="/static/images/VIP@2x.png" style="width: 16px;" />
+        {{userInfo.userName}}
+      </span>
+      <span class="logout" @click="handleLogout" >[退出]</span>
+        <span v-if="!userInfo.isVip">
+           <template v-if="userInfo.days <= 0 && userInfo.expStr">
+             {{userInfo.expStr}}<a style="color: #20a0ff" @click="renew">【开通】</a>
+          </template>
+          <template v-else>
+             成为会员，享受更优质服务<a style="color: #20a0ff" @click="renew">【开通】</a>
+          </template>
+        </span>
+        <span v-else style="margin-left: 10px">
+           {{eDay[0]}}<span style="color: #20a0ff"> {{eDay[1]}} </span> {{eDay[2]}} <a style="color: #20a0ff" @click="renew">【续费】</a>
+        </span>
       </span>
     </div>
     <div class="right">
@@ -72,16 +87,29 @@ import {
   mapGetters
 } from 'vuex';
 import {
-  loginOut
+  loginOut,
+  personaLevel
 } from '@/common/api/api';
 export default {
   computed: {
     ...mapGetters(['userInfo', 'token']),
     isLogin() {
       return !this.token;
+    },
+    eDay () {
+      let arr = [];
+      let dateStr = this.userInfo && this.userInfo.expStr.split('<');
+      arr.push(dateStr[0]);
+      arr.push(dateStr[1].split('/>')[0]);
+      arr.push(dateStr[1].split('/>')[1]);
+      return arr;
     }
   },
   methods: {
+    renew () {
+      // this.$messagebox.alert('如需续费，请拨打 <span style="color: #4c93fd">400-801-3357</span> 联系客服');
+      goto(`/renew?companyId=${this.userInfo.companyId}`);
+    },
     handleGotoPerson() {
       if (this.userInfo.companyId) {
         goto(`/shop/${this.userInfo.companyId}`);
@@ -99,7 +127,7 @@ export default {
       // await this.$store.commit('GET_IS_MEMEBR', false);
       await this.$router.push('/loginPage');
     }
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -134,6 +162,7 @@ export default {
             border-left 1px solid #ddd
         .logout
           cursor pointer
+          margin-right 4px
           &:hover
             color #3385ff
       .right

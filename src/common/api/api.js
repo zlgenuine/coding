@@ -21,7 +21,8 @@ const API = {
     getMsgSetting: '/msg/getMsgSetting', // 获取短信设置
     findPassWd: '/front/user/findPassWd',
     setMsg: '/msg/setMsg', // 设置短信开关，
-    getUserImToken: '/user/getUserImToken' // 获取云信
+    getUserImToken: '/user/getUserImToken', // 获取云信
+    personaLevel: '/personal'
   },
   member: {
     checklimit: '/member/checklimit' // 会员权限检查
@@ -47,6 +48,7 @@ const API = {
     getHot: '/search/getHot', // 爆款热搜排名详情
     viewSearchProduct:'/search/viewSearchProduct',  // 传图搜花结果-查看花型详情 用于发送短信
     history: '/search/history', // 搜索记录列表(大家都在找)
+    homeHistory: '/search/homeHistory', // 首页搜索记录列表(大家都在找)
     listMySearchProduct: '/search/listMySearchProduct'
   },
   // 索样
@@ -302,6 +304,8 @@ export const encodedNew = param => axios.post(API.search.encodedNew, param);
 export const searchPolling = searchKey => axios.get(`${API.search.polling}/${searchKey}`);
 // 搜索记录列表(大家都在找)
 export const searchHistory = param => axios.get(API.search.history, {params: param});
+// 首页搜索记录列表(大家都在找)
+export const searchHomeHistory = param => axios.get(API.search.homeHistory, {params: param});
 // 大家在找（列表）
 export const getResultAll = param => axios.get(API.search.getResultAll, {params: param});
 // 查看单条搜索记录
@@ -328,6 +332,9 @@ export const changeMobile = param => axios.post(API.user.changeMobile, param);
 
 // 修改密码
 export const restPasswd = param => axios.post(API.user.restPasswd, param);
+
+// 用户等级
+export const personaLevel = param => axios.get(API.user.personaLevel, param);
 
 // 获取接单列表
 export const listBuyTask = param => axios.post(API.buy.listBuyTask, param);
@@ -591,3 +598,18 @@ export const orderNextOper = param => axios.get('/order/nextOper', {params: para
 export const cancelOrder = param => axios.post('/order/cancelOrder', param);
 // 物流即时查询
 export const instantQuery = param => axios.get('/logistics/instantQuery', {params: param});
+
+
+// 会员续费
+// 会员下单
+export const place = params => axios.post(`/vipOrder/place`, params );
+// 拉起支付
+export const preOrder = params => axios.post(`/vipOrder/preOrder`, params );
+// 个人中心会员等级
+export const personal = params => axios.get(`/personal/${params.id}`);
+// 查询支付结果
+export const queryPayStatus = param => axios.post('/pay/queryPayStatus', param);
+// 查询支付结果
+export const become = param => axios.post('/vip/become', param);
+// 获取搜花次数
+export const searchCount = param => axios.get('/search/searchCount',{params: param});

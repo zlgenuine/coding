@@ -13,13 +13,19 @@
 			</ts-form>
 		</div>
 		<ts-grid :data="History.list">
-			<ts-grid-item style="width:200px; position: relative" v-for="(product,index) in History.list" :key="product" @click="handleViewResult($event, product.id)">
-				<ts-image width="170" height="170" :canView="false" disabledHover :src="product.searchSource">
-				</ts-image>
-        <div style="width: 170px; height: 170px; position: absolute; background-color: #000; opacity: 0.7; top: 15px; left: 15px" v-if="index === -1" @click="handleViewResult($event, -1)">
+			<ts-grid-item style="width:200px; position: relative" v-for="(product,index) in History.list" :key="product" @click="handleViewResult($event, product.id, product)">
 
+				<ts-image width="170" height="170" :canView="false" disabledHover :src="(product.user && product.user.id !==  $store.state.user.userInfo.id  && product.isOpen) !== 0 ? product.searchSource : ''">
+				</ts-image>
+
+        <!--无法查看花型的遮罩层-->
+        <div style="width: 170px; height: 170px; position: absolute; background-color: #000; opacity: 0.8; top: 15px; left: 15px;" v-if="product.user && product.user.id !==  $store.state.user.userInfo.id && product.isOpen === 0" @click="handleViewResult($event, -1, product.isOpen)">
         </div>
-				<template slot="footer" v-if="userInfo.userType===1">
+        <img src="/static/images/lock.png" v-if="product.user && product.user.id !==  $store.state.user.userInfo.id && product.isOpen === 0" style=" cursor: default; width: 172px;position: absolute; top: 13px; left: 50%; transform: translateX(-50%)" @click="handleViewResult($event, -1, product)"/>
+
+        <!---->
+
+        <template slot="footer" v-if="userInfo.userType===1 && isMemeber">
 					<p class="everyLooking-footer--time" style="font-size:12px">{{product.createDate | filterDate('dateTimeNoYear')}}</p>
 					<ts-popover trigger="hover" :options="{placement: 'top'}">
 						<div class="popper introPic-popper-phone">
@@ -33,22 +39,27 @@
               <i class="icon-dianhua" v-if="product.user"></i>&nbsp;{{product.user?product.user.userMobile:''}}
             </p> -->
 				<!-- <template slot="footer" class="everyLooking-footer"> -->
-				<div v-if="userInfo.userType===1">
-					<div class="everyLooking-product-item">
-						<div class="everyLooking-product-item--div">
+				<div v-if="userInfo.userType===1 && isMemeber">
+            <!--会员显示-->
+            <div class="everyLooking-product-item">
+              <div class="everyLooking-product-item--div">
 							<span class="everyLooking-companyName" :title="product.user?product.user.companyName:''">
                         {{product.user?product.user.companyName:''}}
                       </span>
-							<span>-{{product.category | filterDict(dicTree.PRODUCT_TYPE,'name')}}</span>
-							<i class="icon-dianhua"></i>&nbsp;{{product.user?product.user.userMobile:''}}
-						</div>
-						<button class="everyLooking-product-item--button">查找<br>结果</button>
-					</div>
+                <span>-{{product.category | filterDict(dicTree.PRODUCT_TYPE,'name')}}</span>
+                <i class="icon-dianhua"></i>&nbsp;{{product.user?product.user.userMobile:''}}
+              </div>
+              <div v-if="product.user && product.user.id !==  $store.state.user.userInfo.id && product.isOpen === 0" style="width: 50px;height: 50px; display: inline-block; cursor: default" ></div>
+              <button v-else class="everyLooking-product-item--button" @click="handleViewResult($event, product.id, product)">查找<br>结果</button>
+            </div>
 				</div>
-				<template slot="footer" v-if="userInfo.userType===2" class="everyLooking-footer">
+
+        <!--非会员与贸易商显示-->
+				<template slot="footer" v-if="userInfo.userType===2 || (userInfo.userType===1 && !isMemeber)" class="everyLooking-footer">
 					<p>{{product.category | filterDict(dicTree.PRODUCT_TYPE,'name')}}</p>
 					<p class="everyLooking-footer--time" style="font-size:12px">{{product.createDate | filterDate('dateTimeNoYear')}}</p>
 				</template>
+
 			</ts-grid-item>
 		</ts-grid>
 		<ts-pagination type="page" :total="History.totalNum" :current="History.pageNO" :pageSize="History.pageSize" class="everyLooking-pagination" @change="handleChangePage"></ts-pagination>
@@ -59,6 +70,9 @@
 	import {
 		searchHistory
 	} from '@/common/api/api';
+  import {
+    goto
+  } from '@/common/js/utils.js';
 	import {
 		mapGetters
 	} from 'vuex';
@@ -140,15 +154,25 @@
 				this.Params.pageNo = number;
 			},
 			// 查看结果
-			handleViewResult(e, id) {
+			handleViewResult(e, id, product) {
 
-			  if (id === -1) {
+			  if (product.user.id !==  this.$store.state.user.userInfo.id && product.isOpen === 0) {
           e.stopPropagation();
-          this.$messagebox.alert('查找花型设置为保密状态，无法查看');
+          // this.$messagebox.alert('查找花型已设置为保密状态，无法查看');
 			    return;
         }
 				if (!this.isMemeber) {
-					this.$messagebox.alert('成为会员，请联系热线电话：4008013357', '你无此权限');
+
+					// this.$messagebox.alert('成为会员，请联系热线电话：4008013357', '你无此权限');
+
+          this.$messagebox.confirm('成为会员，享受更优服务质','您无此权限', {
+            confirmButtonText: '开通会员',
+            cancelButtonText: '稍后再说',
+          }).then(action => {
+            goto(`/renew?companyId=${this.userInfo.companyId}`);
+          }).catch(e => {
+          });
+
 					return;
 				}
 				this.$router.push({

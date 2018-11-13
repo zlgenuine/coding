@@ -66,7 +66,8 @@
   import {
     login,
     getVerifyCode,
-    getUserImToken
+    getUserImToken,
+    personaLevel
   } from '@/common/api/api';
 
   export default {
@@ -131,7 +132,9 @@
             userMobile: this.userData.userMobile
           });
           await this.$store.commit('LOGIN', res.headers['x-token']);
-          await this.$store.commit('GET_USERINFO', res.data.data);
+
+          // await this.$store.commit('GET_USERINFO', res.data.data);
+
           await this.$store.dispatch('getDicTree');
           if (this.$route.query.redirect && this.$route.query.redirect.indexOf('undefined') >= 0) {
             this.$route.query.redirect = this.$route.query.redirect.replace('undefined', this.userInfo.companyId);
@@ -139,6 +142,10 @@
           await this.$router.push({
             path: decodeURIComponent(this.$route.query.redirect || '/')
           });
+
+          let dateStr = (await personaLevel()).data.data;
+          await this.$store.commit('GET_USERINFO', Object.assign({}, res.data.data, {isVip: dateStr.isVip, expStr: dateStr.expStr, days: dateStr.days } ));
+
           await this.$store.dispatch('memberChecklimit');
           await getUserImToken({id: res.data.data.id});
           return;

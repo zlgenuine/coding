@@ -280,6 +280,9 @@
   import schema from 'async-validator';
   import DICT from '@/common/dict';
   import {
+    goto
+  } from '@/common/js/utils.js';
+  import {
     mapGetters
   } from 'vuex';
   import {
@@ -584,7 +587,14 @@
       // // 隐藏上传file控件
       handleUpload () {
         if (!this.isMemeber) {
-          this.$messagebox.alert('成为会员，请联系热线电话：4008013357', '你无此权限');
+          // this.$messagebox.alert('成为会员，请联系热线电话：4008013357', '你无此权限');
+          this.$messagebox.confirm('成为会员，享受更优服务质','您无此权限', {
+            confirmButtonText: '开通会员',
+            cancelButtonText: '稍后再说',
+          }).then(action => {
+            goto(`/renew?companyId=${this.userInfo.companyId}`);
+          }).catch(e => {
+          });
           return;
         }
         this.$refs.input.click();

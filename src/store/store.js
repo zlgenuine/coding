@@ -26,7 +26,8 @@ export default new Vuex.Store({
     showLoading: false,
     modelShow: false,
     modelOption: {},
-    currentPerson: ''
+    currentPerson: '',
+    confirmControl: false
   },
   mutations: {
     [types.LOADING]: (state, data) => {
@@ -40,6 +41,9 @@ export default new Vuex.Store({
     },
     [types.CURRENT_PERSONAL]: (state, data) => {
       state.currentPerson = data;
+    },
+    CONFIRM_CONTROL: (state, data) => {
+      state.confirmControl = data;
     }
   },
   getters: {
@@ -48,6 +52,7 @@ export default new Vuex.Store({
     },
     getModelOption: state => {
       return state.modelOption;
-    }
+    },
+    confirmControl: state => state.confirmControl
   }
 });

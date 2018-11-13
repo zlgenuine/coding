@@ -137,10 +137,10 @@ export default {
 <style lang="css" scoped>
 :root{
   --switch-width:85px;
-  --switch-height:32px;
+  --switch-height:26px;
   --switch-off-color:#999999;
   --switch-on-color:#4C93FD;
-  --switch-button-width:24px;
+  --switch-button-width:20px;
   --switch-disabled-color:#eaeaea;
 }
 @component-namespace ts{

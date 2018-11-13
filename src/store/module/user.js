@@ -1,4 +1,4 @@
-import {getUserInfo, checklimit} from '@/common/api/api';
+import {getUserInfo, checklimit, personaLevel} from '@/common/api/api';
 
 const state = {
   // 用户信息
@@ -12,6 +12,7 @@ const mutations = {
   },
   CLEAR_USERINFO (state, userInfo) {
     state.userInfo = {};
+    state.isMemeber = false;
   },
   GET_IS_MEMEBR (state, isMemeber) {
     state.isMemeber = isMemeber;
@@ -22,7 +23,8 @@ const actions = {
   async getUserInfo ({commit}) {
     try {
       let {data} = await getUserInfo();
-      commit('GET_USERINFO', data.data);
+      let dateStr = (await personaLevel()).data.data;
+      commit('GET_USERINFO', Object.assign({}, data.data, {isVip: dateStr.isVip, expStr: dateStr.expStr, days: dateStr.days }));
     } catch (e) {
       console.error('获取用户信息失败');
     }

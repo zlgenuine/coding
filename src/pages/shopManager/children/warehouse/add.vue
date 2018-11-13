@@ -260,6 +260,7 @@
     },
     watch: {
       data (val) {
+        console.log(val);
         this.loadData();
       },
       addPatternForm: {
@@ -275,27 +276,30 @@
             this.Pic.show = !!val.defaultPicUrl;
           }
           // ==========
+          // 2018-10-19 取消不同类型时对价格单位的限制，直接显示全部价格单位
+
           // 4.面料改变的时候
-          if (val.category !== PTJM) {
-            this.CopyDICTUnit = this.CopyDICTUnit.filter(item => item.dicValue !== PUT);
-          } else if (val.productShape === PSPB) {
-            // 如果有选了胚布 => 那就只显示公斤
-            this.CopyDICTUnit = this.CopyDICTUnit.filter(item => item.dicValue === PUSG);
-          } else {
-            // 如果不是睫毛 => 显示所有
-            this.CopyDICTUnit = JSON.parse(JSON.stringify(this.dicTree.PRODUCT_UNIT));
-          }
-          // =========
-          // 5.如果是胚布 => 只显示公斤
-          if (val.productShape === PSPB) {
-            this.CopyDICTUnit = this.CopyDICTUnit.filter(item => item.dicValue === PUSG);
-          } else if (val.category === PTJM) {
-            // 如果面料是睫毛 => 把‘条’也显示
-            this.CopyDICTUnit = this.dicTree.PRODUCT_UNIT;
-          } else {
-            // 什么没选的情况下 => 条是隐藏的
-            this.CopyDICTUnit = this.dicTree.PRODUCT_UNIT.filter(item => item.dicValue !== PUT);
-          }
+          // if (val.category !== PTJM) {
+          //   this.CopyDICTUnit = this.CopyDICTUnit.filter(item => item.dicValue !== PUT);
+          // } else if (val.productShape === PSPB) {
+          //   // 如果有选了胚布 => 那就只显示公斤
+          //   this.CopyDICTUnit = this.CopyDICTUnit.filter(item => item.dicValue === PUSG);
+          // } else {
+          //   // 如果不是睫毛 => 显示所有
+          //   this.CopyDICTUnit = JSON.parse(JSON.stringify(this.dicTree.PRODUCT_UNIT));
+          // }
+          // // =========
+          // // 5.如果是胚布 => 只显示公斤
+          // if (val.productShape === PSPB) {
+          //   this.CopyDICTUnit = this.CopyDICTUnit.filter(item => item.dicValue === PUSG);
+          // } else if (val.category === PTJM) {
+          //   // 如果面料是睫毛 => 把‘条’也显示
+          //   this.CopyDICTUnit = this.dicTree.PRODUCT_UNIT;
+          // } else {
+          //   // 什么没选的情况下 => 条是隐藏的
+          //   this.CopyDICTUnit = this.dicTree.PRODUCT_UNIT.filter(item => item.dicValue !== PUT);
+          // }
+          this.CopyDICTUnit = JSON.parse(JSON.stringify(this.dicTree.PRODUCT_UNIT));
         },
         deep: true
       }
@@ -372,11 +376,14 @@
         if (!this.isCreatedStatus) {
           this.$store.commit('SET_LOADING', true);
           // 1花型信息
-          this.addPatternForm = Object.assign({}, this.addPatternForm, this.data, {
+          this.addPatternForm = Object.assign({}, this.addPatternForm, {
             category: this.data.category && this.data.category.toString(),
             productShape: this.data.productShape && this.data.productShape.toString(),
-            classId: this.classId
-          });
+            classId: this.classId,
+            price: '',
+            cutPrice: ''
+          }, this.data
+          );
           // 2色卡信息
           this.Color.list = (await getColorCards({
             productId: this.addPatternForm.id
@@ -491,14 +498,18 @@
       },
       // 当花型类型选择“睫毛”时，剪版价/大货价对应价格单位自动切换为“条”，花型类型选择“睫毛”以外 的自动切换为码（挖坑）
       handleML (label) {
-        let PTJM = "100013"; // 睫毛
-        let PUT = "400012";  // 条
-        let PSPB = "400010"; // 码
-        if (String(label) === PTJM) {
-          this.addPatternForm.priceUnit = PUT;
-        } else {
-          this.addPatternForm.priceUnit = PSPB;
-        }
+
+        // 2018-10-19 取消不同类型时对价格单位的限制，直接显示全部价格单位
+
+        // let PTJM = "100013"; // 睫毛
+        // let PUT = "400012";  // 条
+        // let PSPB = "400010"; // 码
+        // if (String(label) === PTJM) {
+        //   this.addPatternForm.priceUnit = PUT;
+        // } else {
+        //   this.addPatternForm.priceUnit = PSPB;
+        // }
+
       },
       // 获取成分列表
       getIngredientsList: async function () {
@@ -509,9 +520,12 @@
     async created () {
       // ======
       // 库存单位 首先隐藏条 当选择面料为睫毛的时候才显示
+
       let units = JSON.parse(JSON.stringify(this.dicTree.PRODUCT_UNIT));
-      this.CopyDICTUnit = units.filter(item => item.dicValue !== `400012`);
+      // this.CopyDICTUnit = units.filter(item => item.dicValue !== `400012`);
+      this.CopyDICTUnit = units;
       this.addPatternForm.priceUnit = this.CopyDICTUnit[0].dicValue;
+
       // 用户分类
       let userCategory = (await listUserProductCategory({
         pageNo: 1,

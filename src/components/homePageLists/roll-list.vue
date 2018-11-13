@@ -5,6 +5,7 @@
             <div class="roll-item-content">
                 <div style="overflow: hidden;">
                     <div class="img-box animated-left">
+
                         <ts-image width="120" :canView="false" disabledHover height="120"
                                   v-for="(item,index) in items_find"
                                   :src="item.searchSource" @click="goFind(item.id)" :key="index"></ts-image>
@@ -61,7 +62,7 @@
 <script>
   import totalTitle from './rollComponents/totalTitle.vue';
   import {
-    searchHistory,
+    searchHomeHistory,
     burstHotSearch,
     getSupplyAndBuy,
     getEntering,
@@ -109,7 +110,7 @@
     },
     async created () {
       // 大家在找
-      this.items_find = (await (searchHistory(this.param_find))).data.data.list;
+      this.items_find = (await (searchHomeHistory(this.param_find))).data.data.list;
       this.items_find = this.items_find.concat(this.items_find.slice(0, 20));
       // 厂家上新
       this.items_new = (await (getCompanyNewProductList(this.param_new))).data.data.list;

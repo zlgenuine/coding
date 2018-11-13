@@ -96,6 +96,10 @@ const aboutLace = r => require.ensure([], () => r(require('@/pages/totalPages/ab
 const productExplain = r => require.ensure([], () => r(require('@/pages/homePage/productExplainPage/productExplainPage.vue')), 'productExplain');
 // ========
 // 订单详情
+const renew = r => require.ensure([], () => r(require('@/pages/renew/index.vue')), 'orderDetail'); // 会员续费
+const wxPay = r => require.ensure([], () => r(require('@/pages/renew/wx.vue')), 'orderDetail'); // 微信支付
+const paySuccess = r => require.ensure([], () => r(require('@/pages/renew/paySuccess.vue')), 'orderDetail'); // 微信支付
+
 const orderDeatil = r => require.ensure([], () => r(require('@/pages/orderDetail/index.vue')), 'orderDetail');
 const orderDeatilBulk = r => require.ensure([], () => r(require('@/pages/orderDetail/children/bulkDetail.vue')), 'orderDeatilBulk');
 // ========
@@ -115,6 +119,18 @@ const routes = [{
     path: '/productExplain',
     component: productExplain,
     name: '产品说明'
+  }, {
+    path: '/renew',
+    component: renew,
+    name: '会员续费'
+  }, {
+    path: '/wxPay',
+    component: wxPay,
+    name: '微信支付',
+  },  {
+    path: '/paySuccess',
+    component: paySuccess,
+    name: '支付成功',
   }, {
     path: '/product',
     component: productAdd,
@@ -639,13 +655,20 @@ const router = new Router({
 });
 
 function msg(next) {
-  MessageBox({
-    title: '你无此权限',
-    message: '成为会员，请联系热线电话：4008013357',
-    confirmButtonText: '知道了'
-  }).then(() => {
-    // next('/');
-  });
+  // MessageBox({
+  //   title: '你无此权限',
+  //   message: '成为会员，请联系热线电话：4008013357',
+  //   confirmButtonText: '知道了'
+  // }).then(() => {
+  //   // next('/');
+  // });
+  // MessageBox.confirm({
+  //   title: '你无此权限',
+  //   message: '成为会员，请联系热线电话：4008013357',
+  // }).then(() => {
+  //   // next('/');
+  // });
+  store.commit('CONFIRM_CONTROL', true);
 };
 
 function getUser(to, next) {

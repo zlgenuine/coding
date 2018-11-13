@@ -63,6 +63,8 @@ import {
   mapGetters
 } from 'vuex';
 import CropperDialog from './searchImgDialog.vue';
+import {goto} from '@/common/js/utils.js';
+import {searchCount} from '@/common/api/api';
 export default {
   data() {
     return {
@@ -211,6 +213,7 @@ export default {
         await this.$store.dispatch('getSearchEncoded', {
           category: item.category,
           encoded: item.encoded,
+          isOpen: item.isOpen,
           searchType: 300
         });
       } else {
@@ -225,10 +228,33 @@ export default {
       }
     },
     // 隐藏上传file控件
-    handleUpload() {
-      this.$refs.input.click();
-      this.Search.val = '';
-      this.handleCanceSearch();
+    async handleUpload() {
+      // 判断登陆用户是否是会员，不是会员则弹出
+      if (!this.isMemeber) {
+        let {data: {data}} = await searchCount();
+        if (data === undefined) return;
+        console.log(data);
+        this.$messagebox.confirm(`今日剩余${data}次搜花权限`,'开通会员尊享无限次次精准搜花', {
+          confirmButtonText: '开通会员',
+          cancelButtonText: '稍后再说',
+        }).then(action => {
+          goto(`/renew?companyId=${this.userInfo.companyId}`);
+          return ;
+        }).catch(e => {
+          if (data > 0) { // 搜索次数大于0时有下一步操作
+            this.$refs.input.click();
+            this.Search.val = '';
+            this.handleCanceSearch();
+          } else {
+            console.log('没有搜索次数');
+          }
+        });
+
+      } else {
+        this.$refs.input.click();
+        this.Search.val = '';
+        this.handleCanceSearch();
+      }
     },
     // 上传图片
     uploadImg(e) {

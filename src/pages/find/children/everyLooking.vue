@@ -22,40 +22,58 @@
         <div style="width: 170px; height: 170px; position: absolute; background-color: #000; opacity: 0.8; top: 15px; left: 15px;" v-if="product.user && product.user.id !==  $store.state.user.userInfo.id && product.isOpen === 0" @click="handleViewResult($event, -1, product.isOpen)">
         </div>
         <img src="/static/images/lock.png" v-if="product.user && product.user.id !==  $store.state.user.userInfo.id && product.isOpen === 0" style=" cursor: default; width: 172px;position: absolute; top: 13px; left: 50%; transform: translateX(-50%)" @click="handleViewResult($event, -1, product)"/>
-
         <!---->
 
         <template slot="footer" v-if="userInfo.userType===1 && isMemeber">
 					<p class="everyLooking-footer--time" style="font-size:12px">{{product.createDate | filterDate('dateTimeNoYear')}}</p>
-					<ts-popover trigger="hover" :options="{placement: 'top'}">
-						<div class="popper introPic-popper-phone">
-							<p>查找人：{{product.user?product.user.userName:''}}</p>
-							<p>手机：{{product.user?product.user.userMobile:''}}</p>
-						</div>
-						<p slot="reference" style="font-size:12px">详细信息</p>
-					</ts-popover>
+
+          <!--花型设置不公开时隐藏掉不是自己花型的详细信息按钮-->
+          <template v-if="product.isOpen === 1 || product.user && product.user.id ===  $store.state.user.userInfo.id">
+            <ts-popover trigger="hover" :options="{placement: 'top'}">
+              <div class="popper introPic-popper-phone">
+                <p>查找人：{{product.user?product.user.userName:''}}</p>
+                <p>手机：{{product.user?product.user.userMobile:''}}</p>
+              </div>
+              <p slot="reference" style="font-size:12px">详细信息</p>
+            </ts-popover>
+          </template>
+
 				</template>
+
 				<!-- <p v-if="userInfo.userType===1" class="everyLooking-title">
               <i class="icon-dianhua" v-if="product.user"></i>&nbsp;{{product.user?product.user.userMobile:''}}
             </p> -->
 				<!-- <template slot="footer" class="everyLooking-footer"> -->
-				<div v-if="userInfo.userType===1 && isMemeber">
-            <!--会员显示-->
+
+        <!--会员显示或者非会员但是是主营验证厂家显示-->
+				<div v-if="userInfo.userType===1 && (isMemeber || userInfo.isMain)">
             <div class="everyLooking-product-item">
               <div class="everyLooking-product-item--div">
-							<span class="everyLooking-companyName" :title="product.user?product.user.companyName:''">
+
+                <!--花型设置不公开并不是自己的花型时只显示花型类型，隐藏掉用户信息-->
+                <template v-if="product.isOpen === 1 || product.user && product.user.id ===  $store.state.user.userInfo.id">
+                    <span class="everyLooking-companyName" :title="product.user?product.user.companyName:''">
                         {{product.user?product.user.companyName:''}}
                       </span>
-                <span>-{{product.category | filterDict(dicTree.PRODUCT_TYPE,'name')}}</span>
-                <i class="icon-dianhua"></i>&nbsp;{{product.user?product.user.userMobile:''}}
+                  <span>-{{product.category | filterDict(dicTree.PRODUCT_TYPE,'name')}}</span>
+
+                  <span><i class="icon-dianhua" ></i>&nbsp;{{product.user?product.user.userMobile:''}}</span>
+                </template>
+                <template v-else>
+                  <span style="position: relative; left: -44px; top: -10px;">{{product.category | filterDict(dicTree.PRODUCT_TYPE,'name')}}</span>
+                </template>
+
               </div>
+
+              <!--花型设置不公开的隐藏查找结果按钮-->
               <div v-if="product.user && product.user.id !==  $store.state.user.userInfo.id && product.isOpen === 0" style="width: 50px;height: 50px; display: inline-block; cursor: default" ></div>
               <button v-else class="everyLooking-product-item--button" @click="handleViewResult($event, product.id, product)">查找<br>结果</button>
+
             </div>
 				</div>
 
         <!--非会员与贸易商显示-->
-				<template slot="footer" v-if="userInfo.userType===2 || (userInfo.userType===1 && !isMemeber)" class="everyLooking-footer">
+				<template slot="footer" v-if="userInfo.userType===2 || (userInfo.userType===1 && !isMemeber && !userInfo.isMain)" class="everyLooking-footer">
 					<p>{{product.category | filterDict(dicTree.PRODUCT_TYPE,'name')}}</p>
 					<p class="everyLooking-footer--time" style="font-size:12px">{{product.createDate | filterDate('dateTimeNoYear')}}</p>
 				</template>
@@ -155,17 +173,16 @@
 			},
 			// 查看结果
 			handleViewResult(e, id, product) {
-
-			  if (product.user.id !==  this.$store.state.user.userInfo.id && product.isOpen === 0) {
-          e.stopPropagation();
+			  if (product.user && product.user.id !==  this.$store.state.user.userInfo.id && product.isOpen === 0) {
+          // e.stopPropagation();
           // this.$messagebox.alert('查找花型已设置为保密状态，无法查看');
 			    return;
         }
-				if (!this.isMemeber) {
 
+        // 如果用户时贸易商当并且是非会员时，弹出；或者当用户是厂家并且是非会员与非主营认证厂家就弹出
+				if (!this.isMemeber && (this.userInfo.userType === 2 || this.userInfo.userType === 1 && !this.userInfo.isMain)) {
 					// this.$messagebox.alert('成为会员，请联系热线电话：4008013357', '你无此权限');
-
-          this.$messagebox.confirm('成为会员，享受更优服务质','您无此权限', {
+          this.$messagebox.confirm('成为会员，享受更优质服务','您无此权限', {
             confirmButtonText: '开通会员',
             cancelButtonText: '稍后再说',
           }).then(action => {
@@ -209,6 +226,7 @@
 					display: table-cell;
 					vertical-align: middle;
 					width: 70%;
+          height: 56px;
 				}
 				@modifier button {
 					display: table-cell;

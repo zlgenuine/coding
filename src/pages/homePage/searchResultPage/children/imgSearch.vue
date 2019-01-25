@@ -14,44 +14,110 @@
         <ts-title-block :bodyStyle="{'font-size':'20px'}">
             <i class="icon-huaxin"></i>&nbsp;相似花型
         </ts-title-block>
+
+        <div class="no_member_tip" v-if="!isMemeber">
+          非会员只可查看会员厂家的搜花结果。想要查看更多花型结果，请
+          <router-link style="color: #4C93FD" :to="'/renew?companyId='+userInfo.companyId" target="_blank">【开通会员】</router-link>
+        </div>
+
         <!-- 图片列表 -->
         <div class="">
             <ts-grid :data="search.list" class="imgSearch-data">
                 <ts-grid-item class="imgSearch-data-item" v-for="product in search.list" :key="product">
-                    <div class="imgSearch-image-box-img">
-                        <a :href="'/product/'+product.id" target="_blank" style="display: block"
-                           @click="handleViewProduct(product.id)">
-                            <ts-image
-                                    width="170"
-                                    height="170"
-                                    :canView="false"
-                                    disabledHover
-                                    :src="getImg(product.defaultPicUrl)">
-                            </ts-image>
-                        </a>
-                        <div class="imgSearch-image-box-menu">
-                            <p @click.stop="handleGotoDress(product)"><i class="icon-shiyihui"></i>&nbsp;试衣</p>
-                            <p @click.stop="handleChoosePic(getImg(product.defaultPicUrl))"><i class="icon-sousuo"></i>&nbsp;再找
-                            </p>
-                        </div>
-                        <img src="/static/images/tuijian.jpg" v-if="product.isBest===1"
-                             class="imgSearch-image-box-watermask" alt="">
+
+
+                    <div class="imgSearch-image-box-img" style="position: relative">
+                      <a target="_blank" style="display: block;"
+                         @click="handleViewProduct(product)"
+                      >
+                        <!--登录用户为会员或者登录用户非会员并花型为vip显示花型图片-->
+                        <!--<template v-if="isMemeber || (!isMemeber && product.vip) || (!isMemeber && product.isBest)">-->
+                          <!--<ts-image-->
+                            <!--width="170"-->
+                            <!--height="170"-->
+                            <!--:canView="false"-->
+                            <!--disabledHover-->
+                            <!--:src="getImg(product.defaultPicUrl)">-->
+                          <!--</ts-image>-->
+                        <!--</template>-->
+                        <!--&lt;!&ndash;占位&ndash;&gt;-->
+                        <!--<template v-else>-->
+                          <!--<div style="width: 170px; height: 170px;"></div>-->
+                        <!--</template>-->
+                        <ts-image
+                          width="170"
+                          height="170"
+                          :canView="false"
+                          disabledHover
+                          :src="getImg(product.defaultPicUrl)">
+                        </ts-image>
+                      </a>
+                      <div class="imgSearch-image-box-menu">
+                        <p @click.stop="handleChoosePic(getImg(product.defaultPicUrl))"><i class="icon-sousuo"></i>&nbsp;再找</p>
+                        <p @click.stop="contrastShow(product)"><i class="icon-shiyihui"></i>&nbsp;对比
+                        </p>
+                      </div>
+                      <img src="/static/images/tuijian.jpg" v-if="product.isBest===1 && !product.vip"
+                           class="imgSearch-image-box-watermask" alt="">
+                      <img src="/static/images/t_huiyuan.png" v-if="product.isBest===1 && product.vip"
+                           class="imgSearch-image-box-watermask spc" alt="">
+                      <img src="/static/images/huiyuan.png" v-if="product.isBest !==1 && product.vip "
+                           class="imgSearch-image-box-watermask spc" alt="">
+
+                      <!--非会员登录并该花型vip，isBest为false时则会出现该遮罩层-->
+                      <!--<template v-if="!isMemeber && !product.vip && !product.isBest">-->
+                        <!--<div class="filter_bg" :style="{backgroundImage: 'url(' + product.defaultPicUrl +')'}">-->
+                          <!--<div class="filter_tip">-->
+                            <!--<div>-->
+                              <!--<img src="/static/images/search_logo.png"/>-->
+                            <!--</div>-->
+                            <!--<p>暂无查看权限</p>-->
+                            <!--<p>-->
+                              <!--<router-link style="color: #4C93FD"-->
+                                <!--:to="'/renew?companyId='+userInfo.companyId" target="_blank">开通会员查看-->
+                              <!--</router-link>-->
+                            <!--</p>-->
+                          <!--</div>-->
+                        <!--</div>-->
+                      <!--</template>-->
+
                     </div>
-                    <div class="imgSearch-title">
-                        <p class="imgSearch-title-left">{{product.productNo}}</p>
+
+                    <div class="imgSearch-title" v-if="isMemeber || (!isMemeber && product.vip) || (!isMemeber && product.isBest) || product.isMain">
+                        <p class="imgSearch-title-left">{{ product.productNo}}</p>
                         <p>{{product.updateDate | customTime}}发布</p>
                     </div>
+                   <div class="imgSearch-title" v-else>
+                     <p style="text-align: center; width: 100%">
+                       <router-link style="color: #20a0ff;" :to="'/renew'" target="_blank">开通会员查看详情</router-link>
+                     </p>
+                   </div>
                     <template slot="footer">
                         <!--<p class="imgSearch-product-company">{{product.companyName}}</p>-->
-                        <router-link class="imgSearch-product-contact"
-                                     @click.native="handleViewProduct(product.id)"
-                                     :to="'/product/'+product.id" target="_blank">联系厂家
-                        </router-link>
-                        <p class="imgSearch-product-contrast" @click="contrastShow(product)">对比</p>
+                        <!--<template v-if="isMemeber || (!isMemeber && product.vip) || (!isMemeber && product.isBest)">-->
+                          <!--<router-link class="imgSearch-product-contact"-->
+                                       <!--@click.native="handleViewProduct(product.id)"-->
+                                       <!--:to="'/product/'+product.id" target="_blank">联系厂家-->
+                          <!--</router-link>-->
+                        <!--</template>-->
+                        <!--<template v-else>-->
+                          <!--<router-link class="imgSearch-product-contact"-->
+                                       <!--:to="'/renew?companyId='+userInfo.companyId" target="_blank">联系厂家-->
+                          <!--</router-link>-->
+                        <!--</template>-->
+                        <!--<p class="imgSearch-product-contrast" @click="contrastShow(product)" v-if="isMemeber || (!isMemeber && product.vip)">对比</p>-->
                         <!-- <span v-if="!Type.edit">{{product.publishDate | customTime}}</span> -->
-                        <span v-if="product.price>0&&!!product.price">¥{{product.price / 100}}/{{product.priceUnit | filterDict(DICT.PriceUnits)
+
+                       <template v-if="isMemeber || (!isMemeber && product.vip) || (!isMemeber && product.isBest) || product.isMain">
+                           <span v-if="product.price>0&&!!product.price">¥{{product.price / 100}}/{{product.priceUnit | filterDict(DICT.PriceUnits)
                             }}</span>
-                        <span v-else>价格面议</span>
+                          <span v-else>价格面议</span>
+                          <span style="color: #fb956a" v-if="product.isMain">
+                            <img style="width:18px; vertical-align: middle;margin-right: 2px" src="/static/images/auth_flag.png"/>
+                            认证厂家
+                          </span>
+                       </template>
+
                         <!-- <ts-tag class="imgSearch-tag" v-else>
                             <a>编辑</a>
                         </ts-tag> -->
@@ -164,7 +230,8 @@
           pageSize: 10
         },
         // 当前行
-        currentRow: null
+        currentRow: null,
+        preListLength: 0 // 记录点击查看更多按钮时上一次的花型列表长度，用于判断是否显示查看更多按钮
       };
     },
     watch: {
@@ -195,13 +262,17 @@
 
       },
       search: {
-        handler (val) {
+         handler (val) {
           if (val.list[0]) {
             // this.Pic.encoded = val.list[0].defaultPicUrl;
             let img = new Image();
             img.src = this.Pic.encoded;
             img.onload = () => {
-              this.Pic.canCropper = true;
+              if (val.list.length - this.preListLength < 10) {
+                this.Pic.canCropper = false; // 判断是否还有更多数据
+              } else {
+                this.Pic.canCropper = true;
+              }
             };
             // img.onerror = () => {
             //   this.Pic.canCropper = false;
@@ -221,7 +292,7 @@
       this.$store.commit('SET_SEARCH_EMPTY');
     },
     computed: {
-      ...mapGetters(['search', 'userInfo', 'watermask']),
+      ...mapGetters(['search', 'userInfo', 'watermask', 'isMemeber']),
       isShopRoute () {
         return this.$route.path.indexOf('/shop/') >= 0;
       }
@@ -240,11 +311,11 @@
         return imgPath(img, 'x-oss-process=image/resize,m_fill,h_170,w_170' + this.watermask);
       },
       handleLoadMore () {
+        this.preListLength = this.search.list.length; //赋值当前花型列表长度
         this.Params.pageNo++;
         this.$store.dispatch('searchGetResult', this.Params);
       },
       handleGotoDress (item) {
-        console.log(444);
         sessionStorage.setItem('flowerUrl', item.defaultPicUrl);
         this.$router.push({
           path: `/threeDDressPage`
@@ -287,23 +358,27 @@
         });
       },
       // XXX:仓库管理搜图=>搜图暂时可以跳去编辑页面
-      async handleViewProduct (id) {
+      async handleViewProduct (product) {
         if (this.Type.edit) {
           this.$router.push({
             path: `/shopManagePage/addwarehouse`,
             query: {
-              id: id
+              id: product.id
             }
           });
         } else {
-          try {
-            await viewSearchProduct({productId: id, searchResultId: this.Params.id});
-          } catch (e) {
-            console.log(e);
-          } finally {
-            // this.goto(`/product/${id}`);
+          if (this.isMemeber || (!this.isMemeber && product.vip) || (!this.isMemeber && product.isBest) || product.isMain) {
+            // try {
+            //   await viewSearchProduct({productId: id, searchResultId: this.Params.id});
+            // } catch (e) {
+            //   console.log(e);
+            // } finally {
+            //    this.goto(`/product/${product.id}`);
+            // }
+             this.goto(`/product/${product.id}`);
+          } else {
+            this.goto(`/renew`);
           }
-
         }
       },
       contrastShow (value) {
@@ -580,6 +655,53 @@
         @component wrapper {
             text-align: center;
         }
+    .no_member_tip{
+      width: 100%;
+      padding: 12px 30px;
+      background: #f2f68bc7;
+      margin-bottom: 30px;
+      border-radius: 30px;
+      border: 1px solid red;
+      box-sizing: border-box;
+    }
+    /*.filter_bg{*/
+      /*position: absolute;*/
+      /*left: 0;*/
+      /*top: 0;*/
+      /*width: 100%;*/
+      /*height: 100%;*/
+      /*background-repeat: no-repeat;*/
+      /*background-size: cover;*/
+      /*background-position: center;*/
+      /*overflow: hidden;*/
+      /*z-index: 3;*/
+      /*cursor: default;*/
+      /*&:after{*/
+         /*content: "";*/
+         /*width:150%;*/
+         /*height:150%;*/
+         /*position: absolute;*/
+         /*left:-50px;*/
+         /*top:-50px;*/
+         /*background: inherit;*/
+         /*!*background-size: 150%;*!*/
+         /*filter: blur(14px);*/
+
+       /*}*/
+       /*.filter_tip{*/
+         /*position: relative;*/
+         /*z-index: 2;*/
+         /*color: #fff;*/
+         /*margin-top: 20px;*/
+         /*img{*/
+           /*margin: 10px 0;*/
+         /*}*/
+       /*}*/
+    /*}*/
+    .spc{
+      width: 80px;
+    }
+
 
     }
 </style>

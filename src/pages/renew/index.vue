@@ -8,14 +8,42 @@
         <ts-title-block>会员商家</ts-title-block>
         <div class="vipWrap">
           <p class="textTip">开通会员商家享最优服务</p>
-          <div class="vipMoney" style="">
-            <img src="/static/images/app/vipIcon.png"/>
-            <p>￥ <span class="money">{{userInfo.money}}</span> / 年</p>
-          </div>
+          <template v-if="!userInfo.isJump">
+            <div class="vipMoney" style="">
+              <img src="/static/images/app/vipIcon.png"/>
+              <p>￥ <span class="money">{{userInfo.money}}</span> / 年</p>
+            </div>
+          </template>
+          <template v-else>
+            <div class="b_vip">
+               <div class="b_vip_item">
+                 <span class="recommend">推荐</span>
+                 <p class="money_wrap">￥ <span class="money">{{userInfo.otherMoney && userInfo.otherMoney.year }}</span></p>
+                 <p>12个月付费</p>
+                 <p>会员服务</p>
+                 <p>续费专享￥888/年</p>
+                 <p style="color: #20a0ff">到期(30天内)</p>
+                 <span class="pay_btn" @click="showPayWay('year')">立即开通</span>
+               </div>
+              <div class="b_vip_item">
+                <p class="money_wrap">￥ <span class="money">{{userInfo.otherMoney && userInfo.otherMoney.halfYear }}</span></p>
+                <p>6个月付费</p>
+                <p>会员服务</p>
+                <span class="pay_btn"  @click="showPayWay('halfYear')">立即开通</span>
+               </div>
+              <div class="b_vip_item">
+                <p class="money_wrap">￥ <span class="money">{{userInfo.otherMoney && userInfo.otherMoney.season }}</span></p>
+                <p>3个月付费</p>
+                <p>会员服务</p>
+                <span class="pay_btn"  @click="showPayWay('season')">立即开通</span>
+               </div>
+            </div>
+          </template>
+
         </div>
         <div class="vipWrap vipIconWrap" >
           <p class="textTip">
-            <img src="/static/images/app/VIP@2x.png"/>会员尊享以下10大特权
+            <img src="/static/images/app/VIP@2x.png"/>会员尊享以下特权
           </p>
           <template v-for="item in rightList">
             <div class="vipIcon">
@@ -27,7 +55,7 @@
             </div>
           </template>
         </div>
-        <div class="vipWrap">
+        <div class="vipWrap" v-if="!userInfo.isJump">
           <p class="textTip">选择支付方式</p>
           <div class="payType">
             <a target="_blank" ref="link">
@@ -37,6 +65,13 @@
           </div>
         </div>
       </div>
+      <ts-dialog title="选择支付方式" v-model="showPay"  type="alert" width="40%">
+        <div class="payType">
+          <img  @click="pay(2)" class="weixin" src="/static/images/app/weixin_pay.png"/>
+          <img @click="pay(1)" class="zhifubao" src="/static/images/app/zhifubao_pay.png"/>
+        </div>
+        <div slot="footer"></div>
+      </ts-dialog>
     </div>
 </template>
 
@@ -50,8 +85,10 @@
     search
   } from '@/components';
   import {place,preOrder,personal,queryPayStatus} from '@/common/api/api';
+  import TsDialog from "../../components/common/tsDialog";
   export default {
     components: {
+      TsDialog,
       'vHeader': header,
       'vNav': nav,
       search,
@@ -72,11 +109,23 @@
         },
         orderParams: '',
         userInfo: '',
+        showPay: false,
         rightList: [
+          {
+            icon: 'search_r',
+            title: '更多花型',
+            text: '海量搜花结果',
+            isBest: false
+          },
           {
             icon: 'search_pic',
             title: '精准搜花',
             text: '专享精准无限次搜花',
+            isBest: false
+          }, {
+            icon: 'search_s',
+            title: '搜花保密',
+            text: '设置被查找花型保密',
             isBest: false
           },{
             icon: 'settle',
@@ -135,6 +184,18 @@
       };
     },
     methods: {
+      showPayWay (type) {
+        let orderType = {
+          year: 4,
+          halfYear: 3,
+          season: 2
+        };
+        this.postParams.orderType = orderType[type];
+        // this.postParams.money = this.userInfo.otherMoney[type] * 100;
+        this.postParams.money = 0.01 * 100;
+        this.showPay = true;
+        console.log(this.postParams);
+      },
       async pay (type) {
         // 下单
         let {data: {data: data}} = await place(this.postParams);
@@ -171,13 +232,13 @@
         }
       },
       getData () {
-        personal({id: this.$route.query.companyId}).then(res => {
+        personal().then(res => {
           this.userInfo = res.data.data;
           for(let key in this.postParams) {
             (key !== 'orderType') && (this.postParams[key] = this.userInfo[key]);
             if (key === 'money') {
-              this.postParams[key] = this.userInfo[key] * 100;
-              // this.postParams[key] = 0.01 * 100;
+              // this.postParams[key] = this.userInfo[key] * 100;
+              this.postParams[key] = 0.01 * 100;
             }
           }
         });
@@ -192,6 +253,9 @@
 
 <style scoped lang="scss">
 .renew{
+  .ts-title-block{
+   padding-bottom: 16px;
+  }
   .content{
     max-width: 1100px;
     margin: 10px auto;
@@ -202,6 +266,54 @@
       .textTip{
         margin-bottom: 10px;
         color: #999999;
+      }
+      .b_vip{
+        text-align: center;
+
+        .b_vip_item{
+          vertical-align: top;
+          width: 22%;
+          margin-right: 80px;
+          display: inline-block;
+          height: 220px;
+          border: 1px solid #b4ff6c;
+          position: relative;
+          padding-top: 30px;
+          box-sizing: border-box;
+          &:last-child{
+            margin-right: 0;
+          }
+          .recommend{
+            position: absolute;
+            width: 60px;
+            height:26px;
+            line-height: 26px;
+            background: #20a0ff;
+            color: #fff;
+            top: 0;
+            left: 0;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            text-align: center;
+          }
+          .money_wrap{
+            color: red;
+            .money{
+              font-size: 28px;
+            }
+          }
+          .pay_btn{
+            padding: 4px 24px;
+            color: #fff;
+            background: #20a0ff;
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 20px;
+            cursor: pointer;
+          }
+        }
       }
       .vipMoney{
         background-color: #D8BD89;
@@ -258,18 +370,20 @@
           }
         }
       }
-      .payType{
-        text-align: center;
-        img{
-          width: 160px;
-          cursor: pointer;
-          &.weixin{
-            margin-right: 10%;
-          }
-          &.zhifubao{
-            margin-left:10%;
-          }
-        }
+    }
+  }
+  .payType{
+    text-align: center;
+    img{
+      width: 160px;
+      cursor: pointer;
+      &.weixin{
+        margin-right: 10%;
+        cursor: pointer;
+      }
+      &.zhifubao{
+        margin-left:10%;
+        cursor: pointer;
       }
     }
   }

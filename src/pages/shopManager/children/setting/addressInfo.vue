@@ -92,6 +92,7 @@ export default {
   watch: {
     // company获取
     companyInfo: {
+
       async handler(val) {
         this.addressInfoForm = val;
         // 地址

@@ -37,6 +37,10 @@ const password = r => require.ensure([], () => r(require('@/pages/personalCenter
 const supply = r => require.ensure([], () => r(require('@/pages/personalCenterPage/children/personal-supply.vue')), 'personalCenterPage');
 const releaseBuy = r => require.ensure([], () => r(require('@/pages/personalCenterPage/children/releaseBuy.vue')), 'personalCenterPage');
 const releaseSupply = r => require.ensure([], () => r(require('@/pages/personalCenterPage/children/releaseSupply.vue')), 'personalCenterPage');
+const bannerAdv = r => require.ensure([], () => r(require('@/pages/personalCenterPage/children/personal-bannerAdv.vue')), 'personalCenterPage');
+const loadingAdv = r => require.ensure([], () => r(require('@/pages/personalCenterPage/children/personal-loadingAdv.vue')), 'personalCenterPage');
+const applyBest = r => require.ensure([], () => r(require('@/pages/personalCenterPage/children/personal-applyBest.vue')), 'personalCenterPage');
+const auth = r => require.ensure([], () => r(require('@/pages/personalCenterPage/children/personal-auth.vue')), 'personalCenterPage');
 // =============
 const productAdd = r => require.ensure([], () => r(require('@/pages/homePage/addProductPage/addProduct.vue')), 'productAdd');
 const flowerDetail = r => require.ensure([], () => r(require('@/pages/homePage/flowerDetailPage/flowerDetailPage.vue')), 'flowerDetail');
@@ -122,7 +126,10 @@ const routes = [{
   }, {
     path: '/renew',
     component: renew,
-    name: '会员续费'
+    name: '会员续费',
+    meta: {
+      needAuth: true
+    }
   }, {
     path: '/wxPay',
     component: wxPay,
@@ -310,6 +317,22 @@ const routes = [{
       path: 'supply',
       component: supply,
       name: '供应收藏'
+    }, {
+      path: 'bannerAdv',
+      component: bannerAdv,
+      name: 'banner广告'
+    }, {
+      path: 'loadingAdv',
+      component: loadingAdv,
+      name: '加载广告'
+    }, {
+      path: 'applyBest',
+      component: applyBest,
+      name: '开通推荐厂家'
+    }, , {
+      path: 'auth',
+      component: auth,
+      name: '主营认证'
     }, {
       path: 'releaseBuy',
       component: releaseBuy,

@@ -606,10 +606,37 @@ export const place = params => axios.post(`/vipOrder/place`, params );
 // 拉起支付
 export const preOrder = params => axios.post(`/vipOrder/preOrder`, params );
 // 个人中心会员等级
-export const personal = params => axios.get(`/personal/${params.id}`);
+export const personal = params => axios.get(`/personal`);
 // 查询支付结果
 export const queryPayStatus = param => axios.post('/pay/queryPayStatus', param);
 // 查询支付结果
 export const become = param => axios.post('/vip/become', param);
 // 获取搜花次数
 export const searchCount = param => axios.get('/search/searchCount',{params: param});
+// 广告列表
+export const sysAd = param => axios.get('/sysAd',{params: param});
+// 广告下单
+export const adOrder = params => axios.post(`/adOrder/place`, params);
+// 广告支付
+export const adPreOrder = params => axios.post(`/adOrder/preOrder`, params);
+// 广告支付成功之后的信息
+export const adOrderInfo = params => axios.get(`/adOrder/${params.orderCode}`);
+// 推荐厂家信息
+export const companyBest = param => axios.get('/companyBest/msg',{params: param});
+// 推荐厂家下单
+export const bestOrder = params => axios.post(`/bestOrder/place`, params);
+// 推荐厂家支付
+export const bestPreOrder = params => axios.post(`/bestOrder/preOrder`, params);
+// 推荐厂家支付支付成功之后的信息
+export const bestOrderInfo = params => axios.get(`/bestOrder/${params.orderCode}`);
+// 主营认证厂家信息
+export const authMsg = param => axios.get('/main/msg',{params: param});
+// 主营认证下单
+export const mainOrder = params => axios.post(`/mainOrder/place`, params);
+// 主营认证支付
+export const mainPreOrder = params => axios.post(`/mainOrder/preOrder`, params);
+// 主营认证列表
+export const findCompanyMain = param => axios.get('/company/findCompanyMain',{params: param});
+
+// 搜花结束之后调用Im
+export const companyMainIm = params => axios.get(`/im/companyMain`, {params: params});

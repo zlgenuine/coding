@@ -124,7 +124,13 @@
       searchValue (val) {
         this.Params = Object.assign({}, this.Params, {
           keywords: val,
-          pageNo: 1
+          pageNo: 1,
+          categorys: null,
+          isStock: null
+        });
+        this.Filter = Object.assign({}, this.Filter, {
+          categorys: null,
+          isStock: null
         });
       },
       async selected (val) {

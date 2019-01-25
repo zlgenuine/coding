@@ -1,4 +1,4 @@
-import {searchGetResult, searchEncoded, searchPolling, encodedNew} from '@/common/api/api';
+import {searchGetResult, searchEncoded, searchPolling, encodedNew, companyMainIm} from '@/common/api/api';
 import MessageBox from '@/components/common/messagebox/messagebox.js';
 //
 const state = {
@@ -25,8 +25,9 @@ const mutations = {
     state.search.list = [];
   },
   // 获取搜索ID
-  GET_SEARCH_ID(state, id) {
+  async GET_SEARCH_ID (state, id) {
     state.search.id = id;
+    // await companyMainIm({searchId: id});
   },
   // 获取新的搜索ID
   GET_SEARCH_NEW_ID(state, id) {

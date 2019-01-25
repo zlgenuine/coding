@@ -77,6 +77,14 @@ import {
 } from '@/common/api/api';
 export default {
   data() {
+    const validateCompanyBusiness = (rule, value, callback) => {
+      let val = this.companyInfoForm.companyExtendBO.companyBusiness;
+      if (val.trim().length < 2 || val.trim().length > 50) {
+        callback(new Error('公司主营的长度在 2 到 50 个字符'));
+      } else {
+        callback();
+      }
+    };
     return {
       showConfirm: false,
       // 表格
@@ -122,17 +130,20 @@ export default {
       // 验证规则
       rules: {
         companyName: [{
+          required: true,
           trigger: 'blur',
           max: 15,
           min: 4,
           message: '公司名称的长度在 4 到 15 个字符'
         }],
-        companyBusiness: [{
-          min: 2,
-          max: 50,
-          trigger: 'blur',
-          message: '公司主营的长度在 2 到 15 个字符'
-        }],
+        // companyBusiness: [{
+        //   required: true,
+        //   min: 2,
+        //   max: 50,
+        //   trigger: 'blur',
+        //   message: '公司主营的长度在 2 到 50 个字符'
+        // }], // 不能多级校验表单，自定义校验器
+        companyBusiness: [ { validator: validateCompanyBusiness, trigger: 'blur' }],
         companyProfile: [{
           min: 2,
           max: 500,
@@ -140,6 +151,7 @@ export default {
           message: '公司简介的长度在 2 到 500 个字符'
         }],
         companyAbbreviation: [{
+          required: true,
           min: 2,
           max: 8,
           trigger: 'blur',

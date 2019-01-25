@@ -53,7 +53,7 @@ export default {
   watch: {
     confirmControl (val) {
       if (val) {
-        this.$messagebox.confirm('成为会员，享受更优服务质','您无此权限', {
+        this.$messagebox.confirm('成为会员，享受更优质服务','您无此权限', {
           confirmButtonText: '开通会员',
           cancelButtonText: '稍后再说',
         }).then(action => {

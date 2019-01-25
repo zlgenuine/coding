@@ -44,11 +44,46 @@
     </div>
   </div>
   <!-- 正在处理 -->
-  <div class="search-editPic onepx" v-show="search.handleStatus&&!Pic.isUploaded">
-    <ts-button type="cancel" size="small" class="upload-tip--button button" @click="handleCanceSearch">取消搜索</ts-button>
-    <p v-if="!overtime.status" class="upload-tip"> 正在处理中，请稍候...</p>
-    <ts-progress v-if="!overtime.status" :percentage="search.progress"></ts-progress>
+
+  <!--搜索时显示广告位-->
+  <!--v-show="showAdv"-->
+  <div class="search_adv_mask" @click="test" ref="mask" v-show="showAdv"></div>
+
+  <!--v-show="search.handleStatus&&!Pic.isUploaded"-->
+  <!--v-show="showLoadingStatus"-->
+  <div class="search-editPic onepx" v-show="showLoadingStatus">
+
+
+    <!--<ts-button type="cancel" size="small" class="upload-tip&#45;&#45;button button" @click="handleCanceSearch">取消搜索</ts-button>-->
+    <!--<p v-if="!overtime.status" class="upload-tip"> 正在处理中，请稍候...</p>-->
+    <!--<ts-progress v-if="!overtime.status" :percentage="search.progress"></ts-progress>-->
+
+
+    <div class="search_bar_wrap">
+      <div style="position: absolute; top: 0; right: 0">
+        <ts-button type="cancel" size="small" class="upload-tip&#45;&#45;button button" @click="handleCanceSearch">取消搜索</ts-button>
+      </div>
+
+      <ts-progress v-if="!overtime.status" :percentage="search.progress"></ts-progress>
+      <p class="search_ing_text">正在百万数据库中为您匹配花型...</p>
+    </div>
+
+    <div  v-show="showAdv">
+      <div class="search_adv">
+        <span class="adv_tip">为您推荐<i></i></span>
+        <span class="close_adv" @click="closeAdv">关闭广告<img src="/static/images/close.png"/></span>
+        <div class="adv_img_wrap">
+          <div class="adv_img" v-for="item in advList">
+              <img  :src="item.picUrl" @click="jumpWebsite(item)" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <p v-if="overtime.status" class="upload-tip">请重新上传图片再次搜索</p>
+
+
   </div>
   <div class="search-editPic onepx" v-show="overtime.status">
     <p class="upload-tip">非常抱歉，未能找到结果，请稍后再试</p>
@@ -64,7 +99,7 @@ import {
 } from 'vuex';
 import CropperDialog from './searchImgDialog.vue';
 import {goto} from '@/common/js/utils.js';
-import {searchCount} from '@/common/api/api';
+import {searchCount, sysAd} from '@/common/api/api';
 export default {
   data() {
     return {
@@ -97,10 +132,19 @@ export default {
         show: false,
         isEdit: false,
         url: ''
-      }
+      },
+      advList: [],
+      showAdv: false,
+      t: false
     };
   },
+  mounted () {
+    if (this.token) {
+      this.getAdvList();
+    }
+  },
   created() {
+    // this.freezeDom(this.t);
     this.Search.val = this.$route.query.search;
     if (this.$route.query.searchClass) {
       this.searchClass = this.$route.query.searchClass;
@@ -165,6 +209,11 @@ export default {
         });
         this.options[1].isSelected = true;
       }
+    },
+    showLoadingStatus (val) {
+      this.showAdv = val;
+      // this.test(val);
+      this.$refs.mask.click();
     }
   },
   computed: {
@@ -172,12 +221,39 @@ export default {
     // 显示5张最近记录
     showPics() {
       return this.Search.picList.length >= 5 ? this.Search.picList.splice(0, 5) : this.Search.picList;
-    }
+    },
+    showLoadingStatus () {
+      return this.search.handleStatus&& !this.Pic.isUploaded;
+    },
+    token () {
+      return this.$store.state.token.token;
+    },
   },
   components: {
     CropperDialog
   },
   methods: {
+    test () {
+      this.freezeDom(this.showAdv);
+    },
+    //获取广告列表
+    async getAdvList () {
+      let {data: {data}} =  await sysAd({posId: 2});
+      this.advList = data.sysAdList;
+    },
+    // 关闭广告遮罩层
+    closeAdv () {
+      this.showAdv = false;
+      this.$refs.mask.click();
+    },
+    // 点击广告跳转
+    jumpWebsite (item) {
+      if (item.days > 0) { //广告未过期时跳转到对应商家网店，否则跳转到购买广告页面
+        goto(`http://${item.details}.lacewang.cn`);
+      } else {
+        goto(`/personal/loadingAdv`);
+      }
+    },
     // 搜索类型切换
     tabSwitch(item) {
       this.searchClass = item.value;
@@ -332,6 +408,14 @@ export default {
           this.$emit('search-text', value);
         }
       }
+    },
+
+    // 当显示加载广告遮罩层时禁止页面滑动
+    freezeDom (flag) {
+      console.log('页面冻结' + flag);
+      this.$nextTick(() => {
+        document.getElementsByTagName("body")[0].style.overflow = flag ? 'hidden' : 'auto';
+      });
     }
   }
 };
@@ -384,9 +468,15 @@ export default {
   }
   @component editPic {
     padding: 10px;
-    position: absolute * 0 * 0;
+    /*position: absolute * 0 * 0;*/
     background: #fff;
-    z-index: 2;
+    z-index: 10;
+    width: 100%;
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
     @descendent menu {
       text-align: right;
       margin-top: 10px;
@@ -480,6 +570,68 @@ export default {
 .upload-tip--button.button {
   position: absolute * 10px * *;
 }
+  .search_adv_mask{
+    background-color: #fff;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+    left: 0;
+    top: 140px;
+    opacity: 0.9;
+  }
+  .search_bar_wrap{
+    width: 100%;
+    position: relative;
+    z-index: 10;
+    height: 130px;
+    /*background-color: #fff;*/
+    padding: 40px 0;
+    box-sizing: border-box;
+    .search_ing_text{
+      font-size: 14px;
+      text-align: center;
+      margin: 10px 0;
+    }
+  }
+  .search_adv{
+    width: 100%;
+    position: relative;
+    z-index: 10;
+    .adv_tip{
+      font-size: 18px;
+      font-weight: bold;
+      color: #999999;
+      position: relative;
+      display: inline-block;
+      i{
+        width: 4px;
+        height: 18px;
+        background-color: #ff8400;
+        display: inline-block;
+        margin-left: 6px;
+        position: relative;
+        top: 2px;
+      }
+    }
+    .close_adv{
+      float: right;
+      margin-right: 10px;
+      color: #999999;
+      cursor: pointer;
+    }
+    .adv_img_wrap{
+       max-height: 550px;
+       overflow: auto;
+       width: 100%;
+      .adv_img{
+        margin-top: 14px;
+       img{
+          width: 100%;
+        }
+      }
+    }
+  }
 </style>
 <style lang="scss">
 .search-wrapper.all {

@@ -16,7 +16,7 @@
                     <br>
                 </ts-col>
                 <ts-col :span="isCreatedStatus?24:18" class="add-col"
-                        :style="{'max-height':`${getClientHeight/1.5}px`}">
+                        :style="{'max-height':`${getClientHeight/1}px`}">
                     <ts-menu-table>
                         <div slot="header-left">
                             <strong>花型基本信息</strong>
@@ -79,6 +79,15 @@
                                 <ts-radio :label="item.id" v-for="(item,index) in userCategory" :key="index">{{item.className}}</ts-radio>
                             </ts-radio-group>
                         </ts-form-item>
+
+                        <ts-form-item label="发布状态：" v-if="isCreatedStatus">
+                          <ts-radio-group bordered v-model="addPatternForm.publishStatus">
+                            <ts-radio :label="item.val" :key="item.val"
+                                      v-for="item in publishStatus">{{item.label}}
+                            </ts-radio>
+                          </ts-radio-group>
+                        </ts-form-item>
+
                         <div v-if="!isCreatedStatus">
                             <ts-row :gutter="5">
                                 <ts-col :span="12">
@@ -240,7 +249,7 @@
           cutPrice: '',
           priceUnit: '',
           productNo: '',
-          publishStatus: '',
+          publishStatus: 0,
           stock: '',
           stockUnit: '',
           width: '',
@@ -261,6 +270,9 @@
     watch: {
       data (val) {
         console.log(val);
+        this.loadData();
+      },
+      status () {
         this.loadData();
       },
       addPatternForm: {
@@ -324,6 +336,15 @@
     },
     computed: {
       ...mapGetters(['dicTree', 'userInfo']),
+      // 上架状态
+      publishStatus () {
+        if (this.userInfo.userType === 1) {
+          return [{label: '平台', val: 2},{label: '网店', val: 1},{label: '未上传', val: 0}];
+        } else {
+          return [{label: '网店', val: 1},{label: '未上传', val: 0}];
+        }
+
+      },
       hasUserCategory () {
         return this.userCategory.length > 0;
       },
@@ -376,13 +397,13 @@
         if (!this.isCreatedStatus) {
           this.$store.commit('SET_LOADING', true);
           // 1花型信息
-          this.addPatternForm = Object.assign({}, this.addPatternForm, {
+          this.addPatternForm = Object.assign({}, this.addPatternForm, this.data, {
             category: this.data.category && this.data.category.toString(),
             productShape: this.data.productShape && this.data.productShape.toString(),
             classId: this.classId,
             price: '',
             cutPrice: ''
-          }, this.data
+          }
           );
           // 2色卡信息
           this.Color.list = (await getColorCards({
@@ -392,6 +413,28 @@
             this.Color.detail = this.Color.list[0];
           }
           this.$store.commit('SET_LOADING', false);
+        } else {
+          // 新增时还原初始数据
+          this.addPatternForm = Object.assign({},{
+            produceCompanyName: '',
+            category: '',
+            height: '',
+            ingredient: '',
+            isStock: '-1',
+            outRate: '',
+            classId: '',
+            defaultPicUrl: '',
+            price: '',
+            cutPrice: '',
+            priceUnit: '',
+            productNo: '',
+            publishStatus: this.userInfo.userType === 1 ? 2: 0, // 厂家默认发布状态为平台，贸易商默认未上传
+            stock: '',
+            stockUnit: '',
+            width: '',
+            productShape: '',
+            colorCards: []
+          });
         }
       },
       // ============

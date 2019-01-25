@@ -10,9 +10,12 @@
           <span class="tip_text">您已成功支付<span class="price">{{o.money / 100 || 0}}</span>元 ！</span>
         </div>
         <p>支付方式：{{$route.query.type === '1' ? '支付宝' : '微信'}}</p>
-        <p>支付编号：{{o.orderCode || 0}}</p>
+        <p>支付编号：{{orderCode || 0}}</p>
         <p>付款时间：{{s_date | filterDate}}</p>
-        <p class="exp">会员到期时间：{{o.expDate | filterDate}}</p>
+
+        <!--会员才显示会员到期时间-->
+        <p class="exp" v-if="o.expDate">会员到期时间：{{o.expDate | filterDate}}</p>
+
         <div class="warning_tip">
             <img src="/static/images/app/warning.png"/>
             为了方便后续查询交易，建议留存该笔交易端的支付编号
@@ -30,7 +33,7 @@
     nav,
     search
   } from '@/components';
-  import {become} from '@/common/api/api';
+  import {become, adOrderInfo, bestOrderInfo} from '@/common/api/api';
   export default {
     components: {
       'vHeader': header,
@@ -41,38 +44,30 @@
       return {
         orderCode: this.$route.query.d,
         s_date: new Date(),
-        o: ''
+        o: '',
+        payType: this.$route.query.pt || '1', // 1表示会员支付，2表示广告支付，3表示优质商家支付
       };
     },
     methods: {
-      getData () {
-        become({orderCode: this.orderCode}).then(res => {
-          console.log(res);
-          if (res.data.code === 0) {
-            let {data: {data}} = res;
-            this.o = data;
-          }
-        });
+      async getData () {
+        let payWay = {
+          '1': () => become({orderCode: this.orderCode}),
+          '2': () => adOrderInfo({orderCode: this.orderCode}),
+          '3': () => bestOrderInfo({orderCode: this.orderCode})
+        };
+        let {data:{data}} = await payWay[this.payType]();
+        this.o = data;
       },
       toHome () {
-        this.$router.replace('/');
+        this.$router.replace('/homePage');
         setTimeout(()=>{
           window.location.reload();
-        },10);
+        },100);
 
       }
     },
     mounted () {
       this.getData();
-      let date = new Date();
-      let tme = Date.parse(date);
-      console.log(date);
-      console.log(tme);
-      // console.log('>>>>>>>>>>>>>>>>>>>>');
-      // let date1 = new Date(tme);
-      // console.log(date1);
-      // let test =  new Date(1648915199000);
-      // console.log(test);
     }
   };
 </script>

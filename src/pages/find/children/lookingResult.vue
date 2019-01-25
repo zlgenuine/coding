@@ -9,7 +9,7 @@
             </div>
             <div class="lookingResult-target-detail">
                 <p>查找类型：{{searchSingle.category | filterDict(dicTree.PRODUCT_TYPE, 'name')}}</p>
-                <p v-if="userInfo.userType===1">查找人：{{searchSingle.user ? searchSingle.user.companyName : ''}}</p>
+                <p>查找人：{{searchSingle.user ? searchSingle.user.companyName : ''}}</p>
                 <p v-if="userInfo.userType===1">联系方式：{{searchSingle.user ? searchSingle.user.userMobile : ''}}</p>
                 <p class="lookingResult-target-detail--title">温馨提示：白色的花型图片更利于找到匹配花型哦。</p>
             </div>
@@ -20,16 +20,30 @@
         <div class="lookingResult-result">
             <ts-grid :data="Search">
                 <ts-grid-item style="width:240px" v-for="product in Search" :key="product"
-                              @click="handleViewProduct(product.id)">
+                              @click="handleViewProduct(product)">
                     <ts-image width="170" height="170" :canView="false" disabledHover
                               :src="imgPath(product.defaultPicUrl,'x-oss-process=image/resize,m_fill,h_170,w_170'+watermask)">
                     </ts-image>
+
+                  <!--判断当前登录用户是否与查找人相同，相同的话则判断显示花型的逻辑与快照搜花列表时的判断逻辑一样，不相同时则正常显示，点击跳转到详情页-->
+                  <template v-if="
+                    searchSingle.user && (searchSingle.user.id !==userInfo.id) ||
+                   isMemeber || (!isMemeber && product.vip) ||
+                   (!isMemeber && product.isBest) || product.isMain"
+                  >
                     <p class="lookingResult-product--number">{{product.productNo}}</p>
                     <template slot="footer">
-						<span v-if="product.price>0&&!!product.price">¥{{product.price / 100}}/{{product.priceUnit | filterDict(dicTree.PRODUCT_UNIT, 'name')
-                            }}</span>
-                        <span v-else>价格面议</span>
+                      <span v-if="product.price>0&&!!product.price">¥{{product.price / 100}}/{{product.priceUnit | filterDict(dicTree.PRODUCT_UNIT, 'name')
+                              }}</span>
+                      <span v-else>价格面议</span>
                     </template>
+                  </template>
+                   <template v-else>
+                     <p style="height: 65px; padding-top: 10px; box-sizing: border-box;">
+                       <router-link style="color: #20a0ff;" :to="'/renew'" target="_blank">开通会员查看详情</router-link>
+                     </p>
+                   </template>
+
                 </ts-grid-item>
             </ts-grid>
         </div>
@@ -68,15 +82,19 @@
       };
     },
     computed: {
-      ...mapGetters(['dicTree', 'userInfo', 'watermask'])
+      ...mapGetters(['dicTree', 'userInfo', 'watermask', 'isMemeber'])
     },
     methods: {
       imgPath,
       handleChangePage (number) {
         this.Param.pageNo++;
       },
-      handleViewProduct (id) {
-        this.goto(`/product/${id}`);
+      handleViewProduct (product) {
+        if (this.searchSingle.user && (this.searchSingle.user.id !== this.userInfo.id) || this.isMemeber || (!this.isMemeber && product.vip) || (!this.isMemeber && product.isBest) || product.isMain) {
+          this.goto(`/product/${product.id}`);
+        } else {
+          this.goto(`/renew`);
+        }
       }
     },
     watch: {

@@ -20,7 +20,7 @@ store.commit('LOGIN', axios.defaults.headers['x-token'] || '');
 // ==============
 axios.interceptors.request.use(config => {
   let token = cookie.get('x-token');
-  axios.defaults.headers['x-token'] = token || '';
+  config.headers['x-token'] = token || '';
   return config;
 }, err => {
   return Promise.reject(err);

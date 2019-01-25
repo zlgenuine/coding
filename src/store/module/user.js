@@ -1,4 +1,4 @@
-import {getUserInfo, checklimit, personaLevel} from '@/common/api/api';
+import {getUserInfo, checklimit, personaLevel, authMsg} from '@/common/api/api';
 
 const state = {
   // 用户信息
@@ -24,10 +24,17 @@ const actions = {
     try {
       let {data} = await getUserInfo();
       let dateStr = (await personaLevel()).data.data;
-      commit('GET_USERINFO', Object.assign({}, data.data, {isVip: dateStr.isVip, expStr: dateStr.expStr, days: dateStr.days }));
+      let main = '';
+      if (data.data.userType === 1) {
+         main = (await authMsg()).data.data; // 只有厂家才调这个接口，是否是主营认证
+      }
+      commit('GET_USERINFO', Object.assign({}, data.data, {isVip: dateStr.isVip, expStr: dateStr.expStr, days: dateStr.days, isMain: main.isMain || false }));
     } catch (e) {
       console.error('获取用户信息失败');
     }
+    // let {data} = await getUserInfo();
+    // let dateStr = (await personaLevel()).data.data;
+    // commit('GET_USERINFO', Object.assign({}, data.data, {isVip: dateStr.isVip, expStr: dateStr.expStr, days: dateStr.days }));
   },
   // 会员权限检查
   async memberChecklimit ({commit}) {

@@ -19,7 +19,7 @@
 		</div>
 		<div class="content-info">
 			<h4>联系我们</h4>
-			<p style="margin: 20px 0;">地址：福建长乐市数字福建产业园东湖路33号（8号研发楼）&nbsp;&nbsp;&nbsp;&nbsp;联系电话：17750250757&nbsp;&nbsp;&nbsp;&nbsp; 网址：www.ts57.cn&nbsp;&nbsp;&nbsp;&nbsp;www57lace.com</p>
+			<p style="margin: 20px 0;">地址：福建长乐市数字福建产业园东湖路33号（8号研发楼）&nbsp;&nbsp;&nbsp;&nbsp;联系电话：17750250757&nbsp;&nbsp;&nbsp;&nbsp; 网址：www.ts57.cn&nbsp;&nbsp;&nbsp;&nbsp;www.57lace.com</p>
 			<div style="text-align: center;">
 				<ts-image width="100" height="100" src="/static/images/qrcode/app.png" alt="二维码"/>
 			</div>

@@ -24,21 +24,23 @@
           <p>微信扫一扫支付</p>
         </div>
         <img class="wx-img" src="/static/images/qrcode/bitmap.png"/>
-        <div>
-          <span style="margin-top: 10px; font-size: 20px; color: #20a0ff;cursor: pointer" @click="$router.go(-1)">选择其他付款方式 》</span>
+        <div style="width: 80%; text-align: left; margin: 10px auto; font-size: 18px; color: #20a0ff;cursor: pointer" @click="$router.go(-1)">
+          选择其他付款方式 >>
         </div>
       </div>
     </div>
 </template>
 
 <script>
-  import {place,preOrder,queryPayStatus} from '@/common/api/api';
+  import {place,preOrder,queryPayStatus, adPreOrder, bestPreOrder, mainPreOrder} from '@/common/api/api';
   export default {
     data () {
         return {
-          orderId: this.$route.query.d,
-          payMoney:this.Decrypt(this.$route.query.m),
-          paymentId: this.$route.query.t,
+          orderId: this.$route.query.d, // 订单id
+          payMoney:this.Decrypt(this.$route.query.m), // 支付金额
+          extend: this.$route.query.extend, // 拓展
+          paymentId: this.$route.query.t, // 支付方式
+          payType: this.$route.query.pt || '1', // 1表示会员支付(默认)，2表示广告支付，3表示推荐厂家支付, 4表示主营认证支付
           payNumber: '',
           qr: null,
           payStatus: 0,     // 支付状态:0未支付  1已支付
@@ -61,21 +63,27 @@
     },
     methods: {
       async pay () {
-        let {data} = await preOrder(this.params);
+        let payWay = {
+          '1': () => preOrder(this.params), // 会员支付
+          '2': () => adPreOrder(this.params), // 广告支付
+          '3': () => bestPreOrder(this.params), // 推荐厂家支付
+          '4': () => mainPreOrder(this.params)  // 主营认证支付
+        };
+        let {data:{data}} = await payWay[this.payType]();
         // 微信支付
-        this.qr = data.data.result.payQr;
-        this.payNumber = data.data.result.payNumber;
+        this.qr = data.result.payQr;
+        this.payNumber = data.result.payNumber;
         this.int = window.setInterval(() => {
           if (!this.qr_timeout) this.queryPayStatus();
           // 支付完成，取消轮询
           if (Number(this.payStatus)) {
             window.clearInterval(this.int);
             // 跳往支付成功界面
-            this.$router.push({path: '/paySuccess', query: {d: this.orderId}});
+            this.$router.push({path: '/paySuccess', query: {d: this.orderId, pt: this.payType}});
             console.log('支付成功');
           }
         }, 2* 1000);
-        // 二维码超时,有效时间10分钟
+        // 二维码超时,有效时间20分钟
         this.qrInt = window.setInterval(() => {
           this.qr_timeout = true;
         }, 20 * 60 * 1000);

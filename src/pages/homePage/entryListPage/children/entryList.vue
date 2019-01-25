@@ -3,8 +3,11 @@
   <!-- Tab -->
   <div class="entryList-tab">
     <ts-navbar v-model="selected" v-if="!isShopRoute">
-      <ts-tab-item  id="1">优质厂家
+      <ts-tab-item  id="1">推荐厂家
         <ts-tag class="entryList-tab-item-tag" type="primary">{{Entry.totalNum}}</ts-tag>
+      </ts-tab-item>
+      <ts-tab-item id="4">认证厂家
+        <ts-tag class="entryList-tab-item-tag" type="primary">{{authCompanyNum}}</ts-tag>
       </ts-tab-item>
       <ts-tab-item id="2">入驻厂家
         <ts-tag class="entryList-tab-item-tag" type="primary">{{totalCompanies.factory}}</ts-tag>
@@ -55,6 +58,9 @@
           </div>
         </ts-grid-item>
       </ts-grid>
+    </ts-tab-container-item>
+    <ts-tab-container-item id="4">
+      <auth-company></auth-company>
     </ts-tab-container-item>
     <ts-tab-container-item id="2">
     <!-- 2.入驻厂家 -->
@@ -123,8 +129,12 @@ import {
   totalCompanies,
   searchCompany,
   getEntering,
+  findCompanyMain,
   qualityCompanyList1
 } from '@/common/api/api';
+import {
+  goto
+} from '@/common/js/utils.js';
 import {
   mapGetters
 } from 'vuex';
@@ -133,6 +143,7 @@ import debounce from 'lodash.debounce';
 import qrcode from '@/components/qrcode/qrcode.vue';
 // 属于发现--厂家上新模块
 import factoryList from '../../../find/component/factoryProduct.vue';
+import AuthCompany from "./entryList/authCompany";
 export default {
   data() {
     return {
@@ -141,6 +152,7 @@ export default {
       },
       selected: '1',
       Entry: [],
+      authCompany: '',
       // Param: {
       //   companyType: 1
       // },
@@ -169,6 +181,14 @@ export default {
     ...mapGetters(['isMemeber', 'userInfo']),
     getOrigin() {
       return window.location.origin;
+    },
+    // 认证厂家数量
+    authCompanyNum () {
+      let length = 0;
+      for (let key in this.authCompany) {
+        length += this.authCompany[key].length;
+      }
+      return length;
     }
   },
   watch: {
@@ -202,9 +222,19 @@ export default {
   methods: {
     IsSotre() {
       if (['2', '3'].indexOf(this.selected) >= 0 && !this.isMemeber) {
-        this.$messagebox.alert('成为会员，请联系热线电话：4008013357', '你无此权限').then(action => {
-          this.selected = '1';
+        // this.$messagebox.alert('成为会员，请联系热线电话：4008013357', '你无此权限').then(action => {
+        //   this.selected = '1';
+        // });
+        this.$messagebox.confirm('成为会员，享受更优质服务','您无此权限', {
+          confirmButtonText: '开通会员',
+          cancelButtonText: '稍后再说',
+        }).then(action => {
+          this.$store.commit('CONFIRM_CONTROL', false);
+          goto(`/renew?companyId=${this.userInfo.companyId}`);
+        }).catch(e => {
+          this.$store.commit('CONFIRM_CONTROL', false);
         });
+        this.selected = '1';
       }
     },
     handleChangePage(number) {
@@ -217,10 +247,17 @@ export default {
         this.searchParam.pageNo = 1;
         this.Search = (await searchCompany(this.searchParam)).data.data;
       } else {
-        this.$messagebox.alert('成为会员，请联系热线电话：4008013357', '你无此权限').then(action => {
-          this.selected = '1';
-          this.searchParam.companyName = '';
+        this.$messagebox.confirm('成为会员，享受更优质服务','您无此权限', {
+          confirmButtonText: '开通会员',
+          cancelButtonText: '稍后再说',
+        }).then(action => {
+          this.$store.commit('CONFIRM_CONTROL', false);
+          goto(`/renew?companyId=${this.userInfo.companyId}`);
+        }).catch(e => {
+          this.$store.commit('CONFIRM_CONTROL', false);
         });
+        this.selected = '1';
+        this.searchParam.companyName = '';
       }
     },
     async handleChangeCompanyNum(e) {
@@ -254,7 +291,7 @@ export default {
     },
     handleGotoShopTable(item) {
       this.goto(`/shop/${item.id}`);
-      
+
     },
     handleViewProduct(item) {
       this.goto(`/product/${item.id}`);
@@ -264,6 +301,8 @@ export default {
     this.totalCompanies = (await totalCompanies()).data.data;
     // 最新入驻改为优质厂家
     this.Entry = (await qualityCompanyList1(this.Param)).data.data;
+    // 认证厂家
+    this.authCompany = (await findCompanyMain()).data.data;
     // 最新入驻
     this.NewEntryCompany = (await getEntering(Object.assign({}, this.EnteringParam, {
       companyType: '1'
@@ -271,8 +310,10 @@ export default {
     this.NewEntryStore = (await getEntering(Object.assign({}, this.EnteringParam, {
       companyType: '2'
     }))).data.data;
+
   },
   components: {
+    AuthCompany,
     qrcode,
     factoryList
   }

@@ -65,8 +65,9 @@ export default {
       top: 0;
       height: 100%;
       transition: .6s;
-      border-radius: 2px 0 0 2px;
-      background-color: #4c93fd;
+      /*background-color: #4c93fd;*/
+      background-image: url(/static/images/progress_bar.png);
+      background-repeat: repeat-x;
       text-align: right;
       border-radius: 100px;
       line-height: 1;
@@ -78,8 +79,20 @@ export default {
       color: #fff;
       font-size: 12px;
       margin: 0 5px;
+      /*position: absolute;*/
+      /*top: -20px;*/
+      /*background: red;*/
+      /*z-index: 10;*/
     }
   }
 
 }
+</style>
+<style lang="scss">
+/*.ts-progress{*/
+  /*.ts-progress-bar-outer{*/
+    /*background-color: #a9a6a6;*/
+    /*overflow: auto;*/
+  /*}*/
+/*}*/
 </style>

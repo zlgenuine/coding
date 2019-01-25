@@ -183,7 +183,7 @@
               item.isShow = true;
             }
           } else {
-            if (itme.path === 'auth' || item.path === 'applyBest' || item.path === 'list') {
+            if (item.path === 'auth' || item.path === 'applyBest' || item.path === 'list') {
               item.isShow = true;
             }
           }

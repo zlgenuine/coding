@@ -191,8 +191,8 @@
           season: 2
         };
         this.postParams.orderType = orderType[type];
-        // this.postParams.money = this.userInfo.otherMoney[type] * 100;
-        this.postParams.money = 0.01 * 100;
+        this.postParams.money = this.userInfo.otherMoney[type] * 100;
+        // this.postParams.money = 0.01 * 100;
         this.showPay = true;
         console.log(this.postParams);
       },
@@ -237,8 +237,8 @@
           for(let key in this.postParams) {
             (key !== 'orderType') && (this.postParams[key] = this.userInfo[key]);
             if (key === 'money') {
-              // this.postParams[key] = this.userInfo[key] * 100;
-              this.postParams[key] = 0.01 * 100;
+              this.postParams[key] = this.userInfo[key] * 100;
+              // this.postParams[key] = 0.01 * 100;
             }
           }
         });

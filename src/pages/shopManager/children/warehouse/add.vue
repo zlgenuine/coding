@@ -366,8 +366,9 @@
         get () {
           if ((this.addPatternForm.price / 100 === 0) || isNaN(this.addPatternForm.price)) {
             return '';
+          }else{
+            return this.addPatternForm.price / 100;
           }
-          return this.addPatternForm.price / 100;
         },
         set (val) {
           this.addPatternForm.price = val * 100;
@@ -378,8 +379,9 @@
         get () {
           if ((this.addPatternForm.cutPrice / 100 === 0) || isNaN(this.addPatternForm.cutPrice)) {
             return '';
+          }else{
+            return this.addPatternForm.cutPrice / 100;
           }
-          return this.addPatternForm.cutPrice / 100;
         },
         set (val) {
           this.addPatternForm.cutPrice = val * 100;
@@ -401,10 +403,10 @@
             category: this.data.category && this.data.category.toString(),
             productShape: this.data.productShape && this.data.productShape.toString(),
             classId: this.classId,
-            price: '',
-            cutPrice: ''
+            // price: '',
+            // cutPrice: ''
           }
-          );
+        );
           // 2色卡信息
           this.Color.list = (await getColorCards({
             productId: this.addPatternForm.id

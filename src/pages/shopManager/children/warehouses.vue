@@ -524,6 +524,7 @@
       },
       // 修改花型
       handleEditProduct (data) {
+        console.log(this.productForm,2222);
         this.handleUpOrEditPro(data, 'edit');
         this.BatchUpload.dialogShow = false;
       },
@@ -752,6 +753,13 @@
       // 编辑花型
       handleEdit (item) {
         this.productForm = JSON.parse(JSON.stringify(item));
+        if(!this.productForm.price){
+          this.$set(this.productForm,'price','');
+        }
+        if(!this.productForm.cutPrice){
+          this.$set(this.productForm,'cutPrice','');
+        }
+
         this.handleuploadAvatar('edit');
       },
       // 切换卡

@@ -23,7 +23,7 @@
         <!-- 图片列表 -->
         <div class="">
             <ts-grid :data="search.list" class="imgSearch-data">
-                <ts-grid-item class="imgSearch-data-item" v-for="product in search.list" :key="product">
+                <ts-grid-item class="imgSearch-data-item" v-for="product in search.list" :key="product" v-if="product.defaultPicUrl">
 
 
                     <div class="imgSearch-image-box-img" style="position: relative">
@@ -263,16 +263,22 @@
       },
       search: {
          handler (val) {
-          if (val.list[0]) {
+           if(!val.list[val.list.length-1]){
+             val.list[val.list.length-1]={};
+             this.$set(val.list[val.list.length-1],'defaultPicUrl','');
+           }
+           if (val.list.length%10!==0) {   //val.list.length < 10- this.preListLength
+             this.Pic.canCropper = false; // 判断是否还有更多数据
+             return;
+           } else {
+             this.Pic.canCropper = true;
+           }
+           if (val.list[0]) {
             // this.Pic.encoded = val.list[0].defaultPicUrl;
             let img = new Image();
             img.src = this.Pic.encoded;
             img.onload = () => {
-              if (val.list.length - this.preListLength < 10) {
-                this.Pic.canCropper = false; // 判断是否还有更多数据
-              } else {
-                this.Pic.canCropper = true;
-              }
+
             };
             // img.onerror = () => {
             //   this.Pic.canCropper = false;

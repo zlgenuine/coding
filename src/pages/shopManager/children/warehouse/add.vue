@@ -34,12 +34,12 @@
                         </ts-form-item>
                         <ts-row>
                             <ts-col v-if="!isCreatedStatus" :span="12">
-                                <ts-form-item label="花型编号：" :prop="validate?'productNo':''">
+                                <ts-form-item label="花型编号：" prop="productNo">
                                     <ts-input v-model="addPatternForm.productNo" placeholder="请输入花型编号"></ts-input>
                                 </ts-form-item>
                             </ts-col>
                             <ts-col :span="12">
-                                <ts-form-item label="大货类型：" :prop="validate?'productShape':''">
+                                <ts-form-item label="产品形态：" prop="productShape">
                                     <ts-radio-group bordered v-model="addPatternForm.productShape">
                                         <ts-radio :label="item.dicValue" :key="item.value"
                                                   v-for="item in dicTree.PRODUCT_SHAPE">{{item.name}}
@@ -48,7 +48,7 @@
                                 </ts-form-item>
                             </ts-col>
                         </ts-row>
-                        <ts-form-item label="花型成分：" :prop="validate?'ingredient':''">
+                        <ts-form-item label="花型成分：" prop="ingredient">
                             <ts-radio-group bordered v-model="addPatternForm.ingredient">
                                 <!-- 原有的成分 -->
                                 <!-- 成分类型ingredientType为1才可以修改／删除 -->
@@ -211,7 +211,7 @@
           }],
           productShape: [{
             required: true,
-            message: '请至少选择一个大货类型'
+            message: '请至少选择一个产品形态'
           }],
           defaultPicUrl: [{
             required: true,
@@ -274,6 +274,9 @@
       },
       status () {
         this.loadData();
+      },
+      validate(val){
+        console.log(val);
       },
       addPatternForm: {
         handler (val, oldVal) {

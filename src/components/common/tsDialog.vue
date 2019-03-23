@@ -26,7 +26,6 @@
           <!-- {{$slots.default}} -->
           <slot name="footer"></slot>
         </div>
-
       </div>
     </div>
   </transition>

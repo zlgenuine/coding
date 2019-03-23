@@ -640,3 +640,12 @@ export const findCompanyMain = param => axios.get('/company/findCompanyMain',{pa
 
 // 搜花结束之后调用Im
 export const companyMainIm = params => axios.get(`/im/companyMain`, {params: params});
+
+//查看供应商
+export const lookSupplier = params => axios.get(`/supplier/list/${params}`);
+export const  supplierDetail = params => axios.get(`/supplier/${params}`);
+export const  supplierEdit = params => axios.put(`/supplier`,params);
+export const  supplierDel = params => axios.delete(`/supplier/${params}`);
+export const  supplierAdd = params => axios.post(`/supplier/`,params);
+//获取成分列表
+export const  ingredientList = () => axios.get(`/ingredient/listIngredients`);

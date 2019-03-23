@@ -4,7 +4,7 @@
     <div class="wrapper">
       <vueCropper ref="cropper" :img="Pic.url" :outputSize="example2.size" :outputType="example2.outputType" :info="example2.info" :canScale="example2.canScale" :autoCrop="example2.autoCrop" :autoCropWidth="example2.width" :autoCropHeight="example2.height"></vueCropper>
     </div>
-    <div style="text-align: center; margin-top: 20px;">
+    <div style="text-align: center; margin-top: 20px;" v-show="ifVip">
       <img v-if="!$store.state.user.isMemeber" src="/static/images/VIP@2x.png" style="width: 20px" />
       <img v-else src="/static/images/VIP1@2x.png" style="width: 20px" />
       <span style="margin: 0 8px">是否对搜索花型进行保密</span>
@@ -68,6 +68,10 @@
             show: false
           };
         }
+      },
+      ifVip:{
+        default:true,
+        type:Boolean
       }
     },
     beforeDestroy() {

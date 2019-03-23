@@ -89,7 +89,7 @@
                                             </ts-col>
                                         </ts-row>
                                         <ts-row class="warehouse-grid-item--row">
-                                            <ts-col :span="5">大货类型</ts-col>
+                                            <ts-col :span="5">产品形态</ts-col>
                                             <ts-col :span="7">
                                                 <span>{{item.productShape | filterDict(dicTree.PRODUCT_SHAPE, 'name')}}&nbsp;</span>
                                             </ts-col>
@@ -125,12 +125,11 @@
 
                                         </ts-row>
                                         <ts-row class="warehouse-grid-item--row">
-                                            <ts-col :span="5">所属厂家</ts-col>
+                                            <!--<ts-col :span="5" style="text-align: left">查看供应商(0)</ts-col>-->
                                             <ts-col :span="7">
                                                 <span>{{item.produceCompanyName}}</span>
                                             </ts-col>
                                         </ts-row>
-
                                     </div>
                                     <!-- 4.花型色卡 -->
                                     <div class="warehouse-grid-item--container" v-else>
@@ -179,6 +178,7 @@
                                     </div>
                                 </ts-col>
                             </ts-row>
+                          <div class="lookSupplier" @click="getSupplierData(item)" >查看供应商({{item.supplierCount}})</div>
                             <!-- 5.花型菜单 -->
                             <div class="warehouse-grid-item--footer">
                                 <ts-button type="primary" v-if="item.publishStatus!==1"
@@ -270,13 +270,16 @@
         <!--  ============ -->
         <!--  对话框 - 裁剪 -->
         <!--  ============ -->
-        <cropper-dialog :dialog="Cropper" :imageUrl="Pic.url" @check="handleLookProduct" @change="handleGetResult">
+        <cropper-dialog :dialog="Cropper" :ifVip="false" :imageUrl="Pic.url" @check="handleLookProduct" @change="handleGetResult">
         </cropper-dialog>
+      <!--查看供应商弹窗-->
+      <supplier-dialog :supplierData="supplierData" :listData="listData" :supplierDialog="supplierDialog" @refreshList="refreshList"  @closeDialog="closeDialog"></supplier-dialog>
     </div>
 </template>
 
 <script>
   import Toast from '@/components/common/toast/toast';
+  import supplierDialog from './supplier';
   import schema from 'async-validator';
   import DICT from '@/common/dict';
   import {
@@ -298,12 +301,16 @@
     batchAddProduct,
     updateProduct,
     getColorCards,
-    shelveLSK
+    shelveLSK,
+    lookSupplier
   } from '@/common/api/api';
 
   export default {
     data () {
       return {
+        supplierDialog: false,
+        supplierData:{},
+        listData:'',
         fullscreenLoading: false,
         productList: {
           pageNO: 1,
@@ -373,7 +380,7 @@
         // 色卡详细信息
         ColorDetail: {},
         // 是否获取lsk花型列表
-        lsk: false
+        lsk: false,
       };
     },
     computed: {
@@ -402,7 +409,8 @@
     },
     components: {
       CropperDialog,
-      ProductAddForm
+      ProductAddForm,
+      supplierDialog
     },
     async created () {
       // 获取花型列表
@@ -429,6 +437,32 @@
       !this.cookie.get(this.Cookie.key) ? this.cookie.set(this.Cookie.key, this.Cookie.value, this.Cookie.day, '/') : '';
     },
     methods: {
+      getSupplierData(val){
+        this.getSupplierDatas(val);
+        this.supplierDialog=true;
+      },
+      closeDialog(){
+        this.supplierDialog=false;
+      },
+      getSupplierDatas(val){
+        lookSupplier(val.id)
+          .then(({data})=>{
+            this.supplierData=data;
+            this.listData=val;
+          });
+      },
+      refreshList(val){
+        this.getSupplierDatas(this.listData);
+        for (let i of (this.productList.list)){
+          if(i.id===this.listData.id){
+            if(val){
+              this.listData.supplierCount++;
+            }else{
+              this.listData.supplierCount--;
+            };
+          };
+        };
+      },
       // 返回上一级=> 库内搜花=》花型列表
       async handleReload () {
         this.ParamsSearchImg = Object.assign({}, this.ParamsSearchImg, {
@@ -979,4 +1013,17 @@
             color: #fff;
         }
     }
+    .warehouse-grid-item{
+      position: relative;
+    }
+    .lookSupplier{
+      position: absolute;
+      left: 30px;
+      bottom: 58px;
+      color: #20a0ff;
+      cursor: pointer;
+    }
+  .el-dialog__header{
+    padding: 0;
+  }
 </style>

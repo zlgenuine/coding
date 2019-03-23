@@ -109,6 +109,7 @@ const orderDeatilBulk = r => require.ensure([], () => r(require('@/pages/orderDe
 // ========
 // demo
 const demo = r => require.ensure([], () => r(require('@/pages/demo/index.vue')), 'demo');
+
 const routes = [{
     path: '/',
     redirect: '/homePage'

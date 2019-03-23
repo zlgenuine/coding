@@ -15,9 +15,23 @@ import VueLazyload from 'vue-lazyload';
 import jhComponents from '@/components/common/index.js';
 // 高德地图
 import AMap from 'vue-amap';
-import { Table, TableColumn } from 'element-ui';
+import {
+  Table,
+  TableColumn ,
+  Dialog,
+  Icon,
+  Tree,
+  Checkbox,
+  CheckboxButton,
+  CheckboxGroup,} from 'element-ui';
 Vue.use(AMap);
 Vue.use(jhComponents);
+Vue.use(Dialog);
+Vue.use(Icon);
+Vue.use(Tree);
+Vue.use(Checkbox);
+Vue.use(CheckboxButton);
+Vue.use(CheckboxGroup);
 Vue.component(Table.name, Table);
 Vue.component(TableColumn.name, TableColumn);
 

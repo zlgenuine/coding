@@ -89,7 +89,7 @@ const Components = {
   tsForm,
   tsAliupload,
   tsFormItem,
-  tsLoading
+  tsLoading,
 };
 const install = function(Vue) {
   for (let i in Components) {

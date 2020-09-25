@@ -21,10 +21,10 @@
                         <div slot="header-left">
                             <strong>花型基本信息</strong>
                         </div>
-                        <ts-form-item label="来源厂家1：" prop="produceCompanyName">
-                            <ts-input class="add-input" v-model="addPatternForm.produceCompanyName" :maxlength="10"
-                                      size="small" placeholder="请输入来源厂家"></ts-input>
-                        </ts-form-item>
+                        <!--<ts-form-item label="来源厂家1：" prop="produceCompanyName">-->
+                            <!--<ts-input class="add-input" v-model="addPatternForm.produceCompanyName" :maxlength="10"-->
+                                      <!--size="small" placeholder="请输入来源厂家"></ts-input>-->
+                        <!--</ts-form-item>-->
                         <ts-form-item label="面料种类：" prop="category">
                             <ts-radio-group bordered v-model="addPatternForm.category" @change="handleML">
                                 <ts-radio :label="item.dicValue" v-for="item in dicTree.PRODUCT_TYPE"
@@ -206,8 +206,8 @@
             message: '请至少选择一个花型分类'
           }],
           ingredient: [{
-            required: true,
-            message: '请至少选择一个花型成分'
+            required: false,
+            // message: '请至少选择一个花型成分'
           }],
           productShape: [{
             required: true,

@@ -39,7 +39,7 @@
         </div>
         <div class="item item-3" @click="goProduct(1)">
         </div>
-        <div class="item item-4" @click="goProduct(2)">
+        <div class="item item-4" >
         </div>
       </div>
     </div>
@@ -220,7 +220,6 @@ export default {
             background: url("/static/images/product/product1.jpg");
         }
         .item-4 {
-            cursor: pointer;
             background: url("/static/images/product/product2.jpg");
         }
     }

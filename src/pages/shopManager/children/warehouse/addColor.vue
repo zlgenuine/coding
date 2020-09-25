@@ -29,7 +29,7 @@
             </ts-form-item>
             <ts-form-item :show-message="false"  labelWidth="0" v-if="item.isStock===1" class="add-dynamic--input">
                 <ts-input size="small" v-model.trim="item.stock" :maxlength="9" placeholder="请输入库存数量" style="width:48%" @input="handleSetColorList"></ts-input>
-                <ts-select style="width:48%" data-key-name="name" data-val-name="dicValue" placeholder="选择单位" :options='unit' v-model="item.unit" size="small" @change="handleSetColorList"></ts-select>
+                <ts-select style="width:48%" data-key-name="name" data-val-name="dicValue" placeholder="选择单位" :options='unit' disabled v-model="item.unit = product.priceUnit" size="small" @change="handleSetColorList"></ts-select>
             </ts-form-item>
           </ts-col>
         </ts-row>
@@ -66,6 +66,14 @@ export default {
   computed: {
     getColorLength() {
       return this.ColorList.length;
+    }
+  },
+  watch:{
+    ColorList:{
+      handler(val){
+        console.log(val,888888888);
+      },
+      deep:true
     }
   },
   methods: {

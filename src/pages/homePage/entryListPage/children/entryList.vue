@@ -242,6 +242,7 @@ export default {
     },
     // 搜索
     async handleSearch() {
+      window._czc.push(['_trackEvent', '首页', '最新入驻','搜索']);
       if (this.isMemeber) {
         this.showSearchItem = true;
         this.searchParam.pageNo = 1;

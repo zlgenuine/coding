@@ -50,6 +50,26 @@ export default {
      return nowDateTemp - upDateTemp < 604800000
     }
   },
+  components: {
+    topbar,
+    models,
+    'vFooter': footer
+  },
+  mounted () {
+    if (this.token) {
+      getUserImToken({id: this.userInfo.id});
+    }
+    if (this.showInfo) {
+      // this.$notify.info({
+      //   title: '消息',
+      //   message: '这是一条消息的提示消息'
+      // });
+    }
+    const script = document.createElement('script');
+    script.src = 'https://s23.cnzz.com/z_stat.php?id=1277376286&web_id=1277376286';
+    script.language = 'JavaScript';
+    document.body.appendChild(script);
+  },
   watch: {
     confirmControl (val) {
       if (val) {
@@ -73,22 +93,28 @@ export default {
           message: '这是一条消息的提示消息'
         });
       }
-    }
-  },
-  components: {
-    topbar,
-    models,
-    'vFooter': footer
-  },
-  mounted () {
-    if (this.token) {
-      getUserImToken({id: this.userInfo.id});
-    }
-    if (this.showInfo) {
-      // this.$notify.info({
-      //   title: '消息',
-      //   message: '这是一条消息的提示消息'
-      // });
+    },
+    '$route' (val) {
+      if (window._czc) {
+        switch(val.path){
+          case '/search/image':window._czc.push(['_trackEvent', '首页', '图片搜花入口']);
+            break;
+          case '/search/text':window._czc.push(['_trackEvent', '首页', '文本搜索入口']);
+            break;
+          case '/search/equipment':window._czc.push(['_trackEvent', '首页', '设备搜索入口']);
+            break;
+          case '/find/everyLooking':window._czc.push(['_trackEvent', '首页', '大家都在找']);
+            break;
+          case '/hotListPage':window._czc.push(['_trackEvent', '首页', '新增热搜入口']);
+            break;
+          case '/entryListPage':window._czc.push(['_trackEvent', '首页', '最新入驻']);
+            break;
+          case '/supplyOrBuy':window._czc.push(['_trackEvent', '首页', '供应求购']);
+            break;
+          case '/threeDDressPage':window._czc.push(['_trackEvent', '首页', '3D试衣']);
+            break;
+        }
+      }
     }
   }
 };

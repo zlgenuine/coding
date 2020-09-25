@@ -510,6 +510,7 @@
       },
       // 重新获取列表
       refresh () {
+        window._czc.push(['_trackEvent', '首页','仓库管理', '库内文本搜花']);
         if (this.lsk) {
           this.getLsk();
           getProductList({pageSize: 1}).then(({data: {data}}) => {
@@ -621,6 +622,7 @@
       // ===========
       // // 隐藏上传file控件
       handleUpload () {
+        window._czc.push(['_trackEvent', '首页', '仓库管理','库内图片搜花']);
         if (!this.isMemeber) {
           // this.$messagebox.alert('成为会员，请联系热线电话：4008013357', '你无此权限');
           this.$messagebox.confirm('成为会员，享受更优质服务','您无此权限', {
